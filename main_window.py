@@ -57,9 +57,9 @@ class Ten(QWidget):
         text = self.time.toString('hh:mm')
         print("TEN:", text)
         print("TEN:", self.time.second())
-        if (self.time.second() % 2) == 0:
-            text = text[:2] + ' ' + text[3:]
-        self.timerLCDNumber.display(text)
+        #if (self.time.second() % 2) == 0:
+        #    text = text[:2] + ' ' + text[3:]
+        #self.timerLCDNumber.display(text)
 
     def showStopwatch(self):
         """
@@ -67,18 +67,20 @@ class Ten(QWidget):
         """
 
         self.shiverTimer = self.shiverTimer.addMSecs(1)
-        print(self.shiverTimer.msec())
+        #print(self.shiverTimer.msec())
         text = self.shiverTimer.toString('hh:mm:ss.zzz')
         self.timerLCDNumber.display(text)
-        print(text)
-
+        #print(text)
 
     def on_startPushButton_clicked(self):
 
-        print("TEN: start timer")
         self.timer.start(1)
-        print(self.shiverTimer.hour(), self.shiverTimer.minute(), self.shiverTimer.second())
+        self.time = QTime.currentTime()
+        print('START:', self.time.toString('hh:mm:ss'))
+        self.startPushButton.setEnabled(False)
+        #print(self.shiverTimer.hour(), self.shiverTimer.minute(), self.shiverTimer.second())
 
     def on_stopPushButton_clicked(self):
 
         self.timer.stop()
+        self.startPushButton.setEnabled(True)
