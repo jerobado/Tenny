@@ -1,9 +1,12 @@
-__author__ = 'Jero'
 
 import time
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QVBoxLayout, QHBoxLayout, QGridLayout
 from PyQt5.QtCore import QTime, QTimer
+
+__title__ = 'Tenny'
+__author__ = 'Jero'
+__version__ = 0.1
 
 
 class Ten(QWidget):
@@ -39,7 +42,7 @@ class Ten(QWidget):
     def _properties(self):
 
         self.resize(350, 125)
-        self.setWindowTitle("10K Hours Tracker | version 0.1")
+        self.setWindowTitle('{} {}'.format(__title__, __version__))
 
     def _connections(self):
 

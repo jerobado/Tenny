@@ -9,7 +9,7 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
-from main_window import Ten
+from src.main_window import Ten
 
 __author__ = 'Jero'
 
