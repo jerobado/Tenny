@@ -2,7 +2,7 @@
 import time
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QVBoxLayout, QHBoxLayout, QGridLayout
-from PyQt5.QtCore import QTime, QTimer
+from PyQt5.QtCore import QTime, QTimer, Qt
 
 __title__ = 'Tenny'
 __author__ = 'Jero'
@@ -12,7 +12,7 @@ __version__ = 0.1
 class Ten(QWidget):
 
     def __init__(self, parent=None):
-        super(Ten, self).__init__(parent)
+        super().__init__(parent)
 
         self._widgets()
         self._layout()
@@ -43,6 +43,7 @@ class Ten(QWidget):
 
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
+        self.setWindowFlags(Qt.MSWindowsFixedSizeDialogHint)
 
     def _connections(self):
 
