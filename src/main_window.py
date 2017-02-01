@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout
 from PyQt5.QtCore import QTime, QTimer, Qt
+from PyQt5.QtGui import QIcon
 
 __title__ = 'Tenny'
 __author__ = 'Jero'
@@ -12,7 +13,7 @@ class Ten(QWidget):
         super().__init__(parent)
 
         self._START = '&START'
-        self._STOP = 'S&TOP'
+        self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
 
@@ -42,9 +43,11 @@ class Ten(QWidget):
 
     def _properties(self):
 
+        self.setWindowIcon(QIcon('images\chronometer.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
-        self.setWindowFlags(Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowOpacity(0.7)
+        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)
 
     def _connections(self):
 
@@ -78,3 +81,11 @@ class Ten(QWidget):
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
+
+    def enterEvent(self, event):
+
+        print('mouse entering')
+
+    def leaveEvent(self, event):
+
+        print('mouse leaving')
