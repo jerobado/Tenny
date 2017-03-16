@@ -46,7 +46,7 @@ class Ten(QWidget):
         self.setWindowIcon(QIcon('images\chronometer.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
-        self.setWindowOpacity(0.7)
+        #self.setWindowOpacity(0.7)
         self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)
 
     def _connections(self):
@@ -84,8 +84,10 @@ class Ten(QWidget):
 
     def enterEvent(self, event):
 
-        print('mouse entering')
+        #print('mouse entering')
+        pass
 
     def leaveEvent(self, event):
 
-        print('mouse leaving')
+        #print('mouse leaving')
+        pass
