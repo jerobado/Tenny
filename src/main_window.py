@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 
 __title__ = 'Tenny'
 __author__ = 'Jero'
-__version__ = 0.1
+__version__ = 0.2
 
 
 class Ten(QWidget):
@@ -46,8 +46,8 @@ class Ten(QWidget):
         self.setWindowIcon(QIcon('images\chronometer.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
-        #self.setWindowOpacity(0.7)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowOpacity(0.7)
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
     def _connections(self):
 
@@ -67,10 +67,10 @@ class Ten(QWidget):
     def on_stortPushButton_clicked(self):
 
         if self.stortPushButton.text() == self._START:
-            self.timer.start(1)                     # Start the timer
+            self.timer.start(1)
             self.stortPushButton.setText(self._STOP)
         else:
-            self.timer.stop()                       # Stop the timer
+            self.timer.stop()
             self.stortPushButton.setText(self._START)
 
     def on_resetPushButton_clicked(self):

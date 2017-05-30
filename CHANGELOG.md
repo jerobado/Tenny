@@ -5,9 +5,10 @@ CHANGELOG
 
 _Release Date: TBD_
 
-* TODO
-    * Added hotkey support.
-    * Can now be resize.
+**TODO**
+- [ ] Added hotkey support.
+- [x] Can now be resize.
+
 
 **Patch 0.1**
 
