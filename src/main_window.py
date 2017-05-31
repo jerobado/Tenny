@@ -1,3 +1,4 @@
+import keyboard
 from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout
 from PyQt5.QtCore import QTime, QTimer, Qt
 from PyQt5.QtGui import QIcon
@@ -21,6 +22,7 @@ class Ten(QWidget):
         self._layout()
         self._properties()
         self._connections()
+        self._hotkeys()
 
     def _widgets(self):
 
@@ -43,17 +45,24 @@ class Ten(QWidget):
 
     def _properties(self):
 
-        self.setWindowIcon(QIcon('images\chronometer.png'))
+        # TODO: icon doesn't show
+        self.setWindowIcon(QIcon('images/chronometer.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
         self.setWindowOpacity(0.7)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        self.setFocusPolicy(Qt.StrongFocus)
 
     def _connections(self):
 
         self.timer.timeout.connect(self.showStopwatch)
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
+
+    def _hotkeys(self):
+
+        keyboard.add_hotkey('ctrl+shift+s', self.stortPushButton.click)
+        keyboard.add_hotkey('ctrl+shift+r', self.resetPushButton.click)
 
     def showStopwatch(self):
         """

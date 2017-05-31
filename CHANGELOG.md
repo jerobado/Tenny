@@ -6,7 +6,7 @@ CHANGELOG
 _Release Date: TBD_
 
 **TODO**
-- [ ] Added hotkey support.
+- [x] Added hotkey support.
 - [x] Can now be resize.
 
 
