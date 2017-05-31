@@ -6,8 +6,10 @@ CHANGELOG
 _Release Date: TBD_
 
 **TODO**
-- [x] Added hotkey support.
 - [x] Can now be resize.
+- [x] Added hotkey support.
+- [x] Added stopwatch icon in the taskbar.
+- [x] Added tooltip in the Start/Stop and Reset buttons.
 
 
 **Patch 0.1**

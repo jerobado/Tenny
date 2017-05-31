@@ -33,6 +33,8 @@ class Ten(QWidget):
         self.timerLCDNumber.display("00:00:00.000")
         self.stortPushButton = QPushButton(self._START)
         self.resetPushButton = QPushButton(self._RESET)
+        self.stortPushButton.setToolTip("Start/Stop (Ctrl + Shift + S)")
+        self.resetPushButton.setToolTip("Reset (Ctrl + Shift + R)")
 
     def _layout(self):
 

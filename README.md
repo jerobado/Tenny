@@ -1,11 +1,11 @@
-**Tenny**
+![Hey! Tenny](images/stopwatch-32.png) **Tenny**
 ---
-Simple timer application written in Python and PyQt.
+A simple stopwatch application that can be controlled by a hotkey.
 
 ![Tenny Demo](https://github.com/mokachokokarbon/Tenny/blob/master/images/tenny-demo.gif)
 
-Feature
+Features
 ---    
-* With `START`, `STOP` and `RESET` button to control the timer.
-* Semi-transparent and fixed window size.
+* Controllable by a hotkey (Start/Stop: `Ctrl+Shift+S` and Reset: `Ctrl+Shift+R`) regardless of active window.
+* Semi-transperent and resizeable window.
 * Always on top.
