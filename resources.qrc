@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file alias="stopwatch-32.png">images/stopwatch-32.png</file>
+    </qresource>
+</RCC>
+
+<!-- move resources.qrc (this file) in the root folder before running the command below -->
+<!-- pyrcc5 -o resources/tenny_resources.py resources.qrc -->

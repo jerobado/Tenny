@@ -2,9 +2,11 @@ import keyboard
 from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout
 from PyQt5.QtCore import QTime, QTimer, Qt
 from PyQt5.QtGui import QIcon
+from resources import tenny_resources
+
 
 __title__ = 'Tenny'
-__author__ = 'Jero'
+__author__ = 'mokachokokarbon'
 __version__ = 0.2
 
 
@@ -33,8 +35,8 @@ class Ten(QWidget):
         self.timerLCDNumber.display("00:00:00.000")
         self.stortPushButton = QPushButton(self._START)
         self.resetPushButton = QPushButton(self._RESET)
-        self.stortPushButton.setToolTip("Start/Stop (Ctrl + Shift + S)")
-        self.resetPushButton.setToolTip("Reset (Ctrl + Shift + R)")
+        self.stortPushButton.setToolTip("Start/Stop (Ctrl + 1)")
+        self.resetPushButton.setToolTip("Reset (Ctrl + 2)")
 
     def _layout(self):
 
@@ -48,7 +50,7 @@ class Ten(QWidget):
     def _properties(self):
 
         # TODO: icon doesn't show
-        self.setWindowIcon(QIcon('images/chronometer.png'))
+        self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
         self.setWindowOpacity(0.7)
@@ -63,8 +65,8 @@ class Ten(QWidget):
 
     def _hotkeys(self):
 
-        keyboard.add_hotkey('ctrl+shift+s', self.stortPushButton.click)
-        keyboard.add_hotkey('ctrl+shift+r', self.resetPushButton.click)
+        keyboard.add_hotkey('ctrl+1', self.stortPushButton.click)
+        keyboard.add_hotkey('ctrl+2', self.resetPushButton.click)
 
     def showStopwatch(self):
         """
@@ -92,13 +94,3 @@ class Ten(QWidget):
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
-
-    def enterEvent(self, event):
-
-        #print('mouse entering')
-        pass
-
-    def leaveEvent(self, event):
-
-        #print('mouse leaving')
-        pass

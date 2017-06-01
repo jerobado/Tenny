@@ -6,6 +6,6 @@ A simple stopwatch application that can be controlled by a hotkey.
 
 Features
 ---    
-* Controllable by a hotkey (Start/Stop: `Ctrl+Shift+S` and Reset: `Ctrl+Shift+R`) regardless of active window.
+* Controllable by a hotkey regardless of active window.
 * Semi-transperent and resizeable window.
 * Always on top.
