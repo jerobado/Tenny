@@ -3,7 +3,7 @@ CHANGELOG
 
 **Patch 0.2**
 
-_Release Date: TBD_
+_Release Date: 1 Jun 2017_
 
 * Highlight
     * Added hotkey support.
