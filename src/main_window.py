@@ -1,5 +1,5 @@
 import keyboard
-from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon
 from PyQt5.QtCore import QTime, QTimer, Qt
 from PyQt5.QtGui import QIcon
 from resources import tenny_resources
@@ -7,7 +7,7 @@ from resources import tenny_resources
 
 __title__ = 'Tenny'
 __author__ = 'mokachokokarbon'
-__version__ = 0.2
+__version__ = 0.3
 
 
 class Ten(QWidget):
@@ -25,6 +25,7 @@ class Ten(QWidget):
         self._properties()
         self._connections()
         self._hotkeys()
+        self._systemTray()
 
     def _widgets(self):
 
@@ -37,6 +38,12 @@ class Ten(QWidget):
         self.resetPushButton = QPushButton(self._RESET)
         self.stortPushButton.setToolTip("Start/Stop (Ctrl + 1)")
         self.resetPushButton.setToolTip("Reset (Ctrl + 2)")
+        self.tennySystemTray = QSystemTrayIcon()
+
+        # TODO: playing with QSystemTrayIcon here
+        self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
+        self.tennySystemTray.setToolTip('Tenny 0.2')
+        self.tennySystemTray.show()
 
     def _layout(self):
 
@@ -68,6 +75,10 @@ class Ten(QWidget):
         keyboard.add_hotkey('ctrl+1', self.stortPushButton.click)
         keyboard.add_hotkey('ctrl+2', self.resetPushButton.click)
 
+    def _systemTray(self):
+
+        self.tennySystemTray.showMessage('Tenny', 'Tenny is now active.', QSystemTrayIcon.Information, 3000)
+
     def showStopwatch(self):
         """
             Event handler for showing elapsed time, just like a stopwatch
@@ -82,9 +93,12 @@ class Ten(QWidget):
         if self.stortPushButton.text() == self._START:
             self.timer.start(1)
             self.stortPushButton.setText(self._STOP)
+            # title, message, icon, time
+            self.tennySystemTray.showMessage('Tenny timer started', 'Press Ctrl + 1 to stop the timer.', QSystemTrayIcon.Information, 5000)
         else:
             self.timer.stop()
             self.stortPushButton.setText(self._START)
+            self.tennySystemTray.showMessage('Tenny timer stopped', 'Press Ctrl + 1 to start the timer.', QSystemTrayIcon.Information, 5000)
 
     def on_resetPushButton_clicked(self):
 
