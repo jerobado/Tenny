@@ -56,13 +56,12 @@ class Ten(QWidget):
 
     def _properties(self):
 
-        # TODO: icon doesn't show
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
         self.setWindowOpacity(0.7)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
-        self.setFocusPolicy(Qt.StrongFocus)
+        #self.setFocusPolicy(Qt.StrongFocus)
 
     def _connections(self):
 
@@ -74,6 +73,7 @@ class Ten(QWidget):
 
         keyboard.add_hotkey('ctrl+1', self.stortPushButton.click)
         keyboard.add_hotkey('ctrl+2', self.resetPushButton.click)
+        keyboard.add_hotkey('ctrl+win+alt+e', self.on_keyboardHotkey_pressed)
 
     def _systemTray(self):
 
@@ -99,6 +99,14 @@ class Ten(QWidget):
             self.timer.stop()
             self.stortPushButton.setText(self._START)
             self.tennySystemTray.showMessage('Tenny timer stopped', 'Press Ctrl + 1 to start the timer.', QSystemTrayIcon.Information, 5000)
+
+    def on_keyboardHotkey_pressed(self):
+
+        # TODO: you're app is crashing after showing your new shiny dialog
+        from src.dialog.preferences import Preferences
+        dialog = Preferences(self)
+        if dialog.exec_():
+            print('done')
 
     def on_resetPushButton_clicked(self):
 

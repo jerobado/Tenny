@@ -9,6 +9,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from src.main_window import Ten
+from src.dialog.preferences import Preferences
 
 __author__ = 'mokachokokarbon'
 
@@ -24,6 +25,7 @@ def configure_app_icon() -> None:
 
 if __name__ == '__main__':
     configure_app_icon()
-    window = Ten()
+    #window = Ten()
+    window = Preferences()
     window.show()
     APP.exec_()
