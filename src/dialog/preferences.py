@@ -1,34 +1,49 @@
-from PyQt5.QtWidgets import QDialog, QCheckBox, QPushButton, QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit
-from PyQt5.QtCore import Qt
+# Preference Dialog(s)
 
-class Preferences(QDialog):
+from string import digits as DIGITS
+from PyQt5.QtWidgets import (QDialog,
+                             QCheckBox,
+                             QComboBox,
+                             QPushButton,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QVBoxLayout)
+
+
+class SetShortcut(QDialog):
+    """ A dialog that will let the user choose his/her preferred hotkey. """
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.modifier_keys = []
+        self.single_key = ''
+        self.selected_hotkeys = ''      # Combination of self.modifier_keys and self.single_key
         self._widgets()
         self._layout()
         self._properties()
-        #self._connections()
+        self._connections()
 
-    def _widgets(self):
+    def _widgets(self) -> None:
+        """ List of QWidgets used in this dialog. """
 
         self.shiftCheckBox = QCheckBox('Shift')
         self.ctrlCheckBox = QCheckBox('Ctrl')
-        self.winkeyCheckBox = QCheckBox('Winkey')
+        self.winCheckBox = QCheckBox('Win')
         self.altCheckBox = QCheckBox('Alt')
-        self.keyLineEdit = QLineEdit()
+        self.keyComboBox = QComboBox()
         self.applyPushButton = QPushButton('&Apply')
 
-    def _layout(self):
+    def _layout(self) -> None:
+        """ Layout design in this dialog. """
 
         horizontal = QHBoxLayout()
         horizontal.addWidget(self.shiftCheckBox)
         horizontal.addWidget(self.ctrlCheckBox)
-        horizontal.addWidget(self.winkeyCheckBox)
+        horizontal.addWidget(self.winCheckBox)
         horizontal.addWidget(self.altCheckBox)
-        horizontal.addWidget(self.keyLineEdit)
+        horizontal.addWidget(self.keyComboBox)
 
-        groupbox = QGroupBox('Set Hotkey')
+        groupbox = QGroupBox('Keys')
         groupbox.setLayout(horizontal)
 
         button = QHBoxLayout()
@@ -41,30 +56,66 @@ class Preferences(QDialog):
 
         self.setLayout(vertical)
 
-    def _properties(self):
+    def _properties(self) -> None:
+        """ Settings of all QObjects stored are all here. """
 
-        # self.keyLineEdit
-        self.keyLineEdit.setMaxLength(1)
-        self.keyLineEdit.setMaximumWidth(20)
+        # self.keyComboBox properties
+        self.keyComboBox.addItems(iter(DIGITS))
 
-        # Main window
-        self.setWindowTitle('Preferences')
+        # SetShortcut(QDialog)
+        self.setWindowTitle('Set Shortcut')
         self.resize(300, 104)
+        self.setModal(True)
 
-    def resizeEvent(self, event):
+    def _connections(self) -> None:
+        """ Connect all signals and slots here. """
 
-        print('width: {0}, height: {1}'.format(self.width(), self.height()))
+        self.shiftCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
+        self.altCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
+        self.ctrlCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
+        self.winCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
 
-    def keyPressEvent(self, event):
+        self.keyComboBox.currentIndexChanged.connect(self.on_keyComboBox_currentIndexChanged)
 
-        if event.key() == Qt.Key_Shift:
-            self.shiftCheckBox.setChecked(True) if not self.shiftCheckBox.isChecked() else self.shiftCheckBox.setChecked(False)
+        self.applyPushButton.clicked.connect(self.accept)
 
-        if event.key() == Qt.Key_Control:
-            self.ctrlCheckBox.setChecked(True) if not self.ctrlCheckBox.isChecked() else self.ctrlCheckBox.setChecked(False)
+    def on_anyCheckBox_clicked(self) -> None:
+        """ Call self.update_modifier_keys() everytime clicked any of the four (4) checkboxes. """
 
-        if event.key() == Qt.Key_Meta:
-            self.winkeyCheckBox.setChecked(True) if not self.winkeyCheckBox.isChecked() else self.winkeyCheckBox.setChecked(False)
+        self.update_modifier_keys()
 
-        if event.key() == Qt.Key_Alt:
-            self.altCheckBox.setChecked(True) if not self.altCheckBox.isChecked() else self.altCheckBox.setChecked(False)
+    def update_modifier_keys(self) -> None:
+        """ Update self.modifier_keys based on the checkbox clicked. """
+
+        checkbox = self.sender()
+        text = checkbox.text().lower()
+        if checkbox.isChecked():
+            self.modifier_keys.append(text)
+        else:
+            self.modifier_keys.remove(text)
+
+    def on_keyComboBox_currentIndexChanged(self) -> None:
+        """ Call self.update_single_key() everytime the combobox selection changes. """
+
+        self.update_single_key()
+
+    def update_single_key(self):
+        """ Update self.single_key based on self.keyComboBox's selected text. """
+
+        self.single_key = self.keyComboBox.currentText()
+
+    def accept(self):
+        """ Call self.update_user_hotkeys() based on the user's selected keys. """
+
+        self.update_user_hotkeys()
+        self.done(1)
+
+    def update_user_hotkeys(self) -> None:
+        """ Update self.selected_hotkeys based on the combined self.modifier_keys and self.single_key. """
+
+        self.selected_hotkeys = '+'.join(self.get_combined_modifier_and_single_keys())
+
+    def get_combined_modifier_and_single_keys(self) -> list:
+        """ Return combined self.modifier_keys and self.single_key. """
+
+        return self.modifier_keys + [self.single_key]

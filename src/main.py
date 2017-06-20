@@ -9,10 +9,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from src.main_window import Ten
-from src.dialog.preferences import Preferences
 
 __author__ = 'mokachokokarbon'
-
 APP = QApplication(sys.argv)
 
 
@@ -20,12 +18,11 @@ def configure_app_icon() -> None:
     """ This will show the icon of Betty in the taskbar """
 
     import ctypes
-    APP_ID = u'novus.mokachokokarbon.tenny.02'
+    APP_ID = u'novus.mokachokokarbon.tenny.03'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
 
 if __name__ == '__main__':
     configure_app_icon()
-    #window = Ten()
-    window = Preferences()
+    window = Ten()
     window.show()
-    APP.exec_()
+    APP.exec()

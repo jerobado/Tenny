@@ -1,5 +1,5 @@
 import keyboard
-from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon
+from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon, QMenu, QAction
 from PyQt5.QtCore import QTime, QTimer, Qt
 from PyQt5.QtGui import QIcon
 from resources import tenny_resources
@@ -20,12 +20,17 @@ class Ten(QWidget):
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
 
+        self.stort_hotkey = 'ctrl+9'
+        self.reset_hotkey = 'ctrl+0'
+
         self._widgets()
         self._layout()
         self._properties()
         self._connections()
-        self._hotkeys()
-        self._systemTray()
+        self._create_actions()
+        self._create_menus()
+        self._hotkeys(self.stort_hotkey)
+        #self._systemTray()
 
     def _widgets(self):
 
@@ -36,14 +41,14 @@ class Ten(QWidget):
         self.timerLCDNumber.display("00:00:00.000")
         self.stortPushButton = QPushButton(self._START)
         self.resetPushButton = QPushButton(self._RESET)
-        self.stortPushButton.setToolTip("Start/Stop (Ctrl + 1)")
-        self.resetPushButton.setToolTip("Reset (Ctrl + 2)")
-        self.tennySystemTray = QSystemTrayIcon()
+        self.stortPushButton.setToolTip("Start/Stop ({0})".format(self.stort_hotkey))
+        self.resetPushButton.setToolTip("Reset ({0})".format(self.stort_hotkey))
+        #self.tennySystemTray = QSystemTrayIcon()
 
         # TODO: playing with QSystemTrayIcon here
-        self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
-        self.tennySystemTray.setToolTip('Tenny 0.2')
-        self.tennySystemTray.show()
+        #self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
+        #self.tennySystemTray.setToolTip('Tenny 0.2')
+        #self.tennySystemTray.show()
 
     def _layout(self):
 
@@ -56,12 +61,20 @@ class Ten(QWidget):
 
     def _properties(self):
 
+        # Main window
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
         self.setWindowOpacity(0.7)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
-        #self.setFocusPolicy(Qt.StrongFocus)
+
+        # self.stortPushButton
+        self.stortPushButton.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.stortPushButton.customContextMenuRequested.connect(self.on_context_menu)
+
+        # self.stortPushButton
+        self.resetPushButton.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.resetPushButton.customContextMenuRequested.connect(self.on_context_menu)
 
     def _connections(self):
 
@@ -69,11 +82,21 @@ class Ten(QWidget):
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
 
-    def _hotkeys(self):
+    def _create_menus(self):
 
-        keyboard.add_hotkey('ctrl+1', self.stortPushButton.click)
-        keyboard.add_hotkey('ctrl+2', self.resetPushButton.click)
-        keyboard.add_hotkey('ctrl+win+alt+e', self.on_keyboardHotkey_pressed)
+        # Context menu for self.stortPushButton
+        self.stortPushButton_contextMenu = QMenu()
+        self.stortPushButton_contextMenu.addAction(self.setShortcutAction)
+
+    def _create_actions(self):
+
+        self.setShortcutAction = QAction("Set shortcut", self,
+                                         triggered=self.on_setShortcut_action)
+
+    def _hotkeys(self, stort):
+
+        keyboard.add_hotkey(stort, self.stortPushButton.click)
+        keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
 
     def _systemTray(self):
 
@@ -94,19 +117,11 @@ class Ten(QWidget):
             self.timer.start(1)
             self.stortPushButton.setText(self._STOP)
             # title, message, icon, time
-            self.tennySystemTray.showMessage('Tenny timer started', 'Press Ctrl + 1 to stop the timer.', QSystemTrayIcon.Information, 5000)
+            #self.tennySystemTray.showMessage('Tenny timer started', 'Press Ctrl + 1 to stop the timer.', QSystemTrayIcon.Information, 5000)
         else:
             self.timer.stop()
             self.stortPushButton.setText(self._START)
-            self.tennySystemTray.showMessage('Tenny timer stopped', 'Press Ctrl + 1 to start the timer.', QSystemTrayIcon.Information, 5000)
-
-    def on_keyboardHotkey_pressed(self):
-
-        # TODO: you're app is crashing after showing your new shiny dialog
-        from src.dialog.preferences import Preferences
-        dialog = Preferences(self)
-        if dialog.exec_():
-            print('done')
+            #self.tennySystemTray.showMessage('Tenny timer stopped', 'Press Ctrl + 1 to start the timer.', QSystemTrayIcon.Information, 5000)
 
     def on_resetPushButton_clicked(self):
 
@@ -116,3 +131,15 @@ class Ten(QWidget):
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
+
+    def on_setShortcut_action(self):
+
+        from src.dialog.preferences import SetShortcut
+        dialog = SetShortcut(self)
+        if dialog.exec():
+            print('user preferred shortcut:', dialog.selected_hotkeys)
+            keyboard.add_hotkey(dialog.selected_hotkeys, self.stortPushButton.click)
+
+    def on_context_menu(self, point):
+
+        self.stortPushButton_contextMenu.exec(self.stortPushButton.mapToGlobal(point))
