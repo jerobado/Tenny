@@ -14,23 +14,44 @@ class Ten(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-
         self._START = '&START'
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
-
-        self.stort_hotkey = 'ctrl+9'
-        self.reset_hotkey = 'ctrl+0'
-
+        self.stort_hotkey = 'shift+f1'
+        self.reset_hotkey = 'shift+f2'
+        self._create_actions()
+        self._create_menus()
         self._widgets()
         self._layout()
         self._properties()
         self._connections()
-        self._create_actions()
-        self._create_menus()
-        self._hotkeys(self.stort_hotkey)
-        #self._systemTray()
+        self._hotkeys()
+
+    def _create_actions(self):
+
+        # self.tennyMenu actions
+        self.quitAction = QAction('Quit Tenny', self,
+                                  triggered=self.close)
+
+        # self.setShortCutKeysMenu actions
+        self.startstopAction = QAction('Start or Stop', self,
+                                       triggered=self.on_setShortcut_action)
+        self.resetAction = QAction('Reset', self,
+                                   triggered=self.on_setShortcut_action)
+
+    def _create_menus(self):
+
+        # Sub-menu
+        self.setShortCutKeysMenu = QMenu('Set Shortcut Keys')
+        self.setShortCutKeysMenu.addAction(self.startstopAction)
+        self.setShortCutKeysMenu.addAction(self.resetAction)
+
+        # Main menu
+        self.tennyMenu = QMenu()
+        self.tennyMenu.addMenu(self.setShortCutKeysMenu)
+        self.tennyMenu.addSeparator()
+        self.tennyMenu.addAction(self.quitAction)
 
     def _widgets(self):
 
@@ -41,14 +62,9 @@ class Ten(QWidget):
         self.timerLCDNumber.display("00:00:00.000")
         self.stortPushButton = QPushButton(self._START)
         self.resetPushButton = QPushButton(self._RESET)
-        self.stortPushButton.setToolTip("Start/Stop ({0})".format(self.stort_hotkey))
-        self.resetPushButton.setToolTip("Reset ({0})".format(self.stort_hotkey))
-        #self.tennySystemTray = QSystemTrayIcon()
-
-        # TODO: playing with QSystemTrayIcon here
-        #self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
-        #self.tennySystemTray.setToolTip('Tenny 0.2')
-        #self.tennySystemTray.show()
+        self.stortPushButton.setToolTip(self.stort_hotkey)
+        self.resetPushButton.setToolTip(self.reset_hotkey)
+        self.tennySystemTray = QSystemTrayIcon()
 
     def _layout(self):
 
@@ -68,13 +84,11 @@ class Ten(QWidget):
         self.setWindowOpacity(0.7)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
-        # self.stortPushButton
-        self.stortPushButton.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.stortPushButton.customContextMenuRequested.connect(self.on_context_menu)
-
-        # self.stortPushButton
-        self.resetPushButton.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.resetPushButton.customContextMenuRequested.connect(self.on_context_menu)
+        # TODO: playing with QSystemTrayIcon here
+        self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
+        self.tennySystemTray.setToolTip('Tenny 0.3')
+        self.tennySystemTray.setContextMenu(self.tennyMenu)
+        self.tennySystemTray.show()
 
     def _connections(self):
 
@@ -82,30 +96,13 @@ class Ten(QWidget):
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
 
-    def _create_menus(self):
+    def _hotkeys(self):
 
-        # Context menu for self.stortPushButton
-        self.stortPushButton_contextMenu = QMenu()
-        self.stortPushButton_contextMenu.addAction(self.setShortcutAction)
-
-    def _create_actions(self):
-
-        self.setShortcutAction = QAction("Set shortcut", self,
-                                         triggered=self.on_setShortcut_action)
-
-    def _hotkeys(self, stort):
-
-        keyboard.add_hotkey(stort, self.stortPushButton.click)
+        keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)
         keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
 
-    def _systemTray(self):
-
-        self.tennySystemTray.showMessage('Tenny', 'Tenny is now active.', QSystemTrayIcon.Information, 3000)
-
     def showStopwatch(self):
-        """
-            Event handler for showing elapsed time, just like a stopwatch
-        """
+        """ Event handler for showing elapsed time, just like a stopwatch. """
 
         self.shiverTimer = self.shiverTimer.addMSecs(1)
         text = self.shiverTimer.toString(self._FORMAT)
@@ -116,12 +113,9 @@ class Ten(QWidget):
         if self.stortPushButton.text() == self._START:
             self.timer.start(1)
             self.stortPushButton.setText(self._STOP)
-            # title, message, icon, time
-            #self.tennySystemTray.showMessage('Tenny timer started', 'Press Ctrl + 1 to stop the timer.', QSystemTrayIcon.Information, 5000)
         else:
             self.timer.stop()
             self.stortPushButton.setText(self._START)
-            #self.tennySystemTray.showMessage('Tenny timer stopped', 'Press Ctrl + 1 to start the timer.', QSystemTrayIcon.Information, 5000)
 
     def on_resetPushButton_clicked(self):
 
@@ -134,12 +128,28 @@ class Ten(QWidget):
 
     def on_setShortcut_action(self):
 
+        which_action = self.sender()
+        text = which_action.text()
+
         from src.dialog.preferences import SetShortcut
         dialog = SetShortcut(self)
+        dialog.setWindowTitle('Set Shortcut Key for {0}'.format(text))
+
         if dialog.exec():
+
             print('user preferred shortcut:', dialog.selected_hotkeys)
-            keyboard.add_hotkey(dialog.selected_hotkeys, self.stortPushButton.click)
+            if text == 'Start or Stop':
+                keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
+                self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
+                keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
+                self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
+            else:
+                keyboard.remove_hotkey(self.reset_hotkey)
+                self.reset_hotkey = dialog.selected_hotkeys
+                keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
+                self.resetPushButton.setToolTip(self.reset_hotkey)
 
-    def on_context_menu(self, point):
+    def closeEvent(self, event):
 
-        self.stortPushButton_contextMenu.exec(self.stortPushButton.mapToGlobal(point))
+        self.hide()
+        self.tennySystemTray.showMessage('Tenny', 'You can still found me here :)', QSystemTrayIcon.Information, 3000)

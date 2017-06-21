@@ -31,7 +31,7 @@ class SetShortcut(QDialog):
         self.winCheckBox = QCheckBox('Win')
         self.altCheckBox = QCheckBox('Alt')
         self.keyComboBox = QComboBox()
-        self.applyPushButton = QPushButton('&Apply')
+        self.okPushButton = QPushButton('&OK')
 
     def _layout(self) -> None:
         """ Layout design in this dialog. """
@@ -48,7 +48,7 @@ class SetShortcut(QDialog):
 
         button = QHBoxLayout()
         button.addStretch()
-        button.addWidget(self.applyPushButton)
+        button.addWidget(self.okPushButton)
 
         vertical = QVBoxLayout()
         vertical.addWidget(groupbox)
@@ -63,7 +63,7 @@ class SetShortcut(QDialog):
         self.keyComboBox.addItems(iter(DIGITS))
 
         # SetShortcut(QDialog)
-        self.setWindowTitle('Set Shortcut')
+        #self.setWindowTitle('Set Shortcut Key for {0}'.format(self.title))
         self.resize(300, 104)
         self.setModal(True)
 
@@ -77,10 +77,10 @@ class SetShortcut(QDialog):
 
         self.keyComboBox.currentIndexChanged.connect(self.on_keyComboBox_currentIndexChanged)
 
-        self.applyPushButton.clicked.connect(self.accept)
+        self.okPushButton.clicked.connect(self.accept)
 
     def on_anyCheckBox_clicked(self) -> None:
-        """ Call self.update_modifier_keys() everytime clicked any of the four (4) checkboxes. """
+        """ Call self.update_modifier_keys() everytime the user clicked any of the four (4) checkboxes. """
 
         self.update_modifier_keys()
 
@@ -100,7 +100,7 @@ class SetShortcut(QDialog):
         self.update_single_key()
 
     def update_single_key(self):
-        """ Update self.single_key based on self.keyComboBox's selected text. """
+        """ Update self.single_key based on self.keyComboBox' selected text. """
 
         self.single_key = self.keyComboBox.currentText()
 
