@@ -1,6 +1,7 @@
 # Preference Dialog(s)
 
-from string import digits as DIGITS
+from string import (ascii_uppercase,
+                    digits)
 from PyQt5.QtWidgets import (QDialog,
                              QCheckBox,
                              QComboBox,
@@ -8,6 +9,7 @@ from PyQt5.QtWidgets import (QDialog,
                              QGroupBox,
                              QHBoxLayout,
                              QVBoxLayout)
+from keyboard import read_key, KeyboardEvent
 
 
 class SetShortcut(QDialog):
@@ -60,10 +62,10 @@ class SetShortcut(QDialog):
         """ Settings of all QObjects stored are all here. """
 
         # self.keyComboBox properties
-        self.keyComboBox.addItems(iter(DIGITS))
+        self.keyComboBox.addItems(iter(digits))
+        self.keyComboBox.addItems(iter(ascii_uppercase))
 
         # SetShortcut(QDialog)
-        #self.setWindowTitle('Set Shortcut Key for {0}'.format(self.title))
         self.resize(300, 104)
         self.setModal(True)
 

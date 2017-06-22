@@ -1,6 +1,6 @@
 import keyboard
 from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon, QMenu, QAction
-from PyQt5.QtCore import QTime, QTimer, Qt
+from PyQt5.QtCore import QTime, QTimer, Qt, QSettings
 from PyQt5.QtGui import QIcon
 from resources import tenny_resources
 
@@ -8,6 +8,8 @@ from resources import tenny_resources
 __title__ = 'Tenny'
 __author__ = 'mokachokokarbon'
 __version__ = 0.3
+DEFAULT_STORT_SHORTCUT = 'shift+f1'
+DEFAULT_RESET_SHORTCUT = 'shift+f2'
 
 
 class Ten(QWidget):
@@ -18,8 +20,9 @@ class Ten(QWidget):
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
-        self.stort_hotkey = 'shift+f1'
-        self.reset_hotkey = 'shift+f2'
+        self.stort_hotkey = DEFAULT_STORT_SHORTCUT
+        self.reset_hotkey = DEFAULT_RESET_SHORTCUT
+        self._read_settings()
         self._create_actions()
         self._create_menus()
         self._widgets()
@@ -101,6 +104,16 @@ class Ten(QWidget):
         keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)
         keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
 
+    def _read_settings(self):
+        """ Method for restoring Tenny's position, size and values. """
+
+        settings = QSettings('GIPSC Core Team', 'Tenny')
+        self.restoreGeometry(settings.value('tenny_geometry', self.saveGeometry()))
+        self.stort_hotkey = settings.value('tenny_stort_hotkey')
+        self.reset_hotkey = settings.value('tenny_reset_hotkey')
+        print('stort:', settings.value('tenny_stort_hotkey'))
+        print('reset:', settings.value('tenny_reset_hotkey'))
+
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
 
@@ -133,7 +146,7 @@ class Ten(QWidget):
 
         from src.dialog.preferences import SetShortcut
         dialog = SetShortcut(self)
-        dialog.setWindowTitle('Set Shortcut Key for {0}'.format(text))
+        dialog.setWindowTitle('Set Shortcut for {0}'.format(text))
 
         if dialog.exec():
 
@@ -151,5 +164,14 @@ class Ten(QWidget):
 
     def closeEvent(self, event):
 
-        self.hide()
+        # TODO: keep Tenny running even if the main window is close
         self.tennySystemTray.showMessage('Tenny', 'You can still found me here :)', QSystemTrayIcon.Information, 3000)
+        self._write_settings()
+
+    def _write_settings(self):
+        """ Method for saving Tenny's position, size and values. """
+
+        settings = QSettings('GIPSC Core Team', 'Tenny')
+        settings.setValue('tenny_geometry', self.saveGeometry())
+        settings.setValue('tenny_stort_hotkey', self.stort_hotkey)
+        settings.setValue('tenny_reset_hotkey', self.reset_hotkey)
