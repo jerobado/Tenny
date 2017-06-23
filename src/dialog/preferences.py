@@ -1,15 +1,13 @@
 # Preference Dialog(s)
 
-from string import (ascii_uppercase,
-                    digits)
 from PyQt5.QtWidgets import (QDialog,
                              QCheckBox,
-                             QComboBox,
                              QPushButton,
                              QGroupBox,
                              QHBoxLayout,
-                             QVBoxLayout)
-from keyboard import read_key, KeyboardEvent
+                             QVBoxLayout,
+                             QLineEdit)
+from keyboard import read_key
 
 
 class SetShortcut(QDialog):
@@ -32,7 +30,7 @@ class SetShortcut(QDialog):
         self.ctrlCheckBox = QCheckBox('Ctrl')
         self.winCheckBox = QCheckBox('Win')
         self.altCheckBox = QCheckBox('Alt')
-        self.keyComboBox = QComboBox()
+        self.keyLineEdit = QLineEdit()
         self.okPushButton = QPushButton('&OK')
 
     def _layout(self) -> None:
@@ -43,7 +41,7 @@ class SetShortcut(QDialog):
         horizontal.addWidget(self.ctrlCheckBox)
         horizontal.addWidget(self.winCheckBox)
         horizontal.addWidget(self.altCheckBox)
-        horizontal.addWidget(self.keyComboBox)
+        horizontal.addWidget(self.keyLineEdit)
 
         groupbox = QGroupBox('Keys')
         groupbox.setLayout(horizontal)
@@ -61,9 +59,8 @@ class SetShortcut(QDialog):
     def _properties(self) -> None:
         """ Settings of all QObjects stored are all here. """
 
-        # self.keyComboBox properties
-        self.keyComboBox.addItems(iter(digits))
-        self.keyComboBox.addItems(iter(ascii_uppercase))
+        self.keyLineEdit.setPlaceholderText('type any key')
+        self.keyLineEdit.setReadOnly(True)
 
         # SetShortcut(QDialog)
         self.resize(300, 104)
@@ -76,9 +73,6 @@ class SetShortcut(QDialog):
         self.altCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
         self.ctrlCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
         self.winCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
-
-        self.keyComboBox.currentIndexChanged.connect(self.on_keyComboBox_currentIndexChanged)
-
         self.okPushButton.clicked.connect(self.accept)
 
     def on_anyCheckBox_clicked(self) -> None:
@@ -96,15 +90,10 @@ class SetShortcut(QDialog):
         else:
             self.modifier_keys.remove(text)
 
-    def on_keyComboBox_currentIndexChanged(self) -> None:
-        """ Call self.update_single_key() everytime the combobox selection changes. """
-
-        self.update_single_key()
-
     def update_single_key(self):
-        """ Update self.single_key based on self.keyComboBox' selected text. """
+        """ Update self.single_key based on self.keyLineEdit's text. """
 
-        self.single_key = self.keyComboBox.currentText()
+        self.single_key = self.keyLineEdit.text()
 
     def accept(self):
         """ Call self.update_user_hotkeys() based on the user's selected keys. """
@@ -121,3 +110,10 @@ class SetShortcut(QDialog):
         """ Return combined self.modifier_keys and self.single_key. """
 
         return self.modifier_keys + [self.single_key]
+
+    def keyPressEvent(self, event):
+        """ Update self.single_key based on the key pressed in the self.keyLineEdit. """
+
+        what_key = read_key()
+        self.keyLineEdit.setText(what_key.name)
+        self.update_single_key()
