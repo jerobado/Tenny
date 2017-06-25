@@ -7,7 +7,7 @@ from resources import tenny_resources
 
 __title__ = 'Tenny'
 __author__ = 'mokachokokarbon'
-__version__ = 0.3
+__version__ = '0.3-beta'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
 
@@ -34,24 +34,33 @@ class Ten(QWidget):
     def _create_actions(self):
 
         # self.tennyMenu actions
+        self.stortAction = QAction('Start/Stop', self,
+                                   triggered=self.stort_timer,
+                                   shortcut=self.stort_hotkey)
+        self.resetAction = QAction('Reset', self,
+                                   triggered=self.reset_timer,
+                                   shortcut=self.reset_hotkey)
         self.quitAction = QAction('Quit Tenny', self,
                                   triggered=self.close)
 
         # self.setShortCutKeysMenu actions
-        self.startstopAction = QAction('Start or Stop', self,
+        self.set_startstopAction = QAction('Start/Stop', self,
+                                           triggered=self.on_setShortcut_action)
+        self.set_resetAction = QAction('Reset', self,
                                        triggered=self.on_setShortcut_action)
-        self.resetAction = QAction('Reset', self,
-                                   triggered=self.on_setShortcut_action)
 
     def _create_menus(self):
 
         # Sub-menu
         self.setShortCutKeysMenu = QMenu('Set Shortcut Keys')
-        self.setShortCutKeysMenu.addAction(self.startstopAction)
-        self.setShortCutKeysMenu.addAction(self.resetAction)
+        self.setShortCutKeysMenu.addAction(self.set_startstopAction)
+        self.setShortCutKeysMenu.addAction(self.set_resetAction)
 
         # Main menu
         self.tennyMenu = QMenu()
+        self.tennyMenu.addAction(self.stortAction)
+        self.tennyMenu.addAction(self.resetAction)
+        self.tennyMenu.addSeparator()
         self.tennyMenu.addMenu(self.setShortCutKeysMenu)
         self.tennyMenu.addSeparator()
         self.tennyMenu.addAction(self.quitAction)
@@ -89,7 +98,7 @@ class Ten(QWidget):
 
         # TODO: playing with QSystemTrayIcon here
         self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
-        self.tennySystemTray.setToolTip('Tenny 0.3')
+        self.tennySystemTray.setToolTip('{} {}'.format(__title__, __version__))
         self.tennySystemTray.setContextMenu(self.tennyMenu)
         self.tennySystemTray.show()
 
@@ -109,8 +118,8 @@ class Ten(QWidget):
 
         settings = QSettings('GIPSC Core Team', 'Tenny')
         self.restoreGeometry(settings.value('tenny_geometry', self.saveGeometry()))
-        self.stort_hotkey = settings.value('tenny_stort_hotkey')
-        self.reset_hotkey = settings.value('tenny_reset_hotkey')
+        self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
+        self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
         print('stort:', settings.value('tenny_stort_hotkey'))
         print('reset:', settings.value('tenny_reset_hotkey'))
 
@@ -122,6 +131,12 @@ class Ten(QWidget):
         self.timerLCDNumber.display(text)
 
     def on_stortPushButton_clicked(self):
+        """ Call self.stort_timer to activate the timer. """
+
+        self.stort_timer()
+
+    def stort_timer(self):
+        """ Method that will start or stop the timer. """
 
         if self.stortPushButton.text() == self._START:
             self.timer.start(1)
@@ -131,6 +146,12 @@ class Ten(QWidget):
             self.stortPushButton.setText(self._START)
 
     def on_resetPushButton_clicked(self):
+        """ Call self.reset_timer to reset the timer. """
+
+        self.reset_timer()
+
+    def reset_timer(self):
+        """ Method that will reset the timer. """
 
         self.timer.stop()
         self.shiverTimer = QTime(0, 0, 0)
@@ -149,18 +170,19 @@ class Ten(QWidget):
         dialog.setWindowTitle('Set Shortcut for {0}'.format(text))
 
         if dialog.exec():
-
             print('user preferred shortcut:', dialog.selected_hotkeys)
-            if text == 'Start or Stop':
+            if text == 'Start/Stop':
                 keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
                 self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
                 keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
                 self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
+                self.stortAction.setShortcut(self.stort_hotkey)
             else:
                 keyboard.remove_hotkey(self.reset_hotkey)
                 self.reset_hotkey = dialog.selected_hotkeys
                 keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
                 self.resetPushButton.setToolTip(self.reset_hotkey)
+                self.reset_hotkey.setShortcut(self.reset_hotkey)
 
     def closeEvent(self, event):
 

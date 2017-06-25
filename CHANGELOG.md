@@ -7,7 +7,7 @@ _Release Date: 1 Jul 2017_ [unreleased]
 
 * Highlights
     * User can now set his/her preferred shortcuts keys to control the timer.
-    * TODO: Tenny is now accessible and controllable in the system tray.
+    * Tenny is now accessible and controllable in the system tray.
 
 * Behavior 
     * TODO: Tenny will still run in the background if the window is closed. It can only be close in the system tray. 
