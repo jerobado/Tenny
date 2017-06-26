@@ -34,20 +34,24 @@ class Ten(QWidget):
     def _create_actions(self):
 
         # self.tennyMenu actions
+        self.openAction = QAction('Open Tenny', self,
+                                  triggered=self.on_openTenny_action)
         self.stortAction = QAction('Start/Stop', self,
                                    triggered=self.stort_timer,
                                    shortcut=self.stort_hotkey)
         self.resetAction = QAction('Reset', self,
                                    triggered=self.reset_timer,
                                    shortcut=self.reset_hotkey)
-        self.quitAction = QAction('Quit Tenny', self,
-                                  triggered=self.close)
 
         # self.setShortCutKeysMenu actions
         self.set_startstopAction = QAction('Start/Stop', self,
                                            triggered=self.on_setShortcut_action)
         self.set_resetAction = QAction('Reset', self,
                                        triggered=self.on_setShortcut_action)
+        self.set_opacityAction = QAction('Set Opacity', self,
+                                         triggered=self.on_setOpacity_action)
+        self.quitAction = QAction('Quit Tenny', self,
+                                  triggered=self.close)
 
     def _create_menus(self):
 
@@ -58,10 +62,12 @@ class Ten(QWidget):
 
         # Main menu
         self.tennyMenu = QMenu()
+        self.tennyMenu.addAction(self.openAction)
         self.tennyMenu.addAction(self.stortAction)
         self.tennyMenu.addAction(self.resetAction)
         self.tennyMenu.addSeparator()
         self.tennyMenu.addMenu(self.setShortCutKeysMenu)
+        self.tennyMenu.addAction(self.set_opacityAction)
         self.tennyMenu.addSeparator()
         self.tennyMenu.addAction(self.quitAction)
 
@@ -160,6 +166,11 @@ class Ten(QWidget):
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
 
+    def on_openTenny_action(self):
+
+        if self.isHidden():
+            self.show()
+
     def on_setShortcut_action(self):
 
         which_action = self.sender()
@@ -184,11 +195,22 @@ class Ten(QWidget):
                 self.resetPushButton.setToolTip(self.reset_hotkey)
                 self.reset_hotkey.setShortcut(self.reset_hotkey)
 
+    def on_setOpacity_action(self):
+
+        # TODO: design a mechanism how you want to implement setting window opacity - c/o ~klr
+        print('display vertical slider to set opacity')
+
     def closeEvent(self, event):
 
-        # TODO: keep Tenny running even if the main window is close
-        self.tennySystemTray.showMessage('Tenny', 'You can still found me here :)', QSystemTrayIcon.Information, 3000)
-        self._write_settings()
+        who_closes = self.sender()
+        if isinstance(who_closes, QAction):
+            self._write_settings()
+            self.tennySystemTray.hide()
+            event.accept()
+        else:
+            self.hide()
+            self.tennySystemTray.showMessage('Tenny', 'You can still found me here :)', QSystemTrayIcon.Information, 3000)
+            event.ignore()
 
     def _write_settings(self):
         """ Method for saving Tenny's position, size and values. """
