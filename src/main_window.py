@@ -1,5 +1,5 @@
 import keyboard
-from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon, QMenu, QAction
+from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon, QMenu, QAction, QSlider
 from PyQt5.QtCore import QTime, QTimer, Qt, QSettings
 from PyQt5.QtGui import QIcon
 from resources import tenny_resources
@@ -10,6 +10,7 @@ __author__ = 'mokachokokarbon'
 __version__ = '0.3-beta'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
+DEFAULT_OPACITY_VALUE = 0.7
 
 
 class Ten(QWidget):
@@ -22,6 +23,7 @@ class Ten(QWidget):
         self._FORMAT = 'hh:mm:ss.zzz'
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
+        self.opacity_value = DEFAULT_OPACITY_VALUE
         self._read_settings()
         self._create_actions()
         self._create_menus()
@@ -76,12 +78,9 @@ class Ten(QWidget):
         self.shiverTimer = QTime(0, 0, 0)
         self.timer = QTimer()
         self.timerLCDNumber = QLCDNumber()
-        self.timerLCDNumber.setDigitCount(12)
-        self.timerLCDNumber.display("00:00:00.000")
         self.stortPushButton = QPushButton(self._START)
         self.resetPushButton = QPushButton(self._RESET)
-        self.stortPushButton.setToolTip(self.stort_hotkey)
-        self.resetPushButton.setToolTip(self.reset_hotkey)
+        self.opacitySlider = QSlider()
         self.tennySystemTray = QSystemTrayIcon()
 
     def _layout(self):
@@ -99,10 +98,23 @@ class Ten(QWidget):
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.resize(350, 125)
         self.setWindowTitle('{} {}'.format(__title__, __version__))
-        self.setWindowOpacity(0.7)
+        self.setWindowOpacity(self.opacity_value)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
-        # TODO: playing with QSystemTrayIcon here
+        self.timerLCDNumber.setDigitCount(12)
+        self.timerLCDNumber.display("00:00:00.000")
+
+        self.stortPushButton.setToolTip(self.stort_hotkey)
+        self.resetPushButton.setToolTip(self.reset_hotkey)
+
+        self.opacitySlider.setWindowFlags(Qt.ToolTip)
+        self.opacitySlider.setRange(0, 100)
+        self.opacitySlider.setSingleStep(1)
+        self.opacitySlider.setTracking(True)
+        # TODO: move the slider to its default value, currently the line below doesn't work
+        self.opacitySlider.setSliderPosition(self.opacity_value)
+
+
         self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
         self.tennySystemTray.setToolTip('{} {}'.format(__title__, __version__))
         self.tennySystemTray.setContextMenu(self.tennyMenu)
@@ -113,6 +125,7 @@ class Ten(QWidget):
         self.timer.timeout.connect(self.showStopwatch)
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
+        self.opacitySlider.valueChanged.connect(self.on_opacitySlider_valueChanged)
 
     def _hotkeys(self):
 
@@ -167,6 +180,7 @@ class Ten(QWidget):
             self.stortPushButton.setText(self._START)
 
     def on_openTenny_action(self):
+        """ Show Tenny window if its hidden. """
 
         if self.isHidden():
             self.show()
@@ -195,10 +209,23 @@ class Ten(QWidget):
                 self.resetPushButton.setToolTip(self.reset_hotkey)
                 self.reset_hotkey.setShortcut(self.reset_hotkey)
 
+    def on_opacitySlider_valueChanged(self):
+
+        self.opacity_value = self.opacitySlider.value() / 100
+        self.setWindowOpacity(self.opacity_value)
+        print(self.opacity_value)
+
     def on_setOpacity_action(self):
 
         # TODO: design a mechanism how you want to implement setting window opacity - c/o ~klr
         print('display vertical slider to set opacity')
+        self.opacitySlider.show()
+
+    def mousePressEvent(self, QMouseEvent):
+
+        print(QMouseEvent.pos())
+        if self.opacitySlider.isVisible():
+            self.opacitySlider.close()
 
     def closeEvent(self, event):
 
