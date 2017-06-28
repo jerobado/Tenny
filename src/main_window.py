@@ -110,10 +110,9 @@ class Ten(QWidget):
         self.opacitySlider.setWindowFlags(Qt.ToolTip)
         self.opacitySlider.setRange(0, 100)
         self.opacitySlider.setSingleStep(1)
+        self.opacitySlider.setPageStep(25)
         self.opacitySlider.setTracking(True)
-        # TODO: move the slider to its default value, currently the line below doesn't work
-        self.opacitySlider.setSliderPosition(self.opacity_value)
-
+        self.opacitySlider.setSliderPosition(self.opacity_value * 100)
 
         self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
         self.tennySystemTray.setToolTip('{} {}'.format(__title__, __version__))
@@ -213,17 +212,14 @@ class Ten(QWidget):
 
         self.opacity_value = self.opacitySlider.value() / 100
         self.setWindowOpacity(self.opacity_value)
-        print(self.opacity_value)
 
     def on_setOpacity_action(self):
 
-        # TODO: design a mechanism how you want to implement setting window opacity - c/o ~klr
-        print('display vertical slider to set opacity')
         self.opacitySlider.show()
+        self.opacitySlider.move(self.tennyMenu.pos())
 
     def mousePressEvent(self, QMouseEvent):
 
-        print(QMouseEvent.pos())
         if self.opacitySlider.isVisible():
             self.opacitySlider.close()
 
