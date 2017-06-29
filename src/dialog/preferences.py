@@ -6,7 +6,10 @@ from PyQt5.QtWidgets import (QDialog,
                              QGroupBox,
                              QHBoxLayout,
                              QVBoxLayout,
-                             QLineEdit)
+                             QLineEdit,
+                             QLabel,
+                             QSlider)
+from PyQt5.QtCore import Qt
 from keyboard import read_key
 
 
@@ -117,3 +120,37 @@ class SetShortcut(QDialog):
         what_key = read_key()
         self.keyLineEdit.setText(what_key.name)
         self.update_single_key()
+
+
+class SetOpacity(QDialog):
+
+    def __init__(self, parent=None):
+
+        super().__init__(parent)
+        self._widgets()
+        self._layout()
+        self._properties()
+
+    def _widgets(self):
+
+        self.opacityLabel = QLabel()
+        self.opacitySlider = QSlider()
+
+    def _layout(self):
+
+        horizontal = QVBoxLayout()
+        horizontal.addWidget(self.opacityLabel)
+        horizontal.addWidget(self.opacitySlider)
+
+        self.setLayout(horizontal)
+
+    def _properties(self):
+
+        self.opacitySlider.setRange(0, 100)
+        self.opacitySlider.setSingleStep(1)
+        self.opacitySlider.setPageStep(25)
+        self.opacitySlider.setTracking(True)
+
+        self.opacityLabel.setAlignment(Qt.AlignHCenter)
+
+        self.setWindowFlags(Qt.ToolTip)

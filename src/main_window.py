@@ -2,12 +2,13 @@ import keyboard
 from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon, QMenu, QAction, QSlider
 from PyQt5.QtCore import QTime, QTimer, Qt, QSettings
 from PyQt5.QtGui import QIcon
+from src.dialog.preferences import SetOpacity
 from resources import tenny_resources
 
 
 __title__ = 'Tenny'
 __author__ = 'mokachokokarbon'
-__version__ = '0.3-beta'
+__version__ = '0.3-release_candidate'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
 DEFAULT_OPACITY_VALUE = 0.7
@@ -80,7 +81,7 @@ class Ten(QWidget):
         self.timerLCDNumber = QLCDNumber()
         self.stortPushButton = QPushButton(self._START)
         self.resetPushButton = QPushButton(self._RESET)
-        self.opacitySlider = QSlider()
+        self.set_opacityDialog = SetOpacity()
         self.tennySystemTray = QSystemTrayIcon()
 
     def _layout(self):
@@ -107,12 +108,8 @@ class Ten(QWidget):
         self.stortPushButton.setToolTip(self.stort_hotkey)
         self.resetPushButton.setToolTip(self.reset_hotkey)
 
-        self.opacitySlider.setWindowFlags(Qt.ToolTip)
-        self.opacitySlider.setRange(0, 100)
-        self.opacitySlider.setSingleStep(1)
-        self.opacitySlider.setPageStep(25)
-        self.opacitySlider.setTracking(True)
-        self.opacitySlider.setSliderPosition(self.opacity_value * 100)
+        self.set_opacityDialog.opacityLabel.setText('{:.0f}'.format(self.opacity_value * 100))
+        self.set_opacityDialog.opacitySlider.setSliderPosition(self.opacity_value * 100)
 
         self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
         self.tennySystemTray.setToolTip('{} {}'.format(__title__, __version__))
@@ -124,7 +121,7 @@ class Ten(QWidget):
         self.timer.timeout.connect(self.showStopwatch)
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
-        self.opacitySlider.valueChanged.connect(self.on_opacitySlider_valueChanged)
+        self.set_opacityDialog.opacitySlider.valueChanged.connect(self.on_opacitySlider_valueChanged)
 
     def _hotkeys(self):
 
@@ -138,8 +135,10 @@ class Ten(QWidget):
         self.restoreGeometry(settings.value('tenny_geometry', self.saveGeometry()))
         self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
         self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
+        self.opacity_value = float(settings.value('tenny_opacity', self.opacity_value))
         print('stort:', settings.value('tenny_stort_hotkey'))
         print('reset:', settings.value('tenny_reset_hotkey'))
+        print('opacity:', settings.value('tenny_opacity'))
 
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
@@ -206,22 +205,23 @@ class Ten(QWidget):
                 self.reset_hotkey = dialog.selected_hotkeys
                 keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
                 self.resetPushButton.setToolTip(self.reset_hotkey)
-                self.reset_hotkey.setShortcut(self.reset_hotkey)
-
-    def on_opacitySlider_valueChanged(self):
-
-        self.opacity_value = self.opacitySlider.value() / 100
-        self.setWindowOpacity(self.opacity_value)
+                self.resetAction.setShortcut(self.reset_hotkey)
 
     def on_setOpacity_action(self):
 
-        self.opacitySlider.show()
-        self.opacitySlider.move(self.tennyMenu.pos())
+        self.set_opacityDialog.show()
+        self.set_opacityDialog.move(self.tennyMenu.pos())
+
+    def on_opacitySlider_valueChanged(self):
+
+        self.opacity_value = self.set_opacityDialog.opacitySlider.value() / 100
+        self.setWindowOpacity(self.opacity_value)
+        self.set_opacityDialog.opacityLabel.setText('{:.0f}'.format(self.opacity_value * 100))
 
     def mousePressEvent(self, QMouseEvent):
 
-        if self.opacitySlider.isVisible():
-            self.opacitySlider.close()
+        if self.set_opacityDialog.isVisible():
+            self.set_opacityDialog.close()
 
     def closeEvent(self, event):
 
@@ -242,3 +242,4 @@ class Ten(QWidget):
         settings.setValue('tenny_geometry', self.saveGeometry())
         settings.setValue('tenny_stort_hotkey', self.stort_hotkey)
         settings.setValue('tenny_reset_hotkey', self.reset_hotkey)
+        settings.setValue('tenny_opacity', self.opacity_value)
