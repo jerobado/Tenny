@@ -3,12 +3,12 @@ CHANGELOG
 
 **Patch 0.3**
 
-_Release Date: 1 Jul 2017_ [unreleased]
+_Release Date: 1 Jul 2017_
 
 * Highlights
     * User can now set his/her preferred shortcuts keys to control the timer.
     * Tenny is now accessible and controllable in the notification area.
-    * TODO: Window opacity is now adjustable.
+    * Window opacity is now adjustable.
 
 * Behavior 
     * Tenny will still run in the background if the window is closed. It can only be close in the notification area. 

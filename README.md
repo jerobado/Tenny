@@ -7,5 +7,5 @@ A simple stopwatch application that can be controlled by a hotkey.
 Features
 ---    
 * Controllable by a hotkey regardless of active window.
-* Semi-transperent and resizeable window.
+* Semi-transparent and resizeable window.
 * Always on top.
