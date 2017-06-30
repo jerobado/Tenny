@@ -1,6 +1,15 @@
 import keyboard
-from PyQt5.QtWidgets import QWidget, QPushButton, QLCDNumber, QGridLayout, QSystemTrayIcon, QMenu, QAction, QSlider
-from PyQt5.QtCore import QTime, QTimer, Qt, QSettings
+from PyQt5.QtWidgets import (QWidget,
+                             QPushButton,
+                             QLCDNumber,
+                             QGridLayout,
+                             QSystemTrayIcon,
+                             QMenu,
+                             QAction)
+from PyQt5.QtCore import (QTime,
+                          QTimer,
+                          Qt,
+                          QSettings)
 from PyQt5.QtGui import QIcon
 from src.dialog.preferences import SetOpacity
 from resources import tenny_resources
@@ -8,7 +17,7 @@ from resources import tenny_resources
 
 __title__ = 'Tenny'
 __author__ = 'mokachokokarbon'
-__version__ = '0.3-release_candidate'
+__version__ = '0.3'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
 DEFAULT_OPACITY_VALUE = 0.7
@@ -136,9 +145,6 @@ class Ten(QWidget):
         self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
         self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
         self.opacity_value = float(settings.value('tenny_opacity', self.opacity_value))
-        print('stort:', settings.value('tenny_stort_hotkey'))
-        print('reset:', settings.value('tenny_reset_hotkey'))
-        print('opacity:', settings.value('tenny_opacity'))
 
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """

@@ -1,4 +1,4 @@
-""" 10K Hours: a timer that will track your progress in coding
+""" Tenny: a simple stopwatch application that can be controlled by a hotkey.
 
     Interface: GUI (PyQt5)
     Language: Python 3.5.2
