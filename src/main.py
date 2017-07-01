@@ -18,7 +18,7 @@ def configure_app_icon() -> None:
     """ This will show the icon of Betty in the taskbar """
 
     import ctypes
-    APP_ID = u'novus.mokachokokarbon.tenny.03'
+    APP_ID = u'novus.mokachokokarbon.tenny.04'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
 
 if __name__ == '__main__':

@@ -17,7 +17,7 @@ from resources import tenny_resources
 
 __title__ = 'Tenny'
 __author__ = 'mokachokokarbon'
-__version__ = '0.3'
+__version__ = '0.4'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
 DEFAULT_OPACITY_VALUE = 0.7

@@ -1,6 +1,13 @@
 CHANGELOG
 ---
 
+**Patch 0.4**
+
+_Release Date: 1 Sep 2017_ [unreleased]
+
+* Currently planning
+
+
 **Patch 0.3**
 
 _Release Date: 1 Jul 2017_
