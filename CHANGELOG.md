@@ -5,7 +5,11 @@ CHANGELOG
 
 _Release Date: 1 Sep 2017_ [unreleased]
 
-* Currently planning
+* Taking into consideration
+    * Possible revamping the GUI design using Qt Style Sheet
+    * Auto-hide feature
+* Issue(s) in the previous version
+    * Timer slows down when the size of the LCD display increases 
 
 
 **Patch 0.3**
