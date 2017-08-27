@@ -31,6 +31,7 @@ class Ten(QWidget):
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
+        self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
         self.opacity_value = DEFAULT_OPACITY_VALUE
@@ -63,6 +64,7 @@ class Ten(QWidget):
         self.set_opacityAction = QAction('Set Opacity', self,
                                          triggered=self.on_setOpacity_action)
         self.quitAction = QAction('Quit Tenny', self,
+                                  shortcut='ctrl+q',
                                   triggered=self.close)
 
     def _create_menus(self):
@@ -232,7 +234,7 @@ class Ten(QWidget):
     def closeEvent(self, event):
 
         who_closes = self.sender()
-        if isinstance(who_closes, QAction):
+        if isinstance(who_closes, QAction) or self.close_shortcut:
             self._write_settings()
             self.tennySystemTray.hide()
             event.accept()
@@ -240,6 +242,12 @@ class Ten(QWidget):
             self.hide()
             self.tennySystemTray.showMessage('Tenny', 'You can still found me here :)', QSystemTrayIcon.Information, 3000)
             event.ignore()
+
+    def keyPressEvent(self, event):
+
+        if event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_Q:
+            self.close_shortcut = True
+            self.close()
 
     def _write_settings(self):
         """ Method for saving Tenny's position, size and values. """

@@ -5,9 +5,16 @@ CHANGELOG
 
 _Release Date: 1 Sep 2017_ [unreleased]
 
+* UI
+    * Added `Ctrl+Q` shortcut to easily quit the timer without navigating into the notification area
+
+* Things to implement
+    * Consolidate settings into a Settings dialog  
+
 * Taking into consideration
     * Possible revamping the GUI design using Qt Style Sheet
     * Auto-hide feature
+
 * Issue(s) in the previous version
     * Timer slows down when the size of the LCD display increases 
 
