@@ -3,20 +3,25 @@ CHANGELOG
 
 **Patch 0.4**
 
-_Release Date: 1 Sep 2017_ [unreleased]
+_Release Date: 1 Nov 2017_ [unreleased]
 
 * UI
     * Added `Ctrl+Q` shortcut to easily quit the timer without navigating into the notification area
 
+* Codebase
+    * Python upgraded from 3.5.2 to **3.6.3**
+    * PyQt upgraded from 5.8.1 to **5.9.1**
+
 * Things to implement
-    * Consolidate settings into a Settings dialog  
+    * Consolidate settings into a Settings dialog
 
 * Taking into consideration
     * Possible revamping the GUI design using Qt Style Sheet
     * Auto-hide feature
 
 * Issue(s) in the previous version
-    * Timer slows down when the size of the LCD display increases 
+    * Timer slows down when the size of the LCD display increases
+    * Restrict the user on entering existing hotkeys to eliminate hotkey conflict 
 
 
 **Patch 0.3**

@@ -16,3 +16,5 @@ Tenny wouldn't come into fruition without these third party products that I used
 
 * Alessandro Roncone ([@alecive](https://github.com/alecive)) for the beautiful timer icon used by Tenny.
 * [PyInstaller](https://github.com/pyinstaller/pyinstaller) for packaging and freezing Tenny into an executable file.
+* PyQt for the Graphical User Interface.
+* Python for the whole codebase.
