@@ -23,6 +23,7 @@ DEFAULT_RESET_SHORTCUT = 'shift+f2'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
+# [x] TODO: freeze 0.4 using the new version of PyInstaller (3.3)
 class Ten(QWidget):
 
     def __init__(self, parent=None):
@@ -109,7 +110,7 @@ class Ten(QWidget):
         # Main window
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.resize(350, 125)
-        self.setWindowTitle('{} {}'.format(__title__, __version__))
+        self.setWindowTitle(f'{__title__} {__version__}')
         self.setWindowOpacity(self.opacity_value)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
@@ -119,11 +120,11 @@ class Ten(QWidget):
         self.stortPushButton.setToolTip(self.stort_hotkey)
         self.resetPushButton.setToolTip(self.reset_hotkey)
 
-        self.set_opacityDialog.opacityLabel.setText('{:.0f}'.format(self.opacity_value * 100))
+        self.set_opacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
         self.set_opacityDialog.opacitySlider.setSliderPosition(self.opacity_value * 100)
 
         self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
-        self.tennySystemTray.setToolTip('{} {}'.format(__title__, __version__))
+        self.tennySystemTray.setToolTip(f'{__title__} {__version__}')
         self.tennySystemTray.setContextMenu(self.tennyMenu)
         self.tennySystemTray.show()
 
@@ -198,10 +199,10 @@ class Ten(QWidget):
 
         from src.dialog.preferences import SetShortcut
         dialog = SetShortcut(self)
-        dialog.setWindowTitle('Set Shortcut for {0}'.format(text))
+        dialog.setWindowTitle(f'Set Shortcut for {text}')
 
         if dialog.exec():
-            print('user preferred shortcut:', dialog.selected_hotkeys)
+            print(f'{text} hotkey changed: {dialog.selected_hotkeys}')
             if text == 'Start/Stop':
                 keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
                 self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
@@ -224,7 +225,7 @@ class Ten(QWidget):
 
         self.opacity_value = self.set_opacityDialog.opacitySlider.value() / 100
         self.setWindowOpacity(self.opacity_value)
-        self.set_opacityDialog.opacityLabel.setText('{:.0f}'.format(self.opacity_value * 100))
+        self.set_opacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
 
     def mousePressEvent(self, QMouseEvent):
 
