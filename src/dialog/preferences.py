@@ -13,6 +13,8 @@ from PyQt5.QtCore import Qt
 from keyboard import read_key
 
 
+# [] TODO: design your 'Settings' dialog
+
 class SetShortcut(QDialog):
     """ A dialog that will let the user choose his/her preferred hotkey. """
 
