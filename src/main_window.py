@@ -23,7 +23,6 @@ DEFAULT_RESET_SHORTCUT = 'shift+f2'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
-# [x] TODO: freeze 0.4 using the new version of PyInstaller (3.3)
 class Ten(QWidget):
 
     def __init__(self, parent=None):
@@ -110,7 +109,7 @@ class Ten(QWidget):
         # Main window
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.resize(350, 125)
-        self.setWindowTitle(f'{__title__} {__version__}')
+        self.setWindowTitle(f'{__title__}')
         self.setWindowOpacity(self.opacity_value)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
