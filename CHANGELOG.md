@@ -20,8 +20,8 @@ _Release Date: 1 Nov 2017_ [unreleased]
     * Auto-hide feature
 
 * Issue(s) in the previous version
-    * Timer slows down when the size of the LCD display increases
-    * Restrict the user on entering existing hotkeys to eliminate hotkey conflict 
+    * Timer slows down when the height of the LCD display increases
+    * Restrict the user on entering existing hotkeys to eliminate shortcut conflict 
 
 
 **Patch 0.3**

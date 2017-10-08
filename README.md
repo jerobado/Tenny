@@ -12,9 +12,9 @@ Features
 
 Credits
 ---
-Tenny wouldn't come into fruition without these third party products that I used during development. So let's give them a big hand! :clap: 
+Tenny wouldn't come into fruition without these third party products that I used during development. So let's give them a big hand! :clap: :clap: :clap: 
 
 * Alessandro Roncone ([@alecive](https://github.com/alecive)) for the beautiful timer icon used by Tenny.
 * [PyInstaller](https://github.com/pyinstaller/pyinstaller) for packaging and freezing Tenny into an executable file.
-* PyQt for the Graphical User Interface.
-* Python for the whole codebase.
+* [PyQt](https://riverbankcomputing.com/software/pyqt/intro) for the Graphical User Interface.
+* [Python](https://www.python.org/) :snake: for the whole codebase.
