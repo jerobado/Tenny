@@ -5,7 +5,8 @@ from PyQt5.QtWidgets import (QWidget,
                              QGridLayout,
                              QSystemTrayIcon,
                              QMenu,
-                             QAction)
+                             QAction,
+                             QMessageBox)
 from PyQt5.QtCore import (QTime,
                           QTimer,
                           Qt,
@@ -13,6 +14,7 @@ from PyQt5.QtCore import (QTime,
 from PyQt5.QtGui import QIcon
 from src.dialog.preferences import SetOpacity
 from resources import tenny_resources
+#from resources.constant import EXISTING_HOTKEYS
 
 
 __title__ = 'Tenny'
@@ -31,6 +33,7 @@ class Ten(QWidget):
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
+        self._EXISTING_HOTKEYS = []
         self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
@@ -94,6 +97,7 @@ class Ten(QWidget):
         self.resetPushButton = QPushButton(self._RESET)
         self.set_opacityDialog = SetOpacity()
         self.tennySystemTray = QSystemTrayIcon()
+        self.statusMessageBox = QMessageBox()
 
     def _layout(self):
 
@@ -147,6 +151,8 @@ class Ten(QWidget):
         self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
         self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
         self.opacity_value = float(settings.value('tenny_opacity', self.opacity_value))
+        self._EXISTING_HOTKEYS = [self.stort_hotkey, self.reset_hotkey]
+        print(f'on TEN dialog: {self._EXISTING_HOTKEYS}')
 
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
@@ -201,19 +207,26 @@ class Ten(QWidget):
         dialog.setWindowTitle(f'Set Shortcut for {text}')
 
         if dialog.exec():
-            print(f'{text} hotkey changed: {dialog.selected_hotkeys}')
-            if text == 'Start/Stop':
-                keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
-                self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
-                keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
-                self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
-                self.stortAction.setShortcut(self.stort_hotkey)
+            print(f'selected hotkey: {dialog.selected_hotkeys}')
+            if dialog.selected_hotkeys not in self._EXISTING_HOTKEYS:
+                if text == 'Start/Stop':
+                    keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
+                    self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
+                    keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
+                    self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
+                    self.stortAction.setShortcut(self.stort_hotkey)
+                else:
+                    keyboard.remove_hotkey(self.reset_hotkey)
+                    self.reset_hotkey = dialog.selected_hotkeys
+                    keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
+                    self.resetPushButton.setToolTip(self.reset_hotkey)
+                    self.resetAction.setShortcut(self.reset_hotkey)
+                print(f'{text} hotkey changed: {dialog.selected_hotkeys}')
             else:
-                keyboard.remove_hotkey(self.reset_hotkey)
-                self.reset_hotkey = dialog.selected_hotkeys
-                keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
-                self.resetPushButton.setToolTip(self.reset_hotkey)
-                self.resetAction.setShortcut(self.reset_hotkey)
+                print(f'{dialog.selected_hotkeys} already registered as shortcut for {text}')
+                #dialog.messageLabel.setText(f'{dialog.selected_hotkeys} already registered as shortcut for {text}')
+                self.statusMessageBox.setText(f'{dialog.selected_hotkeys} already registered as shortcut for {text}')
+                self.statusMessageBox.show()
 
     def on_setOpacity_action(self):
 

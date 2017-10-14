@@ -11,10 +11,10 @@ from PyQt5.QtWidgets import (QDialog,
                              QSlider)
 from PyQt5.QtCore import Qt
 from keyboard import read_key
+from resources.constant import EXISTING_HOTKEYS
 
 
 # [] TODO: design your 'Settings' dialog
-
 class SetShortcut(QDialog):
     """ A dialog that will let the user choose his/her preferred hotkey. """
 
@@ -27,6 +27,7 @@ class SetShortcut(QDialog):
         self._layout()
         self._properties()
         self._connections()
+        print(f'on setShortcut dialog: {EXISTING_HOTKEYS}')
 
     def _widgets(self) -> None:
         """ List of QWidgets used in this dialog. """
@@ -36,6 +37,7 @@ class SetShortcut(QDialog):
         self.winCheckBox = QCheckBox('Win')
         self.altCheckBox = QCheckBox('Alt')
         self.keyLineEdit = QLineEdit()
+        self.messageLabel = QLabel()
         self.okPushButton = QPushButton('&OK')
 
     def _layout(self) -> None:
@@ -52,6 +54,7 @@ class SetShortcut(QDialog):
         groupbox.setLayout(horizontal)
 
         button = QHBoxLayout()
+        button.addWidget(self.messageLabel)
         button.addStretch()
         button.addWidget(self.okPushButton)
 
@@ -78,12 +81,20 @@ class SetShortcut(QDialog):
         self.altCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
         self.ctrlCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
         self.winCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
+        self.keyLineEdit.textChanged.connect(self.on_keyLineEdit_textChanged)
         self.okPushButton.clicked.connect(self.accept)
 
     def on_anyCheckBox_clicked(self) -> None:
         """ Call self.update_modifier_keys() everytime the user clicked any of the four (4) checkboxes. """
 
         self.update_modifier_keys()
+
+    def on_keyLineEdit_textChanged(self) -> None:
+
+        if self.selected_hotkeys not in EXISTING_HOTKEYS:
+            self.messageLabel.setText(f'{self.selected_hotkeys}')
+        # self.messageLabel.setText('hey hey')
+        # print('hey hey')
 
     def update_modifier_keys(self) -> None:
         """ Update self.modifier_keys based on the checkbox clicked. """
