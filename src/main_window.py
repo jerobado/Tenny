@@ -33,7 +33,7 @@ class Ten(QWidget):
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
-        self._EXISTING_HOTKEYS = []
+        self._EXISTING_HOTKEYS = {}
         self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
@@ -151,8 +151,8 @@ class Ten(QWidget):
         self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
         self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
         self.opacity_value = float(settings.value('tenny_opacity', self.opacity_value))
-        self._EXISTING_HOTKEYS = [self.stort_hotkey, self.reset_hotkey]
-        print(f'on TEN dialog: {self._EXISTING_HOTKEYS}')
+        self._EXISTING_HOTKEYS = {'Start/Stop': self.stort_hotkey, 'Reset': self.reset_hotkey}
+        print(f'on TEN dialog: {self._EXISTING_HOTKEYS.values()}')
 
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
@@ -206,9 +206,10 @@ class Ten(QWidget):
         dialog = SetShortcut(self)
         dialog.setWindowTitle(f'Set Shortcut for {text}')
 
+        # [] TODO: make this block of code Pythonic, it looks awful
         if dialog.exec():
             print(f'selected hotkey: {dialog.selected_hotkeys}')
-            if dialog.selected_hotkeys not in self._EXISTING_HOTKEYS:
+            if dialog.selected_hotkeys not in self._EXISTING_HOTKEYS.values():
                 if text == 'Start/Stop':
                     keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
                     self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
@@ -221,11 +222,15 @@ class Ten(QWidget):
                     keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
                     self.resetPushButton.setToolTip(self.reset_hotkey)
                     self.resetAction.setShortcut(self.reset_hotkey)
+                # [] TODO: show a notification via Notif area
                 print(f'{text} hotkey changed: {dialog.selected_hotkeys}')
             else:
-                print(f'{dialog.selected_hotkeys} already registered as shortcut for {text}')
-                #dialog.messageLabel.setText(f'{dialog.selected_hotkeys} already registered as shortcut for {text}')
-                self.statusMessageBox.setText(f'{dialog.selected_hotkeys} already registered as shortcut for {text}')
+                # Get existing hotkey owner
+                for k, v in self._EXISTING_HOTKEYS.items():
+                    if dialog.selected_hotkeys == v:
+                        owner = k
+                print(f'\'{dialog.selected_hotkeys}\' already registered as shortcut for {owner}')
+                self.statusMessageBox.setText(f'\'{dialog.selected_hotkeys}\' already registered as shortcut for <b>{owner}</b> button.' )
                 self.statusMessageBox.show()
 
     def on_setOpacity_action(self):
