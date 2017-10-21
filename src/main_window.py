@@ -14,7 +14,6 @@ from PyQt5.QtCore import (QTime,
 from PyQt5.QtGui import QIcon
 from src.dialog.preferences import SetOpacity
 from resources import tenny_resources
-#from resources.constant import EXISTING_HOTKEYS
 
 
 __title__ = 'Tenny'
@@ -25,6 +24,8 @@ DEFAULT_RESET_SHORTCUT = 'shift+f2'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
+# [] TODO: for freezing
+# [] TODO: for 5 day testing
 class Ten(QWidget):
 
     def __init__(self, parent=None):
@@ -33,10 +34,11 @@ class Ten(QWidget):
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
-        self._EXISTING_HOTKEYS = {}
         self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
+        self.quit_hotkey = 'ctrl+q'
+        self._EXISTING_HOTKEYS = {'Quit': self.quit_hotkey}
         self.opacity_value = DEFAULT_OPACITY_VALUE
         self._read_settings()
         self._create_actions()
@@ -60,21 +62,21 @@ class Ten(QWidget):
                                    shortcut=self.reset_hotkey)
 
         # self.setShortCutKeysMenu actions
-        self.set_startstopAction = QAction('Start/Stop', self,
-                                           triggered=self.on_setShortcut_action)
+        self.set_stortAction = QAction('Start/Stop', self,
+                                       triggered=self.on_setShortcut_action)
         self.set_resetAction = QAction('Reset', self,
                                        triggered=self.on_setShortcut_action)
         self.set_opacityAction = QAction('Set Opacity', self,
                                          triggered=self.on_setOpacity_action)
         self.quitAction = QAction('Quit Tenny', self,
-                                  shortcut='ctrl+q',
+                                  shortcut=self.quit_hotkey,
                                   triggered=self.close)
 
     def _create_menus(self):
 
         # Sub-menu
         self.setShortCutKeysMenu = QMenu('Set Shortcut Keys')
-        self.setShortCutKeysMenu.addAction(self.set_startstopAction)
+        self.setShortCutKeysMenu.addAction(self.set_stortAction)
         self.setShortCutKeysMenu.addAction(self.set_resetAction)
 
         # Main menu
@@ -97,7 +99,7 @@ class Ten(QWidget):
         self.resetPushButton = QPushButton(self._RESET)
         self.set_opacityDialog = SetOpacity()
         self.tennySystemTray = QSystemTrayIcon()
-        self.statusMessageBox = QMessageBox()
+        self.statusMessageBox = QMessageBox(self)
 
     def _layout(self):
 
@@ -151,8 +153,7 @@ class Ten(QWidget):
         self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
         self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
         self.opacity_value = float(settings.value('tenny_opacity', self.opacity_value))
-        self._EXISTING_HOTKEYS = {'Start/Stop': self.stort_hotkey, 'Reset': self.reset_hotkey}
-        print(f'on TEN dialog: {self._EXISTING_HOTKEYS.values()}')
+        self._EXISTING_HOTKEYS.update({'Start/Stop': self.stort_hotkey, 'Reset': self.reset_hotkey})
 
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
@@ -229,8 +230,9 @@ class Ten(QWidget):
                 for k, v in self._EXISTING_HOTKEYS.items():
                     if dialog.selected_hotkeys == v:
                         owner = k
-                print(f'\'{dialog.selected_hotkeys}\' already registered as shortcut for {owner}')
-                self.statusMessageBox.setText(f'\'{dialog.selected_hotkeys}\' already registered as shortcut for <b>{owner}</b> button.' )
+                self.statusMessageBox.setIcon(QMessageBox.Warning)
+                self.statusMessageBox.setWindowTitle('Set Shortcut Message')
+                self.statusMessageBox.setText(f'\'{dialog.selected_hotkeys}\' already registered as shortcut for <b>{owner}</b> button.')
                 self.statusMessageBox.show()
 
     def on_setOpacity_action(self):

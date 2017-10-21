@@ -11,7 +11,6 @@ from PyQt5.QtWidgets import (QDialog,
                              QSlider)
 from PyQt5.QtCore import Qt
 from keyboard import read_key
-from resources.constant import EXISTING_HOTKEYS
 
 
 # [] TODO: design your 'Settings' dialog
@@ -27,7 +26,7 @@ class SetShortcut(QDialog):
         self._layout()
         self._properties()
         self._connections()
-        print(f'on setShortcut dialog: {EXISTING_HOTKEYS}')
+        #print(f'on setShortcut dialog: {EXISTING_HOTKEYS}')
 
     def _widgets(self) -> None:
         """ List of QWidgets used in this dialog. """
@@ -91,10 +90,11 @@ class SetShortcut(QDialog):
 
     def on_keyLineEdit_textChanged(self) -> None:
 
-        if self.selected_hotkeys not in EXISTING_HOTKEYS:
-            self.messageLabel.setText(f'{self.selected_hotkeys}')
+        #if self.selected_hotkeys not in EXISTING_HOTKEYS:
+        #    self.messageLabel.setText(f'{self.selected_hotkeys}')
         # self.messageLabel.setText('hey hey')
         # print('hey hey')
+        pass
 
     def update_modifier_keys(self) -> None:
         """ Update self.modifier_keys based on the checkbox clicked. """
