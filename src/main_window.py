@@ -21,10 +21,11 @@ __author__ = 'mokachokokarbon'
 __version__ = '0.4'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
+DEFAULT_QUIT_SHORCUT = 'ctrl+q'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
-# [] TODO: for freezing
+# [x] TODO: for freezing
 # [] TODO: for 5 day testing
 class Ten(QWidget):
 
@@ -37,8 +38,10 @@ class Ten(QWidget):
         self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
-        self.quit_hotkey = 'ctrl+q'
-        self._EXISTING_HOTKEYS = {'Quit': self.quit_hotkey}
+        self.quit_hotkey = DEFAULT_QUIT_SHORCUT
+        self._EXISTING_HOTKEYS = {'Start/Stop': DEFAULT_STORT_SHORTCUT,
+                                  'Reset': DEFAULT_RESET_SHORTCUT,
+                                  'Quit': self.quit_hotkey}
         self.opacity_value = DEFAULT_OPACITY_VALUE
         self._read_settings()
         self._create_actions()
@@ -153,7 +156,8 @@ class Ten(QWidget):
         self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
         self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
         self.opacity_value = float(settings.value('tenny_opacity', self.opacity_value))
-        self._EXISTING_HOTKEYS.update({'Start/Stop': self.stort_hotkey, 'Reset': self.reset_hotkey})
+        self._EXISTING_HOTKEYS.update({'Start/Stop': self.stort_hotkey,
+                                       'Reset': self.reset_hotkey})
 
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
@@ -210,21 +214,25 @@ class Ten(QWidget):
         # [] TODO: make this block of code Pythonic, it looks awful
         if dialog.exec():
             print(f'selected hotkey: {dialog.selected_hotkeys}')
+            print(f'before _EXISTING_HOTKEYS: {self._EXISTING_HOTKEYS.values()}')
             if dialog.selected_hotkeys not in self._EXISTING_HOTKEYS.values():
                 if text == 'Start/Stop':
                     keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
                     self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
                     keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
                     self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
-                    self.stortAction.setShortcut(self.stort_hotkey)
+                    self.stortAction.setShortcut(self.stort_hotkey)                     # Update stort QAction
+                    self._EXISTING_HOTKEYS.update({text: self.stort_hotkey})
                 else:
                     keyboard.remove_hotkey(self.reset_hotkey)
                     self.reset_hotkey = dialog.selected_hotkeys
                     keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
                     self.resetPushButton.setToolTip(self.reset_hotkey)
                     self.resetAction.setShortcut(self.reset_hotkey)
+                    self._EXISTING_HOTKEYS.update({text: self.reset_hotkey})
                 # [] TODO: show a notification via Notif area
                 print(f'{text} hotkey changed: {dialog.selected_hotkeys}')
+                print(f'after _EXISTING_VALUES: {self._EXISTING_HOTKEYS.values()}')
             else:
                 # Get existing hotkey owner
                 for k, v in self._EXISTING_HOTKEYS.items():
