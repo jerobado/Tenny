@@ -102,7 +102,7 @@ class Ten(QWidget):
         self.resetPushButton = QPushButton(self._RESET)
         self.set_opacityDialog = SetOpacity()
         self.tennySystemTray = QSystemTrayIcon()
-        self.statusMessageBox = QMessageBox(self)
+        self.setShortcutMessageBox = QMessageBox(self)
 
     def _layout(self):
 
@@ -130,6 +130,10 @@ class Ten(QWidget):
 
         self.set_opacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
         self.set_opacityDialog.opacitySlider.setSliderPosition(self.opacity_value * 100)
+
+        # SetShortcut QMessageBox
+        self.setShortcutMessageBox.setIcon(QMessageBox.Warning)
+        self.setShortcutMessageBox.setWindowTitle('Set Shortcut Message')
 
         self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
         self.tennySystemTray.setToolTip(f'{__title__} {__version__}')
@@ -212,8 +216,10 @@ class Ten(QWidget):
         dialog.setWindowTitle(f'Set Shortcut for {text}')
 
         # [] TODO: make this block of code Pythonic, it looks awful
+        # [] TODO: refactor dialog.selected_hotkeys
         if dialog.exec():
-            print(f'selected hotkey: {dialog.selected_hotkeys}')
+            selected_hotkey = dialog.selected_hotkeys
+            print(f'selected hotkey: {selected_hotkey}')
             print(f'before _EXISTING_HOTKEYS: {self._EXISTING_HOTKEYS.values()}')
             if dialog.selected_hotkeys not in self._EXISTING_HOTKEYS.values():
                 if text == 'Start/Stop':
@@ -231,17 +237,24 @@ class Ten(QWidget):
                     self.resetAction.setShortcut(self.reset_hotkey)
                     self._EXISTING_HOTKEYS.update({text: self.reset_hotkey})
                 # [] TODO: show a notification via Notif area
-                print(f'{text} hotkey changed: {dialog.selected_hotkeys}')
+                print(f'{text} hotkey changed: {selected_hotkey}')
                 print(f'after _EXISTING_VALUES: {self._EXISTING_HOTKEYS.values()}')
             else:
-                # Get existing hotkey owner
-                for k, v in self._EXISTING_HOTKEYS.items():
-                    if dialog.selected_hotkeys == v:
-                        owner = k
-                self.statusMessageBox.setIcon(QMessageBox.Warning)
-                self.statusMessageBox.setWindowTitle('Set Shortcut Message')
-                self.statusMessageBox.setText(f'\'{dialog.selected_hotkeys}\' already registered as shortcut for <b>{owner}</b> button.')
-                self.statusMessageBox.show()
+                hotkey_owner = self._get_hotkey_owner(selected_hotkey)
+                self._show_setShorcutMessageBox(selected_hotkey, hotkey_owner)
+
+    def _get_hotkey_owner(self, user_hotkey):
+        """ Return the current owner of an existing hotkey. """
+
+        for k, v in self._EXISTING_HOTKEYS.items():
+            if user_hotkey == v:
+                return k
+
+    def _show_setShortcutMessageBox(self, hotkey, owner):
+        """ Set the text and show the message box. """
+
+        self.setShortcutMessageBox.setText(f'\'{hotkey}\' already registered as shortcut for <b>{owner}</b> button. Try again.')
+        self.setShortcutMessageBox.show()
 
     def on_setOpacity_action(self):
 
