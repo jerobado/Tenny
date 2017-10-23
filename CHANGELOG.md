@@ -9,6 +9,8 @@ _Release Date: 1 Mar 2018 (tentative)_
     * Consolidate settings into a Settings dialog
     * Possible designing the GUI using Qt Style Sheet
     * Auto-hide feature
+    * Notify the user if he/she 'set a shortcut'
+    * Display current time when the user hovers the mouse pointer of the app's icon in the notification area
 
 * Issue(s) in the previous version
     * Timer slows down when the height of the LCD display increases [#3](https://github.com/mokachokokarbon/Tenny/issues/3)
@@ -22,9 +24,12 @@ _Release Date: 1 Nov 2017_ [unreleased]
     * Added `Ctrl+Q` as default shortcut to easily quit the timer without navigating into the notification area
     * Restrict the user on entering existing hotkeys to eliminate hotkey conflict [#4](https://github.com/mokachokokarbon/Tenny/issues/4)
 
-* Codebase
+* License
+    * Added GNU GPLv3 as license for Tenny
+
+* Upgrade
     * Python upgraded from 3.5.2 to **3.6.3**
-    * PyQt upgraded from 5.8.1 to **5.9.1**
+    * PyQt upgraded from 5.8.1 to **5.9.1**  
 
 
 **Patch 0.3**
