@@ -216,22 +216,22 @@ class Ten(QWidget):
         dialog.setWindowTitle(f'Set Shortcut for {text}')
 
         # [] TODO: make this block of code Pythonic, it looks awful
-        # [] TODO: refactor dialog.selected_hotkeys
+        # [x] TODO: refactor dialog.selected_hotkeys
         if dialog.exec():
             selected_hotkey = dialog.selected_hotkeys
             print(f'selected hotkey: {selected_hotkey}')
             print(f'before _EXISTING_HOTKEYS: {self._EXISTING_HOTKEYS.values()}')
-            if dialog.selected_hotkeys not in self._EXISTING_HOTKEYS.values():
+            if selected_hotkey not in self._EXISTING_HOTKEYS.values():
                 if text == 'Start/Stop':
                     keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
-                    self.stort_hotkey = dialog.selected_hotkeys                         # Update self.stort_hotkey
+                    self.stort_hotkey = selected_hotkey                                 # Update self.stort_hotkey
                     keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
                     self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
                     self.stortAction.setShortcut(self.stort_hotkey)                     # Update stort QAction
                     self._EXISTING_HOTKEYS.update({text: self.stort_hotkey})
                 else:
                     keyboard.remove_hotkey(self.reset_hotkey)
-                    self.reset_hotkey = dialog.selected_hotkeys
+                    self.reset_hotkey = selected_hotkey
                     keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
                     self.resetPushButton.setToolTip(self.reset_hotkey)
                     self.resetAction.setShortcut(self.reset_hotkey)
