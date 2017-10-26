@@ -25,7 +25,6 @@ DEFAULT_QUIT_SHORCUT = 'ctrl+q'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
-# [x] TODO: for freezing
 # [] TODO: for 5 day testing
 class Ten(QWidget):
 
@@ -39,10 +38,12 @@ class Ten(QWidget):
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
         self.quit_hotkey = DEFAULT_QUIT_SHORCUT
+        self.opacity_value = DEFAULT_OPACITY_VALUE
         self._EXISTING_HOTKEYS = {'Start/Stop': DEFAULT_STORT_SHORTCUT,
                                   'Reset': DEFAULT_RESET_SHORTCUT,
                                   'Quit': self.quit_hotkey}
-        self.opacity_value = DEFAULT_OPACITY_VALUE
+        self._operations = {'Start/Stop': self._update_stort_hotkey,
+                            'Reset': self._update_reset_hotkey}
         self._read_settings()
         self._create_actions()
         self._create_menus()
@@ -215,33 +216,16 @@ class Ten(QWidget):
         dialog = SetShortcut(self)
         dialog.setWindowTitle(f'Set Shortcut for {text}')
 
-        # [] TODO: make this block of code Pythonic, it looks awful
-        # [x] TODO: refactor dialog.selected_hotkeys
+        # [] TODO: make this block of code Pythonic, so far so good
+        # [] TODO: show a notification via Notif area, after update_hotkey()
         if dialog.exec():
             selected_hotkey = dialog.selected_hotkeys
-            print(f'selected hotkey: {selected_hotkey}')
-            print(f'before _EXISTING_HOTKEYS: {self._EXISTING_HOTKEYS.values()}')
             if selected_hotkey not in self._EXISTING_HOTKEYS.values():
-                if text == 'Start/Stop':
-                    keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
-                    self.stort_hotkey = selected_hotkey                                 # Update self.stort_hotkey
-                    keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
-                    self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
-                    self.stortAction.setShortcut(self.stort_hotkey)                     # Update stort QAction
-                    self._EXISTING_HOTKEYS.update({text: self.stort_hotkey})
-                else:
-                    keyboard.remove_hotkey(self.reset_hotkey)
-                    self.reset_hotkey = selected_hotkey
-                    keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
-                    self.resetPushButton.setToolTip(self.reset_hotkey)
-                    self.resetAction.setShortcut(self.reset_hotkey)
-                    self._EXISTING_HOTKEYS.update({text: self.reset_hotkey})
-                # [] TODO: show a notification via Notif area
-                print(f'{text} hotkey changed: {selected_hotkey}')
-                print(f'after _EXISTING_VALUES: {self._EXISTING_HOTKEYS.values()}')
+                update_hotkey = self._operations.get(text)
+                update_hotkey(text, selected_hotkey)
             else:
                 hotkey_owner = self._get_hotkey_owner(selected_hotkey)
-                self._show_setShorcutMessageBox(selected_hotkey, hotkey_owner)
+                self._show_setShortcutMessageBox(selected_hotkey, hotkey_owner)
 
     def _get_hotkey_owner(self, user_hotkey):
         """ Return the current owner of an existing hotkey. """
@@ -255,6 +239,24 @@ class Ten(QWidget):
 
         self.setShortcutMessageBox.setText(f'\'{hotkey}\' already registered as shortcut for <b>{owner}</b> button. Try again.')
         self.setShortcutMessageBox.show()
+
+    def _update_stort_hotkey(self, text, selected_hotkey):
+
+        keyboard.remove_hotkey(self.stort_hotkey)                           # Remove previous hotkey
+        self.stort_hotkey = selected_hotkey                                 # Update self.stort_hotkey
+        keyboard.add_hotkey(self.stort_hotkey, self.stortPushButton.click)  # Register new hotkey in keyboard
+        self.stortPushButton.setToolTip(self.stort_hotkey)                  # Update tooltip for the button
+        self.stortAction.setShortcut(self.stort_hotkey)                     # Update stort QAction
+        self._EXISTING_HOTKEYS.update({text: self.stort_hotkey})
+
+    def _update_reset_hotkey(self, text, selected_hotkey):
+
+        keyboard.remove_hotkey(self.reset_hotkey)
+        self.reset_hotkey = selected_hotkey
+        keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
+        self.resetPushButton.setToolTip(self.reset_hotkey)
+        self.resetAction.setShortcut(self.reset_hotkey)
+        self._EXISTING_HOTKEYS.update({text: self.reset_hotkey})
 
     def on_setOpacity_action(self):
 
