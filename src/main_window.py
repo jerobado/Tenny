@@ -25,7 +25,6 @@ DEFAULT_QUIT_SHORCUT = 'ctrl+q'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
-# [] TODO: for 5 day testing
 class Ten(QWidget):
 
     def __init__(self, parent=None):

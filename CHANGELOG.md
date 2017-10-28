@@ -18,7 +18,7 @@ _Release Date: 1 Mar 2018 (tentative)_
 
 **Patch 0.4**
 
-_Release Date: 1 Nov 2017_ [unreleased]
+_Release Date: 1 Nov 2017 (latest)_ 
 
 * Highlight(s)
     * Added `Ctrl+Q` as default shortcut to easily quit the timer without navigating into the notification area
