@@ -25,6 +25,7 @@ DEFAULT_QUIT_SHORCUT = 'ctrl+q'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
+# [] TODO: separate the logic and UI, this class is getting heavier
 class Ten(QWidget):
 
     def __init__(self, parent=None):

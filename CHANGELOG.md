@@ -3,7 +3,7 @@ CHANGELOG
 
 **Patch 0.5**
 
-_Release Date: 1 Mar 2018 (tentative)_
+_Release Date: 1 Mar 2018 (tentative, unreleased)_
 
 * Things to implement
     * Consolidate settings into a Settings dialog

@@ -26,7 +26,6 @@ class SetShortcut(QDialog):
         self._layout()
         self._properties()
         self._connections()
-        #print(f'on setShortcut dialog: {EXISTING_HOTKEYS}')
 
     def _widgets(self) -> None:
         """ List of QWidgets used in this dialog. """
@@ -88,6 +87,7 @@ class SetShortcut(QDialog):
 
         self.update_modifier_keys()
 
+    # [] TODO: check before you remove this block of code
     def on_keyLineEdit_textChanged(self) -> None:
 
         #if self.selected_hotkeys not in EXISTING_HOTKEYS:
