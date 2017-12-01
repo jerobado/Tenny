@@ -7,10 +7,12 @@
  """
 
 import sys
+sys.path.append('..')
 from PyQt5.QtWidgets import QApplication
 from src.main_window import Ten
 
 __author__ = 'mokachokokarbon'
+__version__ = '0.5'
 APP = QApplication(sys.argv)
 
 
@@ -26,6 +28,7 @@ def check_tools_version() -> None:
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
+    logging.info(f'[TEN]: Tenny version {__version__}')
     logging.info(f'[TEN]: Python version {sys.version[:5]}')
     logging.info(f'[TEN]: Qt version {QT_VERSION_STR}')
     logging.info(f'[TEN]: PyQt version {PYQT_VERSION_STR}')
@@ -36,13 +39,20 @@ def configure_app_icon() -> None:
     """ This will show the icon of Betty in the taskbar. """
 
     import ctypes
-    APP_ID = u'novus.mokachokokarbon.tenny.04'
+    APP_ID = u'novus.mokachokokarbon.tenny.05'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
+
+
+def load_stylesheet():
+
+    stylesheet = open('../qss/style.qss')
+    return stylesheet.read()
 
 
 if __name__ == '__main__':
     check_tools_version()
     configure_app_icon()
     window = Ten()
+    window.setStyleSheet(load_stylesheet())
     window.show()
     APP.exec()

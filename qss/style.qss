@@ -1,0 +1,33 @@
+#Ten {
+    background-color: #FFFFFF;
+}
+
+#timerLabel {
+    /* color: #FF7070; */
+    color: #383838;
+    font: 40px;
+}
+
+#stortPushButton {
+    /*
+    border: 2px solid #8f8f91;
+    border-radius: 6px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #f6f7fa, stop: 1 #dadbde);
+    min-width: 80px;
+    */
+    /* border: 2px solid #e8eaff; */
+    /* background-color: #6197e8; */
+
+}
+
+#stortPushButton:flat, #resetPushButton:flat {
+    border: none;
+}
+
+#stortPushButton:pressed, #resetPushButton:pressed {
+    /* background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #dadbde, stop: 1 #f6f7fa);
+    */
+    background-color: #FF7070;
+}
