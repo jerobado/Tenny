@@ -38,8 +38,9 @@ class Ten(QWidget):
         self._START = '&START'
         self._STOP = '&STOP'
         self._RESET = '&RESET'
-        self._FORMAT = 'hh:mm:ss.zzz'
-        self._ZERO = '00:00:00.000'
+        #self._FORMAT = 'mm:ss.zzz'
+        self._FORMAT = 's.zzz'
+        self._ZERO = '0.000'
         self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
@@ -102,7 +103,7 @@ class Ten(QWidget):
 
     def _widgets(self):
 
-        self.shiverTimer = QTime(0, 0, 0)
+        self.shiverTimer = QTime(0, 0, 50)   # hour, minute, second
         self.timerLabel = QLabel()
         self.timer = QTimer()
         self.timerLCDNumber = QLCDNumber()
@@ -147,6 +148,8 @@ class Ten(QWidget):
         self.timerLabel.setObjectName('timerLabel')
         self.timerLabel.setText(self._ZERO)
         self.timerLabel.setAlignment(Qt.AlignHCenter)
+
+        #self.shiverTimer.setHMS(0, 0, 59)
 
         # [] TODO: candidate for deletion 12.01.2017
         self.timerLCDNumber.setDigitCount(12)
@@ -197,10 +200,34 @@ class Ten(QWidget):
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
 
+        # 1 second = 1000 milliseconds
+        # 1 minute = 60000
+        # self._FORMAT = 'hh:mm:ss.zzz'
         self.shiverTimer = self.shiverTimer.addMSecs(1)
+        #print(self.shiverTimer.elapsed())
+
+        # [] TODO: perform conversion here
+        #       [] try comparing two instances of QTime
+
+        # if self.shiverTimer.elapsed() == 60000:
+        #     self._FORMAT = 'mm:ss:zzz'
+        #     print('you hit 1 minute')
+        # elif self.shiverTimer.elapsed() == 60000 * 59:
+        #     self._FORMAT = 'hh:mm:ss:zzz'
+        #     print('converted??')
+        # if self.shiverTimer.second() == 59 and self.shiverTimer.msec() == 999:
+        #     self._FORMAT = 'm:ss:zzz'
+        #
+        # if self.shiverTimer.minute() == 59 and self.shiverTimer.second() == 59 and self.shiverTimer.msec() == 999:
+        #     self._FORMAT = 'h:mm:ss:zzz'
+
+        if self.shiverTimer == QTime(0, 0, 59, 999):
+            self._FORMAT = 'm:ss:zzz'
+        elif self.shiverTimer == QTime(0, 59, 59, 999):
+            self._FORMAT = 'h:mm:ss:zzz'
+
+        #print(self.shiverTimer.second())
         text = self.shiverTimer.toString(self._FORMAT)
-        #print(text)
-        #self.timerLCDNumber.display(text)
         self.timerLabel.setText(text)
 
     def on_stortPushButton_clicked(self):
@@ -231,6 +258,7 @@ class Ten(QWidget):
         #self.timerLCDNumber.display(self.shiverTimer.toString(self._FORMAT))
 
         self.timerLabel.setText(self.shiverTimer.toString(self._ZERO))
+        self._FORMAT = 's.zzz'
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
