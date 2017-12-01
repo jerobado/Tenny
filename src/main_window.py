@@ -6,7 +6,10 @@ from PyQt5.QtWidgets import (QWidget,
                              QSystemTrayIcon,
                              QMenu,
                              QAction,
-                             QMessageBox)
+                             QMessageBox,
+                             QLabel,
+                             QVBoxLayout,
+                             QHBoxLayout)
 from PyQt5.QtCore import (QTime,
                           QTimer,
                           Qt,
@@ -18,14 +21,16 @@ from resources import tenny_resources
 
 __title__ = 'Tenny'
 __author__ = 'mokachokokarbon'
-__version__ = '0.4'
+__version__ = '0.5'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
 DEFAULT_QUIT_SHORCUT = 'ctrl+q'
 DEFAULT_OPACITY_VALUE = 0.7
 
 
+# [] TODO: implement a good logging system
 # [] TODO: separate the logic and UI, this class is getting heavier
+# [x] TODO: using QLabel instead of QLCDNumber
 class Ten(QWidget):
 
     def __init__(self, parent=None):
@@ -34,6 +39,7 @@ class Ten(QWidget):
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 'hh:mm:ss.zzz'
+        self._ZERO = '00:00:00.000'
         self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
@@ -97,6 +103,7 @@ class Ten(QWidget):
     def _widgets(self):
 
         self.shiverTimer = QTime(0, 0, 0)
+        self.timerLabel = QLabel()
         self.timer = QTimer()
         self.timerLCDNumber = QLCDNumber()
         self.stortPushButton = QPushButton(self._START)
@@ -107,27 +114,50 @@ class Ten(QWidget):
 
     def _layout(self):
 
+        first_layer = QHBoxLayout()
+        first_layer.addWidget(self.timerLabel)
+
+        second_layer = QHBoxLayout()
+        second_layer.addWidget(self.stortPushButton)
+        second_layer.addWidget(self.resetPushButton)
+
         grid = QGridLayout()
-        grid.addWidget(self.timerLCDNumber, 0, 0, 1, 2)
+        #grid.addWidget(self.timerLCDNumber, 0, 0, 1, 2)
+        grid.addWidget(self.timerLabel, 0, 0, 1, 2)
         grid.addWidget(self.stortPushButton, 1, 0)
         grid.addWidget(self.resetPushButton, 1, 1)
+
+        # stack_layers = QVBoxLayout()
+        # stack_layers.addLayout(first_layer)
+        # stack_layers.addLayout(second_layer)
+        # stack_layers.addLayout(grid)
 
         self.setLayout(grid)
 
     def _properties(self):
 
         # Main window
+        self.setObjectName('Ten')
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
-        self.resize(350, 125)
+        self.resize(341, 89)    # width, height
         self.setWindowTitle(f'{__title__}')
         self.setWindowOpacity(self.opacity_value)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
-        self.timerLCDNumber.setDigitCount(12)
-        self.timerLCDNumber.display("00:00:00.000")
+        self.timerLabel.setObjectName('timerLabel')
+        self.timerLabel.setText(self._ZERO)
+        self.timerLabel.setAlignment(Qt.AlignHCenter)
 
+        # [] TODO: candidate for deletion 12.01.2017
+        self.timerLCDNumber.setDigitCount(12)
+        self.timerLCDNumber.display(self._ZERO)
+
+        self.stortPushButton.setObjectName('stortPushButton')
         self.stortPushButton.setToolTip(self.stort_hotkey)
+        self.stortPushButton.setFlat(True)
+        self.resetPushButton.setObjectName('resetPushButton')
         self.resetPushButton.setToolTip(self.reset_hotkey)
+        self.resetPushButton.setFlat(True)
 
         self.set_opacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
         self.set_opacityDialog.opacitySlider.setSliderPosition(self.opacity_value * 100)
@@ -169,7 +199,9 @@ class Ten(QWidget):
 
         self.shiverTimer = self.shiverTimer.addMSecs(1)
         text = self.shiverTimer.toString(self._FORMAT)
-        self.timerLCDNumber.display(text)
+        #print(text)
+        #self.timerLCDNumber.display(text)
+        self.timerLabel.setText(text)
 
     def on_stortPushButton_clicked(self):
         """ Call self.stort_timer to activate the timer. """
@@ -196,7 +228,9 @@ class Ten(QWidget):
 
         self.timer.stop()
         self.shiverTimer = QTime(0, 0, 0)
-        self.timerLCDNumber.display(self.shiverTimer.toString(self._FORMAT))
+        #self.timerLCDNumber.display(self.shiverTimer.toString(self._FORMAT))
+
+        self.timerLabel.setText(self.shiverTimer.toString(self._ZERO))
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
@@ -300,3 +334,8 @@ class Ten(QWidget):
         settings.setValue('tenny_stort_hotkey', self.stort_hotkey)
         settings.setValue('tenny_reset_hotkey', self.reset_hotkey)
         settings.setValue('tenny_opacity', self.opacity_value)
+
+    def resizeEvent(self, QResizeEvent):
+
+        #print(f'{self.height()} x {self.width()}')
+        pass
