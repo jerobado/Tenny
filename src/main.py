@@ -14,6 +14,8 @@ from src.main_window import Ten
 __author__ = 'mokachokokarbon'
 __version__ = '0.5'
 APP = QApplication(sys.argv)
+APP.setOrganizationName('GIPSC Core Team')
+APP.setApplicationName('Tenny')
 
 
 def check_tools_version() -> None:

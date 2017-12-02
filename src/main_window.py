@@ -38,7 +38,6 @@ class Ten(QWidget):
         self._START = '&START'
         self._STOP = '&STOP'
         self._RESET = '&RESET'
-        #self._FORMAT = 'mm:ss.zzz'
         self._FORMAT = 's.zzz'
         self._ZERO = '0.000'
         self.close_shortcut = False
@@ -51,6 +50,7 @@ class Ten(QWidget):
                                   'Quit': self.quit_hotkey}
         self._operations = {'Start/Stop': self._update_stort_hotkey,
                             'Reset': self._update_reset_hotkey}
+        self.settings = QSettings()
         self._read_settings()
         self._create_actions()
         self._create_menus()
@@ -103,13 +103,13 @@ class Ten(QWidget):
 
     def _widgets(self):
 
-        self.shiverTimer = QTime(0, 0, 50)   # hour, minute, second
+        self.shiverTimer = QTime(0, 0, 0)   # hour, minute, second
         self.timerLabel = QLabel()
         self.timer = QTimer()
         self.timerLCDNumber = QLCDNumber()
         self.stortPushButton = QPushButton(self._START)
         self.resetPushButton = QPushButton(self._RESET)
-        self.set_opacityDialog = SetOpacity()
+        self.setOpacityDialog = SetOpacity()
         self.tennySystemTray = QSystemTrayIcon()
         self.setShortcutMessageBox = QMessageBox(self)
 
@@ -123,15 +123,9 @@ class Ten(QWidget):
         second_layer.addWidget(self.resetPushButton)
 
         grid = QGridLayout()
-        #grid.addWidget(self.timerLCDNumber, 0, 0, 1, 2)
         grid.addWidget(self.timerLabel, 0, 0, 1, 2)
         grid.addWidget(self.stortPushButton, 1, 0)
         grid.addWidget(self.resetPushButton, 1, 1)
-
-        # stack_layers = QVBoxLayout()
-        # stack_layers.addLayout(first_layer)
-        # stack_layers.addLayout(second_layer)
-        # stack_layers.addLayout(grid)
 
         self.setLayout(grid)
 
@@ -149,12 +143,6 @@ class Ten(QWidget):
         self.timerLabel.setText(self._ZERO)
         self.timerLabel.setAlignment(Qt.AlignHCenter)
 
-        #self.shiverTimer.setHMS(0, 0, 59)
-
-        # [] TODO: candidate for deletion 12.01.2017
-        self.timerLCDNumber.setDigitCount(12)
-        self.timerLCDNumber.display(self._ZERO)
-
         self.stortPushButton.setObjectName('stortPushButton')
         self.stortPushButton.setToolTip(self.stort_hotkey)
         self.stortPushButton.setFlat(True)
@@ -162,8 +150,8 @@ class Ten(QWidget):
         self.resetPushButton.setToolTip(self.reset_hotkey)
         self.resetPushButton.setFlat(True)
 
-        self.set_opacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
-        self.set_opacityDialog.opacitySlider.setSliderPosition(self.opacity_value * 100)
+        self.setOpacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
+        self.setOpacityDialog.opacitySlider.setSliderPosition(self.opacity_value * 100)
 
         # SetShortcut QMessageBox
         self.setShortcutMessageBox.setIcon(QMessageBox.Warning)
@@ -179,7 +167,7 @@ class Ten(QWidget):
         self.timer.timeout.connect(self.showStopwatch)
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
-        self.set_opacityDialog.opacitySlider.valueChanged.connect(self.on_opacitySlider_valueChanged)
+        self.setOpacityDialog.opacitySlider.valueChanged.connect(self.on_opacitySlider_valueChanged)
 
     def _hotkeys(self):
 
@@ -189,46 +177,33 @@ class Ten(QWidget):
     def _read_settings(self):
         """ Method for restoring Tenny's position, size and values. """
 
-        settings = QSettings('GIPSC Core Team', 'Tenny')
-        self.restoreGeometry(settings.value('tenny_geometry', self.saveGeometry()))
-        self.stort_hotkey = settings.value('tenny_stort_hotkey', self.stort_hotkey)
-        self.reset_hotkey = settings.value('tenny_reset_hotkey', self.reset_hotkey)
-        self.opacity_value = float(settings.value('tenny_opacity', self.opacity_value))
+        self.restoreGeometry(self.settings.value('tenny_geometry', self.saveGeometry()))
+        self.stort_hotkey = self.settings.value('tenny_stort_hotkey', self.stort_hotkey)
+        self.reset_hotkey = self.settings.value('tenny_reset_hotkey', self.reset_hotkey)
+        self.opacity_value = float(self.settings.value('tenny_opacity', self.opacity_value))
         self._EXISTING_HOTKEYS.update({'Start/Stop': self.stort_hotkey,
                                        'Reset': self.reset_hotkey})
 
     def showStopwatch(self):
         """ Event handler for showing elapsed time, just like a stopwatch. """
 
-        # 1 second = 1000 milliseconds
-        # 1 minute = 60000
-        # self._FORMAT = 'hh:mm:ss.zzz'
         self.shiverTimer = self.shiverTimer.addMSecs(1)
-        #print(self.shiverTimer.elapsed())
-
-        # [] TODO: perform conversion here
-        #       [] try comparing two instances of QTime
-
-        # if self.shiverTimer.elapsed() == 60000:
-        #     self._FORMAT = 'mm:ss:zzz'
-        #     print('you hit 1 minute')
-        # elif self.shiverTimer.elapsed() == 60000 * 59:
-        #     self._FORMAT = 'hh:mm:ss:zzz'
-        #     print('converted??')
-        # if self.shiverTimer.second() == 59 and self.shiverTimer.msec() == 999:
-        #     self._FORMAT = 'm:ss:zzz'
-        #
-        # if self.shiverTimer.minute() == 59 and self.shiverTimer.second() == 59 and self.shiverTimer.msec() == 999:
-        #     self._FORMAT = 'h:mm:ss:zzz'
 
         if self.shiverTimer == QTime(0, 0, 59, 999):
-            self._FORMAT = 'm:ss:zzz'
+            self._FORMAT = 'm:ss.zzz'
         elif self.shiverTimer == QTime(0, 59, 59, 999):
-            self._FORMAT = 'h:mm:ss:zzz'
+            self._FORMAT = 'h:mm:ss.zzz'
+        elif self.shiverTimer == QTime(23, 59, 59, 999):
+            # stop the timer and disable the stortPushButton
+            self.stop_tenny_timer()
+            self.stortPushButton.setEnabled(False)
 
-        #print(self.shiverTimer.second())
-        text = self.shiverTimer.toString(self._FORMAT)
-        self.timerLabel.setText(text)
+        self.update_timerLabel_text(self._FORMAT)
+
+    def update_timerLabel_text(self, format: str) -> None:
+
+        format = self.shiverTimer.toString(format)
+        self.timerLabel.setText(format)
 
     def on_stortPushButton_clicked(self):
         """ Call self.stort_timer to activate the timer. """
@@ -238,12 +213,17 @@ class Ten(QWidget):
     def stort_timer(self):
         """ Method that will start or stop the timer. """
 
-        if self.stortPushButton.text() == self._START:
-            self.timer.start(1)
-            self.stortPushButton.setText(self._STOP)
-        else:
-            self.timer.stop()
-            self.stortPushButton.setText(self._START)
+        self.start_tenny_timer() if self.stortPushButton.text() == self._START else self.stop_tenny_timer()
+
+    def start_tenny_timer(self):
+
+        self.timer.start(1)
+        self.stortPushButton.setText(self._STOP)
+
+    def stop_tenny_timer(self):
+
+        self.timer.stop()
+        self.stortPushButton.setText(self._START)
 
     def on_resetPushButton_clicked(self):
         """ Call self.reset_timer to reset the timer. """
@@ -255,13 +235,14 @@ class Ten(QWidget):
 
         self.timer.stop()
         self.shiverTimer = QTime(0, 0, 0)
-        #self.timerLCDNumber.display(self.shiverTimer.toString(self._FORMAT))
-
-        self.timerLabel.setText(self.shiverTimer.toString(self._ZERO))
+        self.update_timerLabel_text(self._ZERO)
         self._FORMAT = 's.zzz'
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
+
+        if not self.stortPushButton.isEnabled():
+            self.stortPushButton.setEnabled(True)
 
     def on_openTenny_action(self):
         """ Show Tenny window if its hidden. """
@@ -322,19 +303,19 @@ class Ten(QWidget):
 
     def on_setOpacity_action(self):
 
-        self.set_opacityDialog.show()
-        self.set_opacityDialog.move(self.tennyMenu.pos())
+        self.setOpacityDialog.show()
+        self.setOpacityDialog.move(self.tennyMenu.pos())
 
     def on_opacitySlider_valueChanged(self):
 
-        self.opacity_value = self.set_opacityDialog.opacitySlider.value() / 100
+        self.opacity_value = self.setOpacityDialog.opacitySlider.value() / 100
         self.setWindowOpacity(self.opacity_value)
-        self.set_opacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
+        self.setOpacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
 
     def mousePressEvent(self, QMouseEvent):
 
-        if self.set_opacityDialog.isVisible():
-            self.set_opacityDialog.close()
+        if self.setOpacityDialog.isVisible():
+            self.setOpacityDialog.close()
 
     def closeEvent(self, event):
 
@@ -357,11 +338,10 @@ class Ten(QWidget):
     def _write_settings(self):
         """ Method for saving Tenny's position, size and values. """
 
-        settings = QSettings('GIPSC Core Team', 'Tenny')
-        settings.setValue('tenny_geometry', self.saveGeometry())
-        settings.setValue('tenny_stort_hotkey', self.stort_hotkey)
-        settings.setValue('tenny_reset_hotkey', self.reset_hotkey)
-        settings.setValue('tenny_opacity', self.opacity_value)
+        self.settings.setValue('tenny_geometry', self.saveGeometry())
+        self.settings.setValue('tenny_stort_hotkey', self.stort_hotkey)
+        self.settings.setValue('tenny_reset_hotkey', self.reset_hotkey)
+        self.settings.setValue('tenny_opacity', self.opacity_value)
 
     def resizeEvent(self, QResizeEvent):
 
