@@ -6,6 +6,7 @@
     /* color: #FF7070; */
     color: #383838;
     font: 40px;
+    font-family: "Segoe UI";
 }
 
 #stortPushButton {
