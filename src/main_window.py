@@ -1,7 +1,6 @@
 import keyboard
 from PyQt5.QtWidgets import (QWidget,
                              QPushButton,
-                             QLCDNumber,
                              QGridLayout,
                              QSystemTrayIcon,
                              QMenu,
@@ -30,7 +29,6 @@ DEFAULT_OPACITY_VALUE = 0.7
 
 # [] TODO: implement a good logging system
 # [] TODO: separate the logic and UI, this class is getting heavier
-# [x] TODO: using QLabel instead of QLCDNumber
 class Ten(QWidget):
 
     def __init__(self, parent=None):
@@ -39,7 +37,6 @@ class Ten(QWidget):
         self._STOP = '&STOP'
         self._RESET = '&RESET'
         self._FORMAT = 's.zzz'
-        self._ZERO = '0.000'
         self.close_shortcut = False
         self.stort_hotkey = DEFAULT_STORT_SHORTCUT
         self.reset_hotkey = DEFAULT_RESET_SHORTCUT
@@ -103,30 +100,21 @@ class Ten(QWidget):
 
     def _widgets(self):
 
-        self.shiverTimer = QTime(0, 0, 0)   # hour, minute, second
-        self.timerLabel = QLabel()
-        self.timer = QTimer()
-        self.timerLCDNumber = QLCDNumber()
-        self.stortPushButton = QPushButton(self._START)
-        self.resetPushButton = QPushButton(self._RESET)
+        self.tennyTime = QTime()            # The true time
+        self.tennyTimer = QTimer()          # The ticker (increments the time)
+        self.tennyTimeLabel = QLabel()      # The time display
+        self.stortPushButton = QPushButton()
+        self.resetPushButton = QPushButton()
         self.setOpacityDialog = SetOpacity()
         self.tennySystemTray = QSystemTrayIcon()
         self.setShortcutMessageBox = QMessageBox(self)
 
     def _layout(self):
 
-        first_layer = QHBoxLayout()
-        first_layer.addWidget(self.timerLabel)
-
-        second_layer = QHBoxLayout()
-        second_layer.addWidget(self.stortPushButton)
-        second_layer.addWidget(self.resetPushButton)
-
         grid = QGridLayout()
-        grid.addWidget(self.timerLabel, 0, 0, 1, 2)
+        grid.addWidget(self.tennyTimeLabel, 0, 0, 1, 2)
         grid.addWidget(self.stortPushButton, 1, 0)
         grid.addWidget(self.resetPushButton, 1, 1)
-
         self.setLayout(grid)
 
     def _properties(self):
@@ -139,15 +127,20 @@ class Ten(QWidget):
         self.setWindowOpacity(self.opacity_value)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
-        self.timerLabel.setObjectName('timerLabel')
-        self.timerLabel.setText(self._ZERO)
-        self.timerLabel.setAlignment(Qt.AlignHCenter)
+        self.tennyTime.setHMS(0, 0, 0)  # (hour, minute, second, ms = 0)
+
+        self.tennyTimeLabel.setObjectName('tennyTimeLabel')
+        self.tennyTimeLabel.setText(self.tennyTime.toString(self._FORMAT))
+        self.tennyTimeLabel.setAlignment(Qt.AlignHCenter)
 
         self.stortPushButton.setObjectName('stortPushButton')
         self.stortPushButton.setToolTip(self.stort_hotkey)
+        self.stortPushButton.setText(self._START)
         self.stortPushButton.setFlat(True)
+
         self.resetPushButton.setObjectName('resetPushButton')
         self.resetPushButton.setToolTip(self.reset_hotkey)
+        self.resetPushButton.setText(self._RESET)
         self.resetPushButton.setFlat(True)
 
         self.setOpacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
@@ -164,7 +157,7 @@ class Ten(QWidget):
 
     def _connections(self):
 
-        self.timer.timeout.connect(self.showStopwatch)
+        self.tennyTimer.timeout.connect(self.on_tennyTimer_timeout)
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
         self.setOpacityDialog.opacitySlider.valueChanged.connect(self.on_opacitySlider_valueChanged)
@@ -184,65 +177,63 @@ class Ten(QWidget):
         self._EXISTING_HOTKEYS.update({'Start/Stop': self.stort_hotkey,
                                        'Reset': self.reset_hotkey})
 
-    def showStopwatch(self):
-        """ Event handler for showing elapsed time, just like a stopwatch. """
+    def on_tennyTimer_timeout(self):
+        """ Event handler for tennyTimer's timeout signal. """
 
-        self.shiverTimer = self.shiverTimer.addMSecs(1)
-
-        if self.shiverTimer == QTime(0, 0, 59, 999):
-            self._FORMAT = 'm:ss.zzz'
-        elif self.shiverTimer == QTime(0, 59, 59, 999):
-            self._FORMAT = 'h:mm:ss.zzz'
-        elif self.shiverTimer == QTime(23, 59, 59, 999):
-            # stop the timer and disable the stortPushButton
-            self.stop_tenny_timer()
-            self.stortPushButton.setEnabled(False)
-
+        self.tennyTime = self.tennyTime.addMSecs(1)
+        self.update_tennyTime_format()      # This will only update the self._FORMAT if the condition is met
         self.update_timerLabel_text(self._FORMAT)
+
+    def update_tennyTime_format(self):
+        """ Update self._FORMAT based on QTime's set condition. """
+
+        if self.tennyTime == QTime(0, 0, 59, 999):
+            self._FORMAT = 'm:ss.zzz'
+        elif self.tennyTime == QTime(0, 59, 59, 999):
+            self._FORMAT = 'h:mm:ss.zzz'
+        elif self.tennyTime == QTime(23, 59, 59, 999):
+            self._FORMAT = 's.zzz'
 
     def update_timerLabel_text(self, format: str) -> None:
 
-        format = self.shiverTimer.toString(format)
-        self.timerLabel.setText(format)
+        format = self.tennyTime.toString(format)
+        self.tennyTimeLabel.setText(format)
 
     def on_stortPushButton_clicked(self):
-        """ Call self.stort_timer to activate the timer. """
+        """ Call self.stort_timer to activate the tennyTimer. """
 
         self.stort_timer()
 
     def stort_timer(self):
-        """ Method that will start or stop the timer. """
+        """ Method that will start or stop the tennyTimer. """
 
         self.start_tenny_timer() if self.stortPushButton.text() == self._START else self.stop_tenny_timer()
 
     def start_tenny_timer(self):
 
-        self.timer.start(1)
+        self.tennyTimer.start(1)
         self.stortPushButton.setText(self._STOP)
 
     def stop_tenny_timer(self):
 
-        self.timer.stop()
+        self.tennyTimer.stop()
         self.stortPushButton.setText(self._START)
 
     def on_resetPushButton_clicked(self):
-        """ Call self.reset_timer to reset the timer. """
+        """ Call self.reset_timer to reset tennyTimer. """
 
         self.reset_timer()
 
     def reset_timer(self):
-        """ Method that will reset the timer. """
+        """ Method that will reset tennyTimer. """
 
-        self.timer.stop()
-        self.shiverTimer = QTime(0, 0, 0)
-        self.update_timerLabel_text(self._ZERO)
+        self.tennyTimer.stop()
+        self.tennyTime.setHMS(0, 0, 0)
         self._FORMAT = 's.zzz'
+        self.update_timerLabel_text(self._FORMAT)
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
-
-        if not self.stortPushButton.isEnabled():
-            self.stortPushButton.setEnabled(True)
 
     def on_openTenny_action(self):
         """ Show Tenny window if its hidden. """
@@ -312,7 +303,7 @@ class Ten(QWidget):
         self.setWindowOpacity(self.opacity_value)
         self.setOpacityDialog.opacityLabel.setText(f'{self.opacity_value * 100:.0f}')
 
-    def mousePressEvent(self, QMouseEvent):
+    def mousePressEvent(self, event):
 
         if self.setOpacityDialog.isVisible():
             self.setOpacityDialog.close()
