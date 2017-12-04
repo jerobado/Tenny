@@ -244,19 +244,21 @@ class Ten(QWidget):
     def on_setShortcut_action(self):
 
         which_action = self.sender()
-        text = which_action.text()
+        selected_text = which_action.text()
 
         from src.dialog.preferences import SetShortcut
         dialog = SetShortcut(self)
-        dialog.setWindowTitle(f'Set Shortcut for {text}')
+        dialog.setWindowTitle(f'Set Shortcut for {selected_text}')
 
-        # [] TODO: make this block of code Pythonic, so far so good
-        # [] TODO: show a notification via Notif area, after update_hotkey()
+        # [x] TODO: make this block of code Pythonic, so far so good
+        # [x] TODO: show a notification via Notif area, after update_hotkey()
         if dialog.exec():
             selected_hotkey = dialog.selected_hotkeys
             if selected_hotkey not in self._EXISTING_HOTKEYS.values():
-                update_hotkey = self._operations.get(text)
-                update_hotkey(text, selected_hotkey)
+                update_hotkey = self._operations.get(selected_text)
+                update_hotkey(selected_text, selected_hotkey)
+                self.tennySystemTray.showMessage('Tenny', f'{selected_text} button hotkey updated to {selected_hotkey}',
+                                                 QSystemTrayIcon.Information, 4000)
             else:
                 hotkey_owner = self._get_hotkey_owner(selected_hotkey)
                 self._show_setShortcutMessageBox(selected_hotkey, hotkey_owner)
