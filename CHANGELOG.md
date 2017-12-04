@@ -6,11 +6,12 @@ CHANGELOG
 _Release Date: 1 Mar 2018 (tentative, unreleased)_
 
 * Things to implement
-    * Consolidate settings into a Settings dialog
-    * Possible designing the GUI using Qt Style Sheet
-    * Auto-hide feature
-    * Notify the user if he/she 'set a shortcut'
-    * Display current time when the user hovers the mouse pointer of the app's icon in the notification area
+    - [x] Possible designing the GUI using Qt Style Sheet
+    - [x] Notify the user if he/she 'set a shortcut'
+    - [ ] Display current time when the user hovers the mouse pointer of the app's icon in the notification area
+    - [ ] Countdown timer feature
+    - [ ] Auto-hide feature
+    - [ ] Consolidate settings into a Settings dialog
 
 * Issue(s) in the previous version
     * Timer slows down when the height of the LCD display increases [#3](https://github.com/mokachokokarbon/Tenny/issues/3)
