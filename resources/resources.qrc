@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource>
         <file alias="stopwatch-32.png">images/stopwatch-32.png</file>
+        <file alias="style.qss">qss/style.qss</file>
     </qresource>
 </RCC>
 
