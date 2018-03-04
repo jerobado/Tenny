@@ -46,3 +46,4 @@ Temporary Items
 *.xml
 __pycache__/
 *.py~
+_todo.txt
