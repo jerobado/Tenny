@@ -3,7 +3,7 @@ CHANGELOG
 
 **Patch 0.5**
 
-_Release Date: 1 Mar 2018 (tentative, unreleased)_
+_Release Date: 1 Apr 2018 (tentative, unreleased)_
 
 * Things to implement
     - [x] Possible designing the GUI using Qt Style Sheet
@@ -14,7 +14,7 @@ _Release Date: 1 Mar 2018 (tentative, unreleased)_
     - [ ] Consolidate settings into a Settings dialog
 
 * Issue(s) in the previous version
-    * Timer slows down when the height of the LCD display increases [#3](https://github.com/mokachokokarbon/Tenny/issues/3)
+    * Timer slows down when the height of the LCD display increases [#3](https://github.com/jerobado/Tenny/issues/3)
 
 
 **Patch 0.4**
@@ -23,7 +23,7 @@ _Release Date: 1 Nov 2017 (latest)_
 
 * Highlight(s)
     * Added `Ctrl+Q` as default shortcut to easily quit the timer without navigating into the notification area
-    * Restrict the user on entering existing hotkeys to eliminate hotkey conflict [#4](https://github.com/mokachokokarbon/Tenny/issues/4)
+    * Restrict the user on entering existing hotkeys to eliminate hotkey conflict [#4](https://github.com/jerobado/Tenny/issues/4)
 
 * License
     * Added GNU GPLv3 as license for Tenny
