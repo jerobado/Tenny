@@ -18,8 +18,9 @@ from src.dialog.preferences import SetOpacity
 from resources import tenny_resources
 
 
+# [] TODO: transfer these to constant.py
 __title__ = 'Tenny'
-__author__ = 'mokachokokarbon'
+__author__ = 'Jero Bado'
 __version__ = '0.5'
 DEFAULT_STORT_SHORTCUT = 'shift+f1'
 DEFAULT_RESET_SHORTCUT = 'shift+f2'
@@ -250,8 +251,6 @@ class Ten(QWidget):
         dialog = SetShortcut(self)
         dialog.setWindowTitle(f'Set Shortcut for {selected_text}')
 
-        # [x] TODO: make this block of code Pythonic, so far so good
-        # [x] TODO: show a notification via Notif area, after update_hotkey()
         if dialog.exec():
             selected_hotkey = dialog.selected_hotkeys
             if selected_hotkey not in self._EXISTING_HOTKEYS.values():

@@ -2,7 +2,7 @@
 
     Interface: GUI (PyQt5)
     Language: Python 3.6.3
-    Author: mokachokokarbon <tokidokitalkyou@gmail.com>
+    Author: Jero Bado <tokidokitalkyou@gmail.com>
     Created: 23 Oct 2015 @ 03:20 AM
  """
 
@@ -10,8 +10,9 @@ import sys
 sys.path.append('..')
 from PyQt5.QtWidgets import QApplication
 from src.main_window import Ten
+from resources import tenny_resources
 
-__author__ = 'mokachokokarbon'
+__author__ = 'Jero Bado'
 __version__ = '0.5'
 APP = QApplication(sys.argv)
 APP.setOrganizationName('GIPSC Core Team')
@@ -45,6 +46,7 @@ def configure_app_icon() -> None:
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
 
 
+# [] TODO: make this one-liner only
 def load_stylesheet():
 
     stylesheet = open('../qss/style.qss')
