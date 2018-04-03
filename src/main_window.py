@@ -33,6 +33,7 @@ DEFAULT_OPACITY_VALUE = 0.7
 class Ten(QWidget):
 
     def __init__(self, parent=None):
+
         super().__init__(parent)
         self._START = '&START'
         self._STOP = '&STOP'

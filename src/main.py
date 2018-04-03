@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import QApplication
 from src.main_window import Ten
 from resources import tenny_resources
 
+# [] TODO: add this to constant.py
 __author__ = 'Jero Bado'
 __version__ = '0.5'
 APP = QApplication(sys.argv)
@@ -57,6 +58,6 @@ if __name__ == '__main__':
     check_tools_version()
     configure_app_icon()
     window = Ten()
-    window.setStyleSheet(load_stylesheet())
+    window.setStyleSheet(load_stylesheet()) # [] TODO: do this in main_window.py
     window.show()
     APP.exec()

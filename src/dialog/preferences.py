@@ -18,6 +18,7 @@ class SetShortcut(QDialog):
     """ A dialog that will let the user choose his/her preferred hotkey. """
 
     def __init__(self, parent=None):
+
         super().__init__(parent)
         self.modifier_keys = []
         self.single_key = ''

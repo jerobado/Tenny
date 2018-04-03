@@ -12,6 +12,7 @@ _Release Date: 1 Apr 2018 (tentative, unreleased)_
     - [ ] Countdown timer feature
     - [ ] Auto-hide feature
     - [ ] Consolidate settings into a Settings dialog
+    - [ ] Create the core operations of Tenny in tenny.py
 
 * Issue(s) in the previous version
     * Timer slows down when the height of the LCD display increases [#3](https://github.com/jerobado/Tenny/issues/3)
