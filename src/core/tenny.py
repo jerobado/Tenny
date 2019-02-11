@@ -7,3 +7,18 @@
 # + start_timer()
 # + stop_timer()
 # + reset_timer()
+
+
+def start_timer():
+
+    ...
+
+
+def stop_timer():
+
+    ...
+
+
+def reset_timer():
+
+    ...
