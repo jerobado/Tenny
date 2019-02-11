@@ -3,23 +3,17 @@ CHANGELOG
 
 **Patch 0.5**
 
-_Release Date: 1 Apr 2018 (tentative, unreleased)_
+_Release Date: 31 Mar 2019 (tentative, unreleased)_
 
-* Things to implement
-    - [x] Possible designing the GUI using Qt Style Sheet
-    - [x] Notify the user if he/she 'set a shortcut'
-    - [ ] Display current time when the user hovers the mouse pointer of the app's icon in the notification area
-    - [ ] Countdown timer feature
-    - [ ] Auto-hide feature
-    - [ ] Consolidate settings into a Settings dialog
-    - [ ] Create the core operations of Tenny in tenny.py
+* Upgrade
+    * keyboard upgraded to 0.13
 
-* Issue(s) in the previous version
-    * Timer slows down when the height of the LCD display increases [#3](https://github.com/jerobado/Tenny/issues/3)
+**Things to implement**
+-[ ] Timer slows down when the height of the LCD display increases [#3](https://github.com/jerobado/Tenny/issues/3)
 
 
 **Patch 0.4**
-
+    
 _Release Date: 1 Nov 2017 (latest)_ 
 
 * Highlight(s)
