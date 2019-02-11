@@ -19,6 +19,7 @@ from resources import tenny_resources
 
 
 # [] TODO: transfer these to constant.py
+# [] TODO: transfer these to constant.py
 __title__ = 'Tenny'
 __author__ = 'Jero Bado'
 __version__ = '0.5'
@@ -121,6 +122,8 @@ class Ten(QWidget):
 
     def _properties(self):
 
+        self.tennyTimer.setTimerType(Qt.PreciseTimer)
+
         # Main window
         self.setObjectName('Ten')
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
@@ -162,6 +165,7 @@ class Ten(QWidget):
         self.tennyTimer.timeout.connect(self.on_tennyTimer_timeout)
         self.stortPushButton.clicked.connect(self.on_stortPushButton_clicked)
         self.resetPushButton.clicked.connect(self.on_resetPushButton_clicked)
+        self.tennySystemTray.activated.connect(self.on_tennySystemTray_activated)
         self.setOpacityDialog.opacitySlider.valueChanged.connect(self.on_opacitySlider_valueChanged)
 
     def _hotkeys(self):
@@ -215,11 +219,13 @@ class Ten(QWidget):
 
         self.tennyTimer.start(1)
         self.stortPushButton.setText(self._STOP)
+        print('timer is running...')
 
     def stop_tenny_timer(self):
 
         self.tennyTimer.stop()
         self.stortPushButton.setText(self._START)
+        print('timer stop running')
 
     def on_resetPushButton_clicked(self):
         """ Call self.reset_timer to reset tennyTimer. """
@@ -236,6 +242,8 @@ class Ten(QWidget):
 
         if self.stortPushButton.text() == self._STOP:
             self.stortPushButton.setText(self._START)
+
+        print('reset timer')
 
     def on_openTenny_action(self):
         """ Show Tenny window if its hidden. """
@@ -263,6 +271,11 @@ class Ten(QWidget):
                 hotkey_owner = self._get_hotkey_owner(selected_hotkey)
                 self._show_setShortcutMessageBox(selected_hotkey, hotkey_owner)
 
+    def on_tennySystemTray_activated(self):
+
+        if QSystemTrayIcon.Trigger:
+            self.show()
+
     def _get_hotkey_owner(self, user_hotkey):
         """ Return the current owner of an existing hotkey. """
 
@@ -287,6 +300,7 @@ class Ten(QWidget):
 
     def _update_reset_hotkey(self, text, selected_hotkey):
 
+        keyboard.remove_hotkey(self.reset_hotkey)
         keyboard.remove_hotkey(self.reset_hotkey)
         self.reset_hotkey = selected_hotkey
         keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
@@ -317,10 +331,12 @@ class Ten(QWidget):
             self._write_settings()
             self.tennySystemTray.hide()
             event.accept()
+            print('closing the application')
         else:
             self.hide()
             self.tennySystemTray.showMessage('Tenny', 'You can still found me here :)', QSystemTrayIcon.Information, 3000)
             event.ignore()
+            print('hiding the app')
 
     def keyPressEvent(self, event):
 
