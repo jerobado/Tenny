@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (QDialog,
                              QLabel,
                              QSlider)
 from PyQt5.QtCore import Qt
-from keyboard import read_key
+import keyboard
 
 
 # [] TODO: design your 'Settings' dialog
@@ -80,22 +80,12 @@ class SetShortcut(QDialog):
         self.altCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
         self.ctrlCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
         self.winCheckBox.clicked.connect(self.on_anyCheckBox_clicked)
-        self.keyLineEdit.textChanged.connect(self.on_keyLineEdit_textChanged)
         self.okPushButton.clicked.connect(self.accept)
 
     def on_anyCheckBox_clicked(self) -> None:
         """ Call self.update_modifier_keys() everytime the user clicked any of the four (4) checkboxes. """
 
         self.update_modifier_keys()
-
-    # [] TODO: check before you remove this block of code
-    def on_keyLineEdit_textChanged(self) -> None:
-
-        #if self.selected_hotkeys not in EXISTING_HOTKEYS:
-        #    self.messageLabel.setText(f'{self.selected_hotkeys}')
-        # self.messageLabel.setText('hey hey')
-        # print('hey hey')
-        pass
 
     def update_modifier_keys(self) -> None:
         """ Update self.modifier_keys based on the checkbox clicked. """
@@ -131,8 +121,7 @@ class SetShortcut(QDialog):
     def keyPressEvent(self, event):
         """ Update self.single_key based on the key pressed in the self.keyLineEdit. """
 
-        what_key = read_key()
-        self.keyLineEdit.setText(what_key.name)
+        self.keyLineEdit.setText(keyboard.read_key())
         self.update_single_key()
 
 
