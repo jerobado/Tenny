@@ -13,7 +13,8 @@ from PyQt5.QtCore import (QTime,
                           QTimer,
                           Qt,
                           QSettings)
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import (QIcon,
+                         QKeySequence)
 from src.dialog.preferences import SetOpacity
 from resources import tenny_resources
 
@@ -67,10 +68,10 @@ class Ten(QWidget):
                                   triggered=self.on_openTenny_action)
         self.stortAction = QAction('Start/Stop', self,
                                    triggered=self.stort_timer,
-                                   shortcut=self.stort_hotkey)
+                                   shortcut=QKeySequence(self.stort_hotkey).toString())
         self.resetAction = QAction('Reset', self,
                                    triggered=self.reset_timer,
-                                   shortcut=self.reset_hotkey)
+                                   shortcut=QKeySequence(self.reset_hotkey).toString())
 
         # self.setShortCutKeysMenu actions
         self.set_stortAction = QAction('Start/Stop', self,
@@ -251,6 +252,7 @@ class Ten(QWidget):
         if self.isHidden():
             self.show()
 
+    # [] TODO: crashes when setting a shortcut
     def on_setShortcut_action(self):
 
         which_action = self.sender()
@@ -271,10 +273,12 @@ class Ten(QWidget):
                 hotkey_owner = self._get_hotkey_owner(selected_hotkey)
                 self._show_setShortcutMessageBox(selected_hotkey, hotkey_owner)
 
-    def on_tennySystemTray_activated(self):
 
-        if QSystemTrayIcon.Trigger:
-            self.show()
+    def on_tennySystemTray_activated(self, reason):
+
+        if reason == QSystemTrayIcon.Trigger:
+            if self.isHidden():
+                self.show()
 
     def _get_hotkey_owner(self, user_hotkey):
         """ Return the current owner of an existing hotkey. """
@@ -300,7 +304,6 @@ class Ten(QWidget):
 
     def _update_reset_hotkey(self, text, selected_hotkey):
 
-        keyboard.remove_hotkey(self.reset_hotkey)
         keyboard.remove_hotkey(self.reset_hotkey)
         self.reset_hotkey = selected_hotkey
         keyboard.add_hotkey(self.reset_hotkey, self.resetPushButton.click)
