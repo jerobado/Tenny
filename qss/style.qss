@@ -20,3 +20,7 @@
 #stortPushButton:pressed, #resetPushButton:pressed {
     background-color: #FF7070;
 }
+
+#stortPushButton:hover, #resetPushButton:hover {
+    background-color: #FF7070;
+}
