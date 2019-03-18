@@ -1,7 +1,7 @@
 """ Tenny: a simple stopwatch application that can be controlled by a hotkey.
 
     Interface: GUI (PyQt5)
-    Language: Python 3.6.3
+    Language: Python 3.6.6
     Author: Jero Bado <tokidokitalkyou@gmail.com>
     Created: 23 Oct 2015 @ 03:20 AM
  """
@@ -48,6 +48,7 @@ def configure_app_icon() -> None:
 
 
 # [] TODO: make this one-liner only
+# [] TODO: can be transferred to constant.py
 def load_stylesheet():
 
     stylesheet = open('../qss/style.qss')

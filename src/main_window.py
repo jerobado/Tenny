@@ -20,7 +20,6 @@ from resources import tenny_resources
 
 
 # [] TODO: transfer these to constant.py
-# [] TODO: transfer these to constant.py
 __title__ = 'Tenny'
 __author__ = 'Jero Bado'
 __version__ = '0.5'
@@ -226,7 +225,7 @@ class Ten(QWidget):
 
         self.tennyTimer.stop()
         self.stortPushButton.setText(self._START)
-        print('timer stop running')
+        print(f'timer stop running, last time at {self.tennyTime.toString("h:mm:ss.zzz")}')
 
     def on_resetPushButton_clicked(self):
         """ Call self.reset_timer to reset tennyTimer. """
@@ -252,7 +251,6 @@ class Ten(QWidget):
         if self.isHidden():
             self.show()
 
-    # [] TODO: crashes when setting a shortcut
     def on_setShortcut_action(self):
 
         which_action = self.sender()
@@ -272,7 +270,6 @@ class Ten(QWidget):
             else:
                 hotkey_owner = self._get_hotkey_owner(selected_hotkey)
                 self._show_setShortcutMessageBox(selected_hotkey, hotkey_owner)
-
 
     def on_tennySystemTray_activated(self, reason):
 
@@ -337,9 +334,9 @@ class Ten(QWidget):
             print('closing the application')
         else:
             self.hide()
-            self.tennySystemTray.showMessage('Tenny', 'You can still found me here :)', QSystemTrayIcon.Information, 3000)
+            self.tennySystemTray.showMessage('Tenny', 'You can still found me in the notification area :)', QSystemTrayIcon.Information, 3000)
             event.ignore()
-            print('hiding the app')
+            print('hiding the app but I will still run in the background')
 
     def keyPressEvent(self, event):
 
