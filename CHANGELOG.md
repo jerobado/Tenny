@@ -8,6 +8,12 @@ _Release Date: 31 Mar 2019 (tentative, unreleased)_
 * Upgrade
     * keyboard upgraded to 0.13
 
+* UI
+    * Improved the looks of the timer label
+
+* Bug fixes
+    * Fix crash when customizing a shortcut
+
 **Things to implement**
 -[ ] Timer slows down when the height of the LCD display increases [#3](https://github.com/jerobado/Tenny/issues/3)
 
