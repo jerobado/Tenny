@@ -3,10 +3,12 @@ CHANGELOG
 
 **Patch 0.5**
 
-_Release Date: 31 Mar 2019 (tentative, unreleased)_
+_Release Date: 6 Apr 2019 (latest)
 
 * Upgrade
     * keyboard upgraded to 0.13
+    * Python upgraded to 3.7.2
+    * PyQt upgraded to 5.11.3
 
 * UI
     * Improved the looks of the timer label
@@ -14,13 +16,13 @@ _Release Date: 31 Mar 2019 (tentative, unreleased)_
 * Bug fixes
     * Fix crash when customizing a shortcut
 
-**Things to implement**
--[ ] Timer slows down when the height of the LCD display increases [#3](https://github.com/jerobado/Tenny/issues/3)
+* Things to implement in the next version (v0.6)
+    -[ ] Timer slows down when the height of the LCD display increases [#3](https://github.com/jerobado/Tenny/issues/3)
 
 
 **Patch 0.4**
     
-_Release Date: 1 Nov 2017 (latest)_ 
+_Release Date: 1 Nov 2017_ 
 
 * Highlight(s)
     * Added `Ctrl+Q` as default shortcut to easily quit the timer without navigating into the notification area

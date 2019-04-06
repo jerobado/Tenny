@@ -7,7 +7,7 @@ A simple timer application that's controllable by a hotkey.
 Features
 ---    
 * Controllable by a customizable hotkey regardless of active window.
-* Semi-transparent and resizable window.
+* Customizable transparency and resizable window.
 * Always on top.
 
 Credits
