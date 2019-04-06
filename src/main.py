@@ -1,11 +1,12 @@
 """ Tenny: a simple stopwatch application that can be controlled by a hotkey.
 
     Interface: GUI (PyQt5)
-    Language: Python 3.6.6
+    Language: Python 3.7.2
     Author: Jero Bado <tokidokitalkyou@gmail.com>
     Created: 23 Oct 2015 @ 03:20 AM
  """
 
+import os
 import sys
 sys.path.append('..')
 from PyQt5.QtWidgets import QApplication
@@ -20,6 +21,25 @@ APP.setOrganizationName('GIPSC Core Team')
 APP.setApplicationName('Tenny')
 
 
+def resource_path(relative_path):
+    """ Get absolute path of data files. """
+
+    try:
+        print('we are skiing in freeze mode # no pun intended :) #live')
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        print('we are not freeze yet #developing')
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+# development files
+# QSS_FILE = open('..\qss\style.qss').read()
+
+# live files
+QSS_FILE = open(resource_path('qss\style.qss')).read()
+
+
 def check_tools_version() -> None:
     """ Check tools version for debugging. """
 
@@ -27,7 +47,7 @@ def check_tools_version() -> None:
     import logging
     from PyQt5.QtCore import QT_VERSION_STR
     from PyQt5.Qt import PYQT_VERSION_STR
-    from sip import SIP_VERSION_STR
+    from PyQt5.sip import SIP_VERSION_STR
 
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(message)s',
@@ -56,9 +76,11 @@ def load_stylesheet():
 
 
 if __name__ == '__main__':
+    # [] TODO: create a condition that will determine if we are running live or in development
     check_tools_version()
     configure_app_icon()
     window = Ten()
-    window.setStyleSheet(load_stylesheet()) # [] TODO: do this in main_window.py
+    # window.setStyleSheet(load_stylesheet()) # [] TODO: do this in main_window.py
+    window.setStyleSheet(QSS_FILE)
     window.show()
     APP.exec()
