@@ -1,4 +1,16 @@
-# Core operations of Tenny the timer
+"""
+Core operations of Tenny the timer
+
+Demo
+    import tenny
+    tenny.start_timer()
+    'timer started at xx:xx:xx:xx (see tenny.now() to display current time)
+    tenny.stop_timer()
+    'timer stops at xx:xx::xxx'
+    tenny.reset_timer()
+    'timer reset at xx:xx:xxx'
+
+"""
 
 # [] TODO: start creating the core operations
 # class design structure
@@ -10,6 +22,11 @@
 
 
 def start_timer():
+
+    ...
+
+
+def now():
 
     ...
 
