@@ -329,7 +329,7 @@ class Ten(QWidget):
         who_closes = self.sender()
         if isinstance(who_closes, QAction) or self.close_shortcut:
             self._write_settings()
-            self.tennySystemTray.hide()
+            self.tennySystemTray.hide() # [] TODO: keyboard shortcut doesn't work after waking up machine from sleep
             event.accept()
             print('closing the application')
         else:

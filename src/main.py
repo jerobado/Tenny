@@ -34,10 +34,10 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 # development files
-# QSS_FILE = open('..\qss\style.qss').read()
+QSS_FILE = open('..\qss\style.qss').read()
 
 # live files
-QSS_FILE = open(resource_path('qss\style.qss')).read()
+# QSS_FILE = open(resource_path('qss\style.qss')).read()
 
 
 def check_tools_version() -> None:
