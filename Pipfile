@@ -6,8 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-keyboard = "==0.13.3"
-PyQt5 = "==5.13.0"
+keyboard = "*"
+PyQt5 = "*"
+pyinstaller = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
