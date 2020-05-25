@@ -9,33 +9,24 @@ Demo
     'timer stops at xx:xx::xxx'
     tenny.reset_timer()
     'timer reset at xx:xx:xxx'
-
 """
 
-# [] TODO: start creating the core operations
-# class design structure
 
-# Tenny()
-# + start_timer()
-# + stop_timer()
-# + reset_timer()
+class Stopwatch:
 
+    def __init__(self):
 
-def start_timer():
+        self.time = None
+        self.timer = None
 
-    ...
+    def start_timer(self):
 
+        ...
 
-def now():
+    def stop_timer(self):
 
-    ...
+        ...
 
+    def reset_timer(self):
 
-def stop_timer():
-
-    ...
-
-
-def reset_timer():
-
-    ...
+        ...
