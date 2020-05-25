@@ -11,6 +11,7 @@ import sys
 sys.path.append('..')
 from PyQt5.QtWidgets import QApplication
 from src.main_window import Ten
+from src.widget.window import MainWindow
 from resources import tenny_resources
 
 # [] TODO: add this to constant.py
@@ -79,7 +80,8 @@ if __name__ == '__main__':
     # [] TODO: create a condition that will determine if we are running live or in development
     check_tools_version()
     configure_app_icon()
-    window = Ten()
+    # window = Ten()
+    window = MainWindow()
     # window.setStyleSheet(load_stylesheet()) # [] TODO: do this in main_window.py
     window.setStyleSheet(QSS_FILE)
     window.show()
