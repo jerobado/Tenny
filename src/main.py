@@ -15,7 +15,7 @@ from resources import tenny_resources
 
 # [] TODO: add this to constant.py
 __author__ = 'Jero Bado'
-__version__ = '0.5'
+__version__ = '0.6'
 APP = QApplication(sys.argv)
 APP.setOrganizationName('GIPSC Core Team')
 APP.setApplicationName('Tenny')
@@ -63,7 +63,7 @@ def configure_app_icon() -> None:
     """ This will show the icon of Betty in the taskbar. """
 
     import ctypes
-    APP_ID = u'novus.mokachokokarbon.tenny.05'
+    APP_ID = u'novus.mokachokokarbon.tenny.06'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
 
 
