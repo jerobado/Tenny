@@ -11,22 +11,13 @@ Demo
     'timer reset at xx:xx:xxx'
 """
 
+from PyQt5.QtCore import (QTime,
+                          QTimer)
 
-class Stopwatch:
+
+class Stopwatch(QTimer):
 
     def __init__(self):
 
-        self.time = None
-        self.timer = None
-
-    def start_timer(self):
-
-        ...
-
-    def stop_timer(self):
-
-        ...
-
-    def reset_timer(self):
-
-        ...
+        super().__init__()
+        self.time = QTime(0, 0, 0, 0)
