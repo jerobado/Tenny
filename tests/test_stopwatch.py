@@ -19,6 +19,19 @@ class TestStopwatch(unittest.TestCase):
 
         self.assertEqual('00:00:00.000', result)
 
+    def test_RESET_if_time_equal_zero(self):
+
+        self.stopwatch.reset()
+        result = self.stopwatch.time.toString('hh:mm:ss')
+
+        self.assertEqual('00:00:00', result)
+
+    def test_RESET_if_isActive_False(self):
+
+        self.stopwatch.reset()
+
+        self.assertFalse(self.stopwatch.isActive())
+
 
 if __name__ == '__main__':
     unittest.main()

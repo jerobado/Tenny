@@ -21,3 +21,8 @@ class Stopwatch(QTimer):
 
         super().__init__()
         self.time = QTime(0, 0, 0, 0)
+
+    def reset(self):
+
+        self.stop()
+        self.time = QTime(0, 0, 0, 0)
