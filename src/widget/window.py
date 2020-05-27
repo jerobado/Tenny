@@ -28,8 +28,8 @@ class MainWindow(QWidget):
 
         self.stopwatch = Stopwatch()
         self.timeLabel = QLabel()
-        self.startPushButton = QPushButton()
-        self.stopPushButton = QPushButton()
+        self.startstopPushButton = QPushButton()
+        self.resetPushButton = QPushButton()
 
     def _layout(self):
 
@@ -37,8 +37,8 @@ class MainWindow(QWidget):
         label.addWidget(self.timeLabel)
 
         buttons = QHBoxLayout()
-        buttons.addWidget(self.startPushButton)
-        buttons.addWidget(self.stopPushButton)
+        buttons.addWidget(self.startstopPushButton)
+        buttons.addWidget(self.resetPushButton)
 
         combine = QVBoxLayout()
         combine.addLayout(label)
@@ -49,8 +49,9 @@ class MainWindow(QWidget):
     def _properties(self):
 
         self.timeLabel.setText('00:00:00')
-        self.startPushButton.setText('Start')
+        self.startstopPushButton.setText('Start')
         self.stopPushButton.setText('Stop')
+        self.resetPushButton.setText('Reset')
         self.setWindowTitle('Tenny')
         self.resize(341, 89)
 
@@ -59,21 +60,30 @@ class MainWindow(QWidget):
         self.stopwatch.timeout.connect(self._on_stopwatch_timeout)
         self.stopwatch.timeout.connect(self._update_time_label)
         self.stopwatch.timeout.connect(self._update_time_label_DEBUG)
-        self.startPushButton.clicked.connect(self._on_startPushButton_clicked)
-        self.stopPushButton.clicked.connect(self._on_stopPushButton_clicked)
+        self.startstopPushButton.clicked.connect(self._on_startstopPushButton_clicked)
+        self.resetPushButton.clicked.connect(self._on_resetPushButton_clicked)
+        self.resetPushButton.clicked.connect(self._update_time_label)
 
     # Slots
     def _on_stopwatch_timeout(self):
 
         self.stopwatch.time = self.stopwatch.time.addSecs(1)
 
-    def _on_startPushButton_clicked(self):
+    def _on_startstopPushButton_clicked(self):
 
-        self.stopwatch.start(1000)
+        if not self.stopwatch.isActive():
+            self.stopwatch.start(1000)
+            self.startstopPushButton.setText('Stop')
+            logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch active')
+        else:
+            self.stopwatch.stop()
+            self.startstopPushButton.setText('Start')
+            logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch stop')
 
-    def _on_stopPushButton_clicked(self):
+    def _on_resetPushButton_clicked(self):
 
-        self.stopwatch.stop()
+        self.stopwatch.reset()
+        logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch reset')
 
     def _update_time_label(self):
 
