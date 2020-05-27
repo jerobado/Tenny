@@ -57,11 +57,11 @@ class MainWindow(QWidget):
     def _connections(self):
 
         self.stopwatch.timeout.connect(self._on_stopwatch_timeout)
-        self.stopwatch.timeout.connect(self._update_time_label)
+        self.stopwatch.timeout.connect(self._update_timeLabel)
         self.stopwatch.timeout.connect(self._update_time_label_DEBUG)
         self.startstopPushButton.clicked.connect(self._on_startstopPushButton_clicked)
         self.resetPushButton.clicked.connect(self._on_resetPushButton_clicked)
-        self.resetPushButton.clicked.connect(self._update_time_label)
+        self.resetPushButton.clicked.connect(self._update_timeLabel)
 
     # Slots
     def _on_stopwatch_timeout(self):
@@ -84,7 +84,7 @@ class MainWindow(QWidget):
         self.stopwatch.reset()
         logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch reset')
 
-    def _update_time_label(self):
+    def _update_timeLabel(self):
 
         self.timeLabel.setText(self.stopwatch.time.toString(self.timeformat))
 
