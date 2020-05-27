@@ -50,7 +50,6 @@ class MainWindow(QWidget):
 
         self.timeLabel.setText('00:00:00')
         self.startstopPushButton.setText('Start')
-        self.stopPushButton.setText('Stop')
         self.resetPushButton.setText('Reset')
         self.setWindowTitle('Tenny')
         self.resize(341, 89)
