@@ -58,8 +58,10 @@ class MainWindow(QWidget):
 
         self.stopwatch.timeout.connect(self._on_stopwatch_timeout)
         self.stopwatch.timeout.connect(self._update_timeLabel)
-        self.stopwatch.timeout.connect(self._update_time_label_DEBUG)
+        self.stopwatch.timeout.connect(self._debug_message)
+
         self.startstopPushButton.clicked.connect(self._on_startstopPushButton_clicked)
+
         self.resetPushButton.clicked.connect(self._on_resetPushButton_clicked)
         self.resetPushButton.clicked.connect(self._update_timeLabel)
 
@@ -88,6 +90,6 @@ class MainWindow(QWidget):
 
         self.timeLabel.setText(self.stopwatch.time.toString(self.timeformat))
 
-    def _update_time_label_DEBUG(self):
+    def _debug_message(self):
 
         logging.debug(self.stopwatch.time.toString(self.timeformat))
