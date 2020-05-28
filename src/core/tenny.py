@@ -31,6 +31,11 @@ class Stopwatch(QTimer):
 
 class Hotkey:
 
+    def __init__(self):
+
+        self.shortcut = str
+
     def setShortcut(self, shortcut, slot):
 
         keyboard.add_hotkey(shortcut, slot)
+        self.shortcut = shortcut
