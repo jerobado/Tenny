@@ -13,6 +13,7 @@ Demo
 
 from PyQt5.QtCore import (QTime,
                           QTimer)
+import keyboard
 
 
 class Stopwatch(QTimer):
@@ -26,3 +27,10 @@ class Stopwatch(QTimer):
 
         self.stop()
         self.time = QTime(0, 0, 0, 0)
+
+
+class Hotkey:
+
+    def setShortcut(self, shortcut, slot):
+
+        keyboard.add_hotkey(shortcut, slot)
