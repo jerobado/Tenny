@@ -28,10 +28,11 @@ class TestMainWindow(unittest.TestCase):
         self.assertEqual('alt+w', self.tennyMainWindow.resetHotkey.shortcut)
         self.assertEqual(QSize(341, 89), self.tennyMainWindow.size())
 
-    def test_startstopPushButton(self):
+    def test_startstopPushButton_start(self):
 
         QTest.mouseClick(self.tennyMainWindow.startstopPushButton, Qt.LeftButton)
 
+        self.assertTrue(self.tennyMainWindow.stopwatch.isActive())
         self.assertEqual('&STOP', self.tennyMainWindow.startstopPushButton.text())
 
     def test_resetPushButton(self):
