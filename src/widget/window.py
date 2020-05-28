@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (QWidget,
                              QPushButton,
                              QHBoxLayout,
                              QVBoxLayout)
+from PyQt5.QtCore import Qt
 from src.core.tenny import Stopwatch
 
 # [] TODO: create a logger class that can be use anywhere in the codebase
@@ -93,3 +94,9 @@ class MainWindow(QWidget):
     def _debug_message(self):
 
         logging.debug(self.stopwatch.time.toString(self.timeformat))
+
+    # Events
+    def keyPressEvent(self, event):
+
+        if event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_Q:
+            self.close()
