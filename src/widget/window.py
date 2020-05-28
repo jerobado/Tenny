@@ -90,6 +90,7 @@ class MainWindow(QWidget):
     def _on_resetPushButton_clicked(self):
 
         self.stopwatch.reset()
+        self.startstopPushButton.setText('&START')
         logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch reset')
 
     def _update_timeLabel(self):
