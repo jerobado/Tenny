@@ -1,7 +1,7 @@
 import logging
 import sys
 import unittest
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtTest import QTest
 from PyQt5.QtWidgets import QApplication
 from src.widget.window import MainWindow
@@ -17,6 +17,16 @@ class TestMainWindow(unittest.TestCase):
         logging.basicConfig(level=logging.DEBUG,
                             format='%(levelname)s: %(message)s')
         self.tennyMainWindow = MainWindow()
+
+    def test_default_properties(self):
+
+        self.assertEqual('00:00:00', self.tennyMainWindow.timeLabel.text())
+        self.assertEqual('&START', self.tennyMainWindow.startstopPushButton.text())
+        self.assertEqual('&RESET', self.tennyMainWindow.resetPushButton.text())
+        self.assertEqual('Tenny', self.tennyMainWindow.windowTitle())
+        self.assertEqual('alt+q', self.tennyMainWindow.startstopHotkey.shortcut)
+        self.assertEqual('alt+w', self.tennyMainWindow.resetHotkey.shortcut)
+        self.assertEqual(QSize(341, 89), self.tennyMainWindow.size())
 
     def test_startstopPushButton(self):
 
