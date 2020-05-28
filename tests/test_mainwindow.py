@@ -35,6 +35,14 @@ class TestMainWindow(unittest.TestCase):
         self.assertTrue(self.tennyMainWindow.stopwatch.isActive())
         self.assertEqual('&STOP', self.tennyMainWindow.startstopPushButton.text())
 
+    def test_starstopPushButton_stop(self):
+
+        QTest.mouseClick(self.tennyMainWindow.startstopPushButton, Qt.LeftButton)
+        QTest.mouseClick(self.tennyMainWindow.startstopPushButton, Qt.LeftButton)
+
+        self.assertFalse(self.tennyMainWindow.stopwatch.isActive())
+        self.assertEqual('&START', self.tennyMainWindow.startstopPushButton.text())
+
     def test_resetPushButton(self):
 
         QTest.mouseClick(self.tennyMainWindow.startstopPushButton, Qt.LeftButton)
