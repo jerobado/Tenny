@@ -50,6 +50,7 @@ class MainWindow(QWidget):
     def _properties(self):
 
         self.timeLabel.setText('00:00:00')
+        self.timeLabel.setAlignment(Qt.AlignHCenter)
         self.startstopPushButton.setText('&START')
         self.resetPushButton.setText('&RESET')
         self.setWindowTitle('Tenny')
