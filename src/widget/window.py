@@ -49,8 +49,8 @@ class MainWindow(QWidget):
     def _properties(self):
 
         self.timeLabel.setText('00:00:00')
-        self.startstopPushButton.setText('Start')
-        self.resetPushButton.setText('Reset')
+        self.startstopPushButton.setText('&START')
+        self.resetPushButton.setText('&RESET')
         self.setWindowTitle('Tenny')
         self.resize(341, 89)
 
@@ -74,11 +74,11 @@ class MainWindow(QWidget):
 
         if not self.stopwatch.isActive():
             self.stopwatch.start(1000)
-            self.startstopPushButton.setText('Stop')
+            self.startstopPushButton.setText('&STOP')
             logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch active')
         else:
             self.stopwatch.stop()
-            self.startstopPushButton.setText('Start')
+            self.startstopPushButton.setText('&START')
             logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch stop')
 
     def _on_resetPushButton_clicked(self):
