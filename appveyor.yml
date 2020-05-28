@@ -106,6 +106,7 @@ install:
 
   # We should be able to install the test dependencies via setup.py, but in the meantime, do it manually:
   #- pip install pytest pytest-cov pytest-qt
+  - pip install -r requirements.txt
 
 build_script:
 
