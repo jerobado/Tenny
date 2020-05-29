@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (QWidget,
                              QHBoxLayout,
                              QVBoxLayout)
 from PyQt5.QtCore import Qt
-from src.core.tenny import Stopwatch, Hotkey
+from src.core.tenny import Stopwatch, Hotkey, Settings
 
 # [] TODO: create a logger class that can be use anywhere in the codebase
 logging.basicConfig(level=logging.DEBUG,
@@ -20,6 +20,8 @@ class MainWindow(QWidget):
 
         super().__init__(parent)
         self.timeformat = 'hh:mm:ss'
+        self.tennySettings = Settings(self)
+        self.tennySettings.loadSettings()
         self._widgets()
         self._layout()
         self._properties()
@@ -106,3 +108,7 @@ class MainWindow(QWidget):
 
         if event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_Q:
             self.close()
+
+    def closeEvent(self, event):
+
+        self.tennySettings.saveSettings()
