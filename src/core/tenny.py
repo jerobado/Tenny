@@ -12,7 +12,8 @@ Demo
 """
 
 from PyQt5.QtCore import (QTime,
-                          QTimer)
+                          QTimer,
+                          QSettings)
 import keyboard
 
 
@@ -39,3 +40,20 @@ class Hotkey:
 
         keyboard.add_hotkey(shortcut, slot)
         self.shortcut = shortcut
+
+
+class Settings(QSettings):
+
+    def __init__(self, widget):
+
+        super().__init__()
+        self.widget = widget
+
+    def loadSettings(self):
+
+        self.widget.restoreGeometry(self.value('tennyGeometry', self.widget.saveGeometry()))
+
+    def saveSettings(self):
+
+        self.setValue('tennyGeometry', self.widget.saveGeometry())
+
