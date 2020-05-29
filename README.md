@@ -7,11 +7,17 @@ A simple timer application that's controllable by a hotkey.
 
 ![Tenny Demo](https://github.com/mokachokokarbon/Tenny/blob/master/images/tenny-demo.gif)
 
-Features
+Features & Benefits
 ---    
 * Controllable by a customizable hotkey regardless of active window.
 * Customizable transparency and resizable window.
 * Always on top.
+
+System Requirements
+---
+- OS: Windows 10 64-bit
+- Memory: 20 MB
+- Storage: 45 MB
 
 Credits
 ---
