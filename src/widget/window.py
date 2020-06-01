@@ -21,11 +21,11 @@ class MainWindow(QWidget):
         super().__init__(parent)
         self.timeformat = 'hh:mm:ss'
         self.tennySettings = Settings(self)
-        self.tennySettings.loadSettings()
         self._widgets()
         self._layout()
         self._properties()
         self._connections()
+        self.tennySettings.loadSettings()
 
     def _widgets(self):
 
