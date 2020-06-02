@@ -5,8 +5,10 @@ from PyQt5.QtWidgets import (QWidget,
                              QLabel,
                              QPushButton,
                              QHBoxLayout,
-                             QVBoxLayout)
+                             QVBoxLayout,
+                             QSystemTrayIcon)
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from src.core.tenny import Stopwatch, Hotkey, Settings
 
 # [] TODO: create a logger class that can be use anywhere in the codebase
@@ -35,6 +37,7 @@ class MainWindow(QWidget):
         self.timeLabel = QLabel()
         self.startstopPushButton = QPushButton()
         self.resetPushButton = QPushButton()
+        self.tennySystemTray = QSystemTrayIcon()
 
     def _layout(self):
 
@@ -55,10 +58,17 @@ class MainWindow(QWidget):
 
         self.timeLabel.setText('00:00:00')
         self.timeLabel.setAlignment(Qt.AlignHCenter)
+
         self.startstopPushButton.setText('&START')
         self.startstopHotkey.setShortcut('alt+q', self.startstopPushButton.click)
+
         self.resetPushButton.setText('&RESET')
         self.resetHotkey.setShortcut('alt+w', self.resetPushButton.click)
+
+        self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
+        self.tennySystemTray.setToolTip('Tenny develop-0.6')
+        self.tennySystemTray.show()
+
         self.setWindowTitle('Tenny')
         self.resize(341, 89)
 
