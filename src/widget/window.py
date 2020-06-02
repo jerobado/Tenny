@@ -6,7 +6,9 @@ from PyQt5.QtWidgets import (QWidget,
                              QPushButton,
                              QHBoxLayout,
                              QVBoxLayout,
-                             QSystemTrayIcon)
+                             QSystemTrayIcon,
+                             QMenu,
+                             QAction)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from src.core.tenny import Stopwatch, Hotkey, Settings
@@ -37,6 +39,8 @@ class MainWindow(QWidget):
         self.timeLabel = QLabel()
         self.startstopPushButton = QPushButton()
         self.resetPushButton = QPushButton()
+        self.preferenceAction = QAction()
+        self.contextMenu = QMenu()
         self.tennySystemTray = QSystemTrayIcon()
 
     def _layout(self):
@@ -65,8 +69,14 @@ class MainWindow(QWidget):
         self.resetPushButton.setText('&RESET')
         self.resetHotkey.setShortcut('alt+w', self.resetPushButton.click)
 
+        self.preferenceAction.setText('Preferences')
+        self.preferenceAction.setParent(self)
+
+        self.contextMenu.addAction(self.preferenceAction)
+
         self.tennySystemTray.setIcon(QIcon(':/stopwatch-32.png'))
         self.tennySystemTray.setToolTip('Tenny develop-0.6')
+        self.tennySystemTray.setContextMenu(self.contextMenu)
         self.tennySystemTray.show()
 
         self.setWindowTitle('Tenny')
@@ -82,6 +92,8 @@ class MainWindow(QWidget):
 
         self.resetPushButton.clicked.connect(self._on_resetPushButton_clicked)
         self.resetPushButton.clicked.connect(self._update_timeLabel)
+
+        self.preferenceAction.triggered.connect(self._on_preferenceAction_triggered)
 
     # Slots
     def _on_stopwatch_timeout(self):
@@ -104,6 +116,11 @@ class MainWindow(QWidget):
         self.stopwatch.reset()
         self.startstopPushButton.setText('&START')
         logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch reset')
+
+    def _on_preferenceAction_triggered(self):
+
+        # [] TODO: create preferences dialog
+        logging.debug('display preference dialog')
 
     def _update_timeLabel(self):
 
