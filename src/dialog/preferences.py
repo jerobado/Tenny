@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import (QDialog,
                              QGroupBox,
                              QHBoxLayout,
                              QVBoxLayout,
+                             QGridLayout,
+                             QGridLayout,
                              QLineEdit,
                              QLabel,
                              QSlider)
@@ -157,3 +159,53 @@ class SetOpacity(QDialog):
         self.opacityLabel.setAlignment(Qt.AlignHCenter)
 
         self.setWindowFlags(Qt.ToolTip)
+
+
+class PreferencesDialog(QDialog):
+
+    def __init__(self, parent=None):
+
+        super().__init__(parent)
+        self._widgets()
+        self._layout()
+        self._properties()
+        self._connections()
+
+    def _widgets(self):
+
+        self.descriptionLabel = QLabel()
+        self.startstopLabel = QLabel('Start/Stop:')
+        self.resetLabel = QLabel('Reset:')
+        self.startstopHotkeyLineEdit = QLineEdit()
+        self.resetHotkeyLineEdit = QLineEdit()
+        self.okPushButton = QPushButton('OK')
+
+    def _layout(self):
+
+        grid = QGridLayout()
+        grid.addWidget(self.startstopLabel, 0, 0)
+        grid.addWidget(self.startstopHotkeyLineEdit, 0, 1)
+        grid.addWidget(self.resetLabel, 1, 0)
+        grid.addWidget(self.resetHotkeyLineEdit, 1, 1)
+
+        hotkeyGroupBox = QGroupBox('Hotkey')
+        hotkeyGroupBox.setLayout(grid)
+
+        buttons = QHBoxLayout()
+        buttons.addStretch(1)
+        buttons.addWidget(self.okPushButton)
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.descriptionLabel)
+        vbox.addWidget(hotkeyGroupBox)
+        vbox.addLayout(buttons)
+
+        self.setLayout(vbox)
+
+    def _properties(self):
+
+        self.descriptionLabel.setText('Set your preferred settings here:')
+
+    def _connections(self):
+
+        self.okPushButton.clicked.connect(self.accept)
