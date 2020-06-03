@@ -10,7 +10,8 @@ from PyQt5.QtWidgets import (QDialog,
                              QGridLayout,
                              QLineEdit,
                              QLabel,
-                             QSlider)
+                             QSlider,
+                             QKeySequenceEdit)
 from PyQt5.QtCore import Qt
 import keyboard
 
@@ -176,8 +177,8 @@ class PreferencesDialog(QDialog):
         self.descriptionLabel = QLabel()
         self.startstopLabel = QLabel('Start/Stop:')
         self.resetLabel = QLabel('Reset:')
-        self.startstopHotkeyLineEdit = QLineEdit()
-        self.resetHotkeyLineEdit = QLineEdit()
+        self.startstopHotkeyLineEdit = QKeySequenceEdit()
+        self.resetHotkeyLineEdit = QKeySequenceEdit()
         self.okPushButton = QPushButton('OK')
 
     def _layout(self):
