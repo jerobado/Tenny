@@ -205,6 +205,7 @@ class PreferencesDialog(QDialog):
     def _properties(self):
 
         self.descriptionLabel.setText('Set your preferred settings here:')
+        self.resize(381, 149)
 
     def _connections(self):
 
