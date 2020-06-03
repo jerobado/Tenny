@@ -18,5 +18,8 @@ class ContextMenu(QMenu):
 
     def _on_preferencesAction_triggered(self):
 
-        # [] TODO: create preferences dialog
-        logging.debug('display preference dialog')
+        from src.dialog.preferences import PreferencesDialog
+
+        dialog = PreferencesDialog()
+        if dialog.exec():
+            logging.debug('update settings')
