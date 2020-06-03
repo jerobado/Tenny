@@ -22,4 +22,6 @@ class ContextMenu(QMenu):
 
         dialog = PreferencesDialog()
         if dialog.exec():
-            logging.debug('update settings')
+            logging.debug('settings to be udpated:')
+            logging.debug(f'Start/Stop: {dialog.startstopHotkeyLineEdit.keySequence().toString()}')
+            logging.debug(f'Reset: {dialog.resetHotkeyLineEdit.keySequence().toString()}')
