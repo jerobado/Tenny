@@ -61,10 +61,12 @@ class MainWindow(QWidget):
         self.timeLabel.setAlignment(Qt.AlignHCenter)
 
         self.startstopPushButton.setText('&START')
-        self.startstopHotkey.setShortcut('Alt+Q', self.startstopPushButton.click)
+        self.startstopHotkey.shortcut = 'Alt+Q'
 
         self.resetPushButton.setText('&RESET')
-        self.resetHotkey.setShortcut('Alt+W', self.resetPushButton.click)
+        self.resetHotkey.shortcut = 'Alt+W'
+
+        self.preferencesAction.setText('Preferences')
 
         self.tennySystemTray.show()
 
