@@ -8,8 +8,5 @@ class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self):
 
         super().__init__()
-        self.contextmenu = ContextMenu()
-
         self.setIcon(QIcon(':/stopwatch-32.png'))
         self.setToolTip('Tenny develop 0.6')
-        self.setContextMenu(self.contextmenu)
