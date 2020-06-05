@@ -55,6 +55,9 @@ class Settings(QSettings):
         self.widget.startstopHotkey.shortcut = self.value('startstopHotkey', self.widget.startstopHotkey.shortcut)
         self.widget.resetHotkey.shortcut = self.value('resetHotkey', self.widget.resetHotkey.shortcut)
 
+        self.widget.startstopHotkey.setShortcut(self.widget.startstopHotkey.shortcut, self.widget.startstopPushButton.click)
+        self.widget.resetHotkey.setShortcut(self.widget.resetHotkey.shortcut, self.widget.resetPushButton.click)
+
     def saveSettings(self):
 
         self.setValue('tennyGeometry', self.widget.saveGeometry())
