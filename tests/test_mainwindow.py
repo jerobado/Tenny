@@ -24,8 +24,8 @@ class TestMainWindow(unittest.TestCase):
         self.assertEqual('&START', self.tennyMainWindow.startstopPushButton.text())
         self.assertEqual('&RESET', self.tennyMainWindow.resetPushButton.text())
         self.assertEqual('Tenny', self.tennyMainWindow.windowTitle())
-        self.assertEqual('alt+q', self.tennyMainWindow.startstopHotkey.shortcut)
-        self.assertEqual('alt+w', self.tennyMainWindow.resetHotkey.shortcut)
+        self.assertEqual('Alt+Q', self.tennyMainWindow.startstopHotkey.shortcut)
+        self.assertEqual('Alt+W', self.tennyMainWindow.resetHotkey.shortcut)
         self.assertEqual(QSize(341, 89), self.tennyMainWindow.size())
 
     def test_startstopPushButton_start(self):
