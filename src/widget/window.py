@@ -91,6 +91,8 @@ class MainWindow(QWidget):
         self.resetPushButton.clicked.connect(self._on_resetPushButton_clicked)
         self.resetPushButton.clicked.connect(self._update_timeLabel)
 
+        self.preferencesAction.triggered.connect(self._on_preferencesAction_triggered)
+
     # Slots
     def _on_stopwatch_timeout(self):
 
