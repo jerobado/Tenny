@@ -115,6 +115,17 @@ class MainWindow(QWidget):
         self.startstopPushButton.setText('&START')
         logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch reset')
 
+    def _on_preferencesAction_triggered(self):
+
+        from src.dialog.preferences import PreferencesDialog
+        dialog = PreferencesDialog()
+        dialog.startstopHotkey = self.startstopHotkey
+        dialog.resetHotkey = self.resetHotkey
+        dialog.startstopPushButton_click = self.startstopPushButton.click
+        dialog.resetPushButton_click = self.resetPushButton.click
+
+        if dialog.exec(): pass
+
     def _update_timeLabel(self):
 
         self.timeLabel.setText(self.stopwatch.time.toString(self.timeformat))
