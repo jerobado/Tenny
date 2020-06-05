@@ -41,6 +41,12 @@ class Hotkey:
         keyboard.add_hotkey(shortcut, slot)
         self.shortcut = shortcut
 
+    def updateShortcut(self, new_shortcut, slot):
+
+        keyboard.remove_hotkey(self.shortcut)
+        keyboard.add_hotkey(new_shortcut, slot)
+        self.shortcut = new_shortcut
+
 
 class Settings(QSettings):
 
@@ -63,4 +69,3 @@ class Settings(QSettings):
         self.setValue('tennyGeometry', self.widget.saveGeometry())
         self.setValue('startstopHotkey', self.widget.startstopHotkey.shortcut)
         self.setValue('resetHotkey', self.widget.resetHotkey.shortcut)
-
