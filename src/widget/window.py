@@ -5,7 +5,9 @@ from PyQt5.QtWidgets import (QWidget,
                              QLabel,
                              QPushButton,
                              QHBoxLayout,
-                             QVBoxLayout)
+                             QVBoxLayout,
+                             QAction,
+                             QMenu)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from src.core.tenny import Stopwatch, Hotkey, Settings
@@ -32,6 +34,8 @@ class MainWindow(QWidget):
 
     def _widgets(self):
 
+        self.preferencesAction = QAction()
+        self.contextMenu = QMenu()
         self.stopwatch = Stopwatch()
         self.startstopHotkey = Hotkey()
         self.resetHotkey = Hotkey()
@@ -68,6 +72,9 @@ class MainWindow(QWidget):
 
         self.preferencesAction.setText('Preferences')
 
+        self.contextMenu.addAction(self.preferencesAction)
+
+        self.tennySystemTray.setContextMenu(self.contextMenu)
         self.tennySystemTray.show()
 
         self.setWindowTitle('Tenny')
