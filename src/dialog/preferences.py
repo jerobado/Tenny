@@ -1,5 +1,5 @@
 # Preference Dialog(s)
-
+import logging
 from PyQt5.QtWidgets import (QDialog,
                              QCheckBox,
                              QPushButton,
@@ -14,6 +14,9 @@ from PyQt5.QtWidgets import (QDialog,
                              QKeySequenceEdit)
 from PyQt5.QtCore import Qt
 import keyboard
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(levelname)s: %(message)s')
 
 
 # [] TODO: design your 'Settings' dialog
@@ -210,4 +213,19 @@ class PreferencesDialog(QDialog):
 
     def _connections(self):
 
+        self.okPushButton.clicked.connect(self._on_okPushButton_clicked)
         self.okPushButton.clicked.connect(self.accept)
+
+    # Slots
+    def _on_okPushButton_clicked(self):
+
+        new_startstortKeySequence = self.startstopHotkeyLineEdit.keySequence().toString()
+        new_resetKeySequence = self.resetHotkeyLineEdit.keySequence().toString()
+
+        if new_startstortKeySequence:
+            self.startstopHotkey.updateShortcut(new_startstortKeySequence, self.startstopPushButton_click)
+            logging.debug(f'Start/Stop: new hotkey -> {new_startstortKeySequence}')
+
+        if new_resetKeySequence:
+            self.resetHotkey.updateShortcut(new_resetKeySequence, self.resetPushButton_click)
+            logging.debug(f'Reset: new hotkey -> {new_resetKeySequence}')
