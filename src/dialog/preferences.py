@@ -214,6 +214,8 @@ class PreferencesDialog(QDialog):
     def _connections(self):
 
         self.okPushButton.clicked.connect(self._on_okPushButton_clicked)
+        self.startstopKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
+        self.resetKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
         self.okPushButton.clicked.connect(self.accept)
 
     # Slots
@@ -221,11 +223,21 @@ class PreferencesDialog(QDialog):
 
         new_startstortKeySequence = self.startstopKeySequenceEdit.keySequence().toString()
         new_resetKeySequence = self.resetKeySequenceEdit.keySequence().toString()
+        startstop_keysequence_length = len(self.startstopKeySequenceEdit.keySequence())
+        reset_keysequence_length = len(self.resetKeySequenceEdit.keySequence())
 
-        if new_startstortKeySequence:
+        if new_startstortKeySequence and not startstop_keysequence_length > 1:
             self.startstopHotkey.updateShortcut(new_startstortKeySequence, self.startstopPushButton_click)
             logging.debug(f'Start/Stop: new hotkey -> {new_startstortKeySequence}')
 
-        if new_resetKeySequence:
+        if new_resetKeySequence and not reset_keysequence_length > 1:
             self.resetHotkey.updateShortcut(new_resetKeySequence, self.resetPushButton_click)
             logging.debug(f'Reset: new hotkey -> {new_resetKeySequence}')
+
+    def _on_KeySequenceChanged(self):
+
+        if len(self.startstopKeySequenceEdit.keySequence()) > 1:
+            self.startstopKeySequenceEdit.clear()
+
+        if len(self.resetKeySequenceEdit.keySequence()) > 1:
+            self.resetKeySequenceEdit.clear()
