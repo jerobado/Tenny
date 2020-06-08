@@ -180,17 +180,17 @@ class PreferencesDialog(QDialog):
         self.descriptionLabel = QLabel()
         self.startstopLabel = QLabel('Start/Stop:')
         self.resetLabel = QLabel('Reset:')
-        self.startstopHotkeyLineEdit = QKeySequenceEdit()
-        self.resetHotkeyLineEdit = QKeySequenceEdit()
+        self.startstopKeySequenceEdit = QKeySequenceEdit()
+        self.resetKeySequenceEdit = QKeySequenceEdit()
         self.okPushButton = QPushButton('OK')
 
     def _layout(self):
 
         grid = QGridLayout()
         grid.addWidget(self.startstopLabel, 0, 0)
-        grid.addWidget(self.startstopHotkeyLineEdit, 0, 1)
+        grid.addWidget(self.startstopKeySequenceEdit, 0, 1)
         grid.addWidget(self.resetLabel, 1, 0)
-        grid.addWidget(self.resetHotkeyLineEdit, 1, 1)
+        grid.addWidget(self.resetKeySequenceEdit, 1, 1)
 
         hotkeyGroupBox = QGroupBox('Hotkey')
         hotkeyGroupBox.setLayout(grid)
@@ -219,8 +219,8 @@ class PreferencesDialog(QDialog):
     # Slots
     def _on_okPushButton_clicked(self):
 
-        new_startstortKeySequence = self.startstopHotkeyLineEdit.keySequence().toString()
-        new_resetKeySequence = self.resetHotkeyLineEdit.keySequence().toString()
+        new_startstortKeySequence = self.startstopKeySequenceEdit.keySequence().toString()
+        new_resetKeySequence = self.resetKeySequenceEdit.keySequence().toString()
 
         if new_startstortKeySequence:
             self.startstopHotkey.updateShortcut(new_startstortKeySequence, self.startstopPushButton_click)
