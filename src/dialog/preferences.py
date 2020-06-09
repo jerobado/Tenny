@@ -11,7 +11,8 @@ from PyQt5.QtWidgets import (QDialog,
                              QLineEdit,
                              QLabel,
                              QSlider,
-                             QKeySequenceEdit)
+                             QKeySequenceEdit,
+                             QMessageBox)
 from PyQt5.QtCore import Qt
 import keyboard
 
@@ -216,7 +217,6 @@ class PreferencesDialog(QDialog):
         self.okPushButton.clicked.connect(self._on_okPushButton_clicked)
         self.startstopKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
         self.resetKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
-        self.okPushButton.clicked.connect(self.accept)
 
     # Slots
     def _on_okPushButton_clicked(self):
@@ -226,13 +226,17 @@ class PreferencesDialog(QDialog):
         startstop_keysequence_length = len(self.startstopKeySequenceEdit.keySequence())
         reset_keysequence_length = len(self.resetKeySequenceEdit.keySequence())
 
-        if new_startstortKeySequence and not startstop_keysequence_length > 1:
-            self.startstopHotkey.updateShortcut(new_startstortKeySequence, self.startstopPushButton_click)
-            logging.debug(f'Start/Stop: new hotkey -> {new_startstortKeySequence}')
-
-        if new_resetKeySequence and not reset_keysequence_length > 1:
-            self.resetHotkey.updateShortcut(new_resetKeySequence, self.resetPushButton_click)
-            logging.debug(f'Reset: new hotkey -> {new_resetKeySequence}')
+        if (new_startstortKeySequence or new_resetKeySequence) not in self.existing_hotkeys:
+            if new_startstortKeySequence and not startstop_keysequence_length > 1:
+                self.startstopHotkey.updateShortcut(new_startstortKeySequence, self.startstopPushButton_click)
+                logging.debug(f'Start/Stop: new hotkey -> {new_startstortKeySequence}')
+            if new_resetKeySequence and not reset_keysequence_length > 1:
+                self.resetHotkey.updateShortcut(new_resetKeySequence, self.resetPushButton_click)
+                logging.debug(f'Reset: new hotkey -> {new_resetKeySequence}')
+            self.accept()
+        else:
+            QMessageBox.warning(self, 'Set Hotkey', 'Entered hotkey already exist', QMessageBox.Ok)
+            logging.debug(f'{new_startstortKeySequence} or {new_resetKeySequence} already exist')
 
     def _on_KeySequenceChanged(self):
 
