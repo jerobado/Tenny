@@ -121,6 +121,8 @@ class MainWindow(QWidget):
         dialog = PreferencesDialog()
         dialog.startstopHotkey = self.startstopHotkey
         dialog.resetHotkey = self.resetHotkey
+        dialog.existing_hotkeys = [self.startstopHotkey.shortcut,
+                                   self.resetHotkey.shortcut]
         dialog.startstopPushButton_click = self.startstopPushButton.click
         dialog.resetPushButton_click = self.resetPushButton.click
 
