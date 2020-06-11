@@ -136,7 +136,7 @@ class MainWindow(QWidget):
         dialog.resetPushButton_click = self.resetPushButton.click
         dialog.exec()
 
-         # Update button's shortcut tooltip
+        # Update button's shortcut tooltip
         self.startstopPushButton.setToolTip(dialog.startstopHotkey.shortcut)
         self.resetPushButton.setToolTip(dialog.resetHotkey.shortcut)
 
