@@ -62,6 +62,7 @@ class TestMainWindow(unittest.TestCase):
         self.tennyMainWindow.show()
         self.tennyMainWindow.close()
 
+        self.assertFalse(self.tennyMainWindow.isQuit)
         self.assertTrue(self.tennyMainWindow.isHidden())
 
     def test_closeEvent_if_stopwatch_isActive(self):
