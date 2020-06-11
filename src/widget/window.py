@@ -78,6 +78,7 @@ class MainWindow(QWidget):
         self.tennySystemTray.setContextMenu(self.contextMenu)
         self.tennySystemTray.show()
 
+        self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.setWindowTitle('Tenny')
         self.resize(341, 89)
 
