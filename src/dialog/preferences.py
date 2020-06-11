@@ -233,7 +233,7 @@ class PreferencesDialog(QDialog):
             if new_resetKeySequence and not reset_keysequence_length > 1:
                 self.resetHotkey.updateShortcut(new_resetKeySequence, self.resetPushButton_click)
                 logging.debug(f'Reset: new hotkey -> {new_resetKeySequence}')
-            self.accept()
+            self.hide()
         else:
             QMessageBox.warning(self, 'Set Hotkey', 'Entered hotkey already exist', QMessageBox.Ok)
             logging.debug(f'{new_startstortKeySequence} or {new_resetKeySequence} already exist')
