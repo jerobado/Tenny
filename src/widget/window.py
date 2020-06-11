@@ -97,6 +97,11 @@ class MainWindow(QWidget):
 
         self.preferencesAction.triggered.connect(self._on_preferencesAction_triggered)
 
+    def unhide(self):
+
+        if self.isMinimized() or self.isMaximized() or self.isHidden():
+            self.showNormal()
+
     # Slots
     def _on_stopwatch_timeout(self):
 
