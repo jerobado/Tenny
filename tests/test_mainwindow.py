@@ -50,6 +50,13 @@ class TestMainWindow(unittest.TestCase):
 
         self.assertEqual('&START', self.tennyMainWindow.startstopPushButton.text())
 
+    def test_keyPressEvent_isQuit(self):
+
+        QTest.keyPress(self.tennyMainWindow, Qt.Key_Q, Qt.ControlModifier)
+
+        self.assertTrue(self.tennyMainWindow.isQuit)
+        self.assertTrue(self.tennyMainWindow.close())
+
     def test_closeEvent_if_tennyMainWindow_isHidden(self):
 
         self.tennyMainWindow.show()
