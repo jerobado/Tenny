@@ -40,6 +40,7 @@ class MainWindow(QWidget):
         self.stopwatch = Stopwatch()
         self.startstopHotkey = Hotkey()
         self.resetHotkey = Hotkey()
+        self.unhideHotkey = Hotkey()
         self.timeLabel = QLabel()
         self.startstopPushButton = QPushButton()
         self.resetPushButton = QPushButton()
@@ -70,6 +71,8 @@ class MainWindow(QWidget):
 
         self.resetPushButton.setText('&RESET')
         self.resetHotkey.shortcut = 'Alt+W'
+
+        self.unhideHotkey.shortcut = 'Alt+D'
 
         self.preferencesAction.setText('Preferences')
 
