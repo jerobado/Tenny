@@ -50,6 +50,27 @@ class TestMainWindow(unittest.TestCase):
 
         self.assertEqual('&START', self.tennyMainWindow.startstopPushButton.text())
 
+    def test_unhide_function_isMinimized_false(self):
+
+        self.tennyMainWindow.showMinimized()
+        self.tennyMainWindow.unhide()
+
+        self.assertFalse(self.tennyMainWindow.isMinimized())
+
+    def test_unhide_function_isMaxmized_false(self):
+
+        self.tennyMainWindow.showMaximized()
+        self.tennyMainWindow.unhide()
+
+        self.assertFalse(self.tennyMainWindow.isMaximized())
+
+    def test_unhide_function_isHidden_false(self):
+
+        self.tennyMainWindow.hide()
+        self.tennyMainWindow.unhide()
+
+        self.assertFalse(self.tennyMainWindow.isHidden())
+
     def test_keyPressEvent_isQuit(self):
 
         QTest.keyPress(self.tennyMainWindow, Qt.Key_Q, Qt.ControlModifier)
