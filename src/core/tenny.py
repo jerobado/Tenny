@@ -60,9 +60,11 @@ class Settings(QSettings):
         self.widget.restoreGeometry(self.value('tennyGeometry', self.widget.saveGeometry()))
         self.widget.startstopHotkey.shortcut = self.value('startstopHotkey', self.widget.startstopHotkey.shortcut)
         self.widget.resetHotkey.shortcut = self.value('resetHotkey', self.widget.resetHotkey.shortcut)
+        self.widget.unhideHotkey.shortcut = self.value('unhideHotkey', self.widget.unhideHotkey.shortcut)
 
         self.widget.startstopHotkey.setShortcut(self.widget.startstopHotkey.shortcut, self.widget.startstopPushButton.click)
         self.widget.resetHotkey.setShortcut(self.widget.resetHotkey.shortcut, self.widget.resetPushButton.click)
+        self.widget.unhideHotkey.setShortcut(self.widget.unhideHotkey.shortcut, self.widget.unhide)
 
         self.widget.startstopPushButton.setToolTip(self.widget.startstopHotkey.shortcut)
         self.widget.resetPushButton.setToolTip(self.widget.resetHotkey.shortcut)
@@ -72,3 +74,4 @@ class Settings(QSettings):
         self.setValue('tennyGeometry', self.widget.saveGeometry())
         self.setValue('startstopHotkey', self.widget.startstopHotkey.shortcut)
         self.setValue('resetHotkey', self.widget.resetHotkey.shortcut)
+        self.setValue('unhideHotkey', self.widget.unhideHotkey.shortcut)
