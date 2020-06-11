@@ -57,7 +57,7 @@ class TestMainWindow(unittest.TestCase):
         self.assertTrue(self.tennyMainWindow.isQuit)
         self.assertTrue(self.tennyMainWindow.close())
 
-    def test_closeEvent_if_tennyMainWindow_isHidden(self):
+    def test_closeEvent_isHidden(self):
 
         self.tennyMainWindow.show()
         self.tennyMainWindow.close()
