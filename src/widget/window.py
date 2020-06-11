@@ -148,4 +148,12 @@ class MainWindow(QWidget):
 
     def closeEvent(self, event):
 
-        self.tennySettings.saveSettings()
+        if self.isQuit:
+            self.tennySettings.saveSettings()
+            self.tennySystemTray.hide()
+            event.accept()
+            logging.debug('exited')
+        else:
+            self.hide()
+            event.ignore()
+            logging.debug('running in the background')
