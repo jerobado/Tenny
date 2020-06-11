@@ -128,7 +128,7 @@ class MainWindow(QWidget):
     def _on_preferencesAction_triggered(self):
 
         from src.dialog.preferences import PreferencesDialog
-        dialog = PreferencesDialog()
+        dialog = PreferencesDialog(self)
         dialog.startstopHotkey = self.startstopHotkey
         dialog.resetHotkey = self.resetHotkey
         dialog.existing_hotkeys = [self.startstopHotkey.shortcut,
