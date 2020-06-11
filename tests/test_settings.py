@@ -18,6 +18,10 @@ class TestSettings(unittest.TestCase):
                             format='%(levelname)s: %(message)s')
         self.window = MainWindow()
 
+    def test_default_values(self):
+
+        self.assertIsInstance(self.window, MainWindow)
+
     def test_saveSettings(self):
 
         # [] TODO: study how to test settings
