@@ -142,6 +142,7 @@ class MainWindow(QWidget):
     def keyPressEvent(self, event):
 
         if event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_Q:
+            self.isQuit = True
             self.close()
 
     def closeEvent(self, event):
