@@ -92,6 +92,8 @@ class MainWindow(QWidget):
         self.resetPushButton.clicked.connect(self._on_resetPushButton_clicked)
         self.resetPushButton.clicked.connect(self._update_timeLabel)
 
+        self.tennySystemTray.activated.connect(self._on_tennySystemTray_activated)
+
         self.preferencesAction.triggered.connect(self._on_preferencesAction_triggered)
 
     # Slots
@@ -115,6 +117,12 @@ class MainWindow(QWidget):
         self.stopwatch.reset()
         self.startstopPushButton.setText('&START')
         logging.debug(f'{self.stopwatch.time.toString(self.timeformat)} stopwatch reset')
+
+    def _on_tennySystemTray_activated(self, reason):
+
+        if reason == self.tennySystemTray.Trigger:
+            if self.isHidden():
+                self.show()
 
     def _on_preferencesAction_triggered(self):
 
