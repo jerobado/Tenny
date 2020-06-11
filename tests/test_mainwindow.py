@@ -50,6 +50,20 @@ class TestMainWindow(unittest.TestCase):
 
         self.assertEqual('&START', self.tennyMainWindow.startstopPushButton.text())
 
+    def test_closeEvent_if_tennyMainWindow_isHidden(self):
+
+        self.tennyMainWindow.show()
+        self.tennyMainWindow.close()
+
+        self.assertTrue(self.tennyMainWindow.isHidden())
+
+    def test_closeEvent_if_stopwatch_isActive(self):
+
+        QTest.mouseClick(self.tennyMainWindow.startstopPushButton, Qt.LeftButton)
+        self.tennyMainWindow.close()
+
+        self.assertTrue(self.tennyMainWindow.stopwatch.isActive())
+
 
 if __name__ == '__main__':
     unittest.main()
