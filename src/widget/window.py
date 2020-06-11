@@ -134,10 +134,11 @@ class MainWindow(QWidget):
                                    self.resetHotkey.shortcut]
         dialog.startstopPushButton_click = self.startstopPushButton.click
         dialog.resetPushButton_click = self.resetPushButton.click
+        dialog.exec()
 
-        if dialog.exec():
-            self.startstopPushButton.setToolTip(dialog.startstopHotkey.shortcut)
-            self.resetPushButton.setToolTip(dialog.resetHotkey.shortcut)
+         # Update button's shortcut tooltip
+        self.startstopPushButton.setToolTip(dialog.startstopHotkey.shortcut)
+        self.resetPushButton.setToolTip(dialog.resetHotkey.shortcut)
 
     def _update_timeLabel(self):
 
