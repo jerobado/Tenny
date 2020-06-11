@@ -245,3 +245,9 @@ class PreferencesDialog(QDialog):
 
         if len(self.resetKeySequenceEdit.keySequence()) > 1:
             self.resetKeySequenceEdit.clear()
+
+    def closeEvent(self, event):
+
+        self.hide()
+        event.ignore()
+
