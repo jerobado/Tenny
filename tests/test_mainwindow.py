@@ -57,6 +57,13 @@ class TestMainWindow(unittest.TestCase):
         self.assertTrue(self.tennyMainWindow.isQuit)
         self.assertTrue(self.tennyMainWindow.close())
 
+    def test_closeEvent_isQuit(self):
+
+        QTest.keyPress(self.tennyMainWindow, Qt.Key_Q, Qt.ControlModifier)
+
+        self.assertTrue(self.tennyMainWindow.isQuit)
+        self.assertFalse(self.tennyMainWindow.tennySystemTray.isVisible())
+
     def test_closeEvent_isHidden(self):
 
         self.tennyMainWindow.show()
