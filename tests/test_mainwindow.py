@@ -1,4 +1,5 @@
 import logging
+import platform
 import sys
 import unittest
 from PyQt5.QtCore import Qt, QSize
@@ -51,6 +52,7 @@ class TestMainWindow(unittest.TestCase):
 
         self.assertEqual('&START', self.tennyMainWindow.startstopPushButton.text())
 
+    @unittest.skipIf(platform.node() != 'DESKTOP-IKR4SLI', 'skip testing in appveyor')
     def test_unhide_function_isMinimized_false(self):
 
         self.tennyMainWindow.showMinimized()
@@ -58,6 +60,7 @@ class TestMainWindow(unittest.TestCase):
 
         self.assertFalse(self.tennyMainWindow.isMinimized())
 
+    @unittest.skipIf(platform.node() != 'DESKTOP-IKR4SLI', 'skip testing in appveyor')
     def test_unhide_function_isMaxmized_false(self):
 
         self.tennyMainWindow.showMaximized()
@@ -65,6 +68,7 @@ class TestMainWindow(unittest.TestCase):
 
         self.assertFalse(self.tennyMainWindow.isMaximized())
 
+    @unittest.skipIf(platform.node() != 'DESKTOP-IKR4SLI', 'skip testing in appveyor')
     def test_unhide_function_isHidden_false(self):
 
         # tennyMainwindow is hidden by default so we immediately call unhide()
