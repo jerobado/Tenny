@@ -53,21 +53,21 @@ class TestMainWindow(unittest.TestCase):
 
     def test_unhide_function_isMinimized_false(self):
 
-        self.tennyMainWindow.showMinimized()
+        QTest.keyPress(self.tennyMainWindow, Qt.Key_Down, Qt.MetaModifier)
         self.tennyMainWindow.unhide()
 
         self.assertFalse(self.tennyMainWindow.isMinimized())
 
     def test_unhide_function_isMaxmized_false(self):
 
-        self.tennyMainWindow.showMaximized()
+        QTest.keyPress(self.tennyMainWindow, Qt.Key_Up, Qt.MetaModifier)
         self.tennyMainWindow.unhide()
 
         self.assertFalse(self.tennyMainWindow.isMaximized())
 
     def test_unhide_function_isHidden_false(self):
 
-        self.tennyMainWindow.hide()
+        QTest.keyPress(self.tennyMainWindow, Qt.Key_F4, Qt.AltModifier)
         self.tennyMainWindow.unhide()
 
         self.assertFalse(self.tennyMainWindow.isHidden())
