@@ -181,8 +181,10 @@ class PreferencesDialog(QDialog):
         self.descriptionLabel = QLabel()
         self.startstopLabel = QLabel('Start/Stop:')
         self.resetLabel = QLabel('Reset:')
+        self.unhideLabel = QLabel('Unhide:')
         self.startstopKeySequenceEdit = QKeySequenceEdit()
         self.resetKeySequenceEdit = QKeySequenceEdit()
+        self.unhideKeySequenceEdit = QKeySequenceEdit()
         self.okPushButton = QPushButton('OK')
 
     def _layout(self):
@@ -192,6 +194,8 @@ class PreferencesDialog(QDialog):
         grid.addWidget(self.startstopKeySequenceEdit, 0, 1)
         grid.addWidget(self.resetLabel, 1, 0)
         grid.addWidget(self.resetKeySequenceEdit, 1, 1)
+        grid.addWidget(self.unhideLabel, 2, 0)
+        grid.addWidget(self.unhideKeySequenceEdit, 2, 1)
 
         hotkeyGroupBox = QGroupBox('Hotkey')
         hotkeyGroupBox.setLayout(grid)
