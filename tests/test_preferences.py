@@ -3,8 +3,10 @@ import sys
 import unittest
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QKeySequenceEdit, QPushButton
 from src.dialog.preferences import PreferencesDialog
+
+APP = QApplication(sys.argv)
 
 
 class TestPreferencesDialog(unittest.TestCase):
@@ -28,6 +30,15 @@ class TestPreferencesDialog(unittest.TestCase):
         self.assertEqual(381, self.preferenceDialog.width())
         self.assertEqual(149, self.preferenceDialog.height())
         self.assertEqual(QSize(381, 149), self.preferenceDialog.size())
+
+    def test_unhideKeySequenceEdit_on_KeySequenceChanged(self):
+
+        QTest.keyPress(self.preferenceDialog.unhideKeySequenceEdit, Qt.Key_D, Qt.ControlModifier)
+        QTest.keyPress(self.preferenceDialog.unhideKeySequenceEdit, Qt.Key_4, Qt.ShiftModifier)
+        self.assertGreater(len(self.preferenceDialog.unhideKeySequenceEdit.keySequence()), 1)
+
+        self.preferenceDialog._on_KeySequenceChanged()
+        self.assertEqual('', self.preferenceDialog.unhideKeySequenceEdit.keySequence().toString())
 
 
 if __name__ == '__main__':
