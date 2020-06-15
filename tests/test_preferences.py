@@ -17,6 +17,14 @@ class TestPreferencesDialog(unittest.TestCase):
 
     def test_default_properties(self):
 
+        self.assertEqual('Start/Stop:', self.preferenceDialog.startstopLabel.text())
+        self.assertEqual('Reset:', self.preferenceDialog.resetLabel.text())
+        self.assertEqual('Unhide:', self.preferenceDialog.unhideLabel.text())
+        self.assertEqual('OK', self.preferenceDialog.okPushButton.text())
+        self.assertIsInstance(self.preferenceDialog.startstopKeySequenceEdit, QKeySequenceEdit)
+        self.assertIsInstance(self.preferenceDialog.resetKeySequenceEdit, QKeySequenceEdit)
+        self.assertIsInstance(self.preferenceDialog.unhideKeySequenceEdit, QKeySequenceEdit)
+        self.assertIsInstance(self.preferenceDialog.okPushButton, QPushButton)
         self.assertEqual(381, self.preferenceDialog.width())
         self.assertEqual(149, self.preferenceDialog.height())
         self.assertEqual(QSize(381, 149), self.preferenceDialog.size())
