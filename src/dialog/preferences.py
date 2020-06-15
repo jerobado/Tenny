@@ -221,6 +221,7 @@ class PreferencesDialog(QDialog):
         self.okPushButton.clicked.connect(self._on_okPushButton_clicked)
         self.startstopKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
         self.resetKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
+        self.unhideKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
 
     # Slots
     def _on_okPushButton_clicked(self):
@@ -249,6 +250,9 @@ class PreferencesDialog(QDialog):
 
         if len(self.resetKeySequenceEdit.keySequence()) > 1:
             self.resetKeySequenceEdit.clear()
+
+        if len(self.unhideKeySequenceEdit.keySequence()) > 1:
+            self.unhideKeySequenceEdit.clear()
 
     def closeEvent(self, event):
 
