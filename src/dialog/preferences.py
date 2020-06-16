@@ -222,9 +222,6 @@ class PreferencesDialog(QDialog):
     def _connections(self):
 
         self.okPushButton.clicked.connect(self._on_okPushButton_clicked)
-        self.startstopKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
-        self.resetKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
-        self.unhideKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
 
     def get_user_input(self):
 
@@ -265,17 +262,6 @@ class PreferencesDialog(QDialog):
         else:
             QMessageBox.warning(self, 'Set Hotkey', 'Entered hotkey already exist', QMessageBox.Ok)
             logging.debug(f'{self.common_hotkey} already exist')
-
-    def _on_KeySequenceChanged(self):
-
-        if len(self.startstopKeySequenceEdit.keySequence()) > 1:
-            self.startstopKeySequenceEdit.clear()
-
-        if len(self.resetKeySequenceEdit.keySequence()) > 1:
-            self.resetKeySequenceEdit.clear()
-
-        if len(self.unhideKeySequenceEdit.keySequence()) > 1:
-            self.unhideKeySequenceEdit.clear()
 
     def closeEvent(self, event):
 
