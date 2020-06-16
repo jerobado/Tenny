@@ -40,6 +40,21 @@ class TestPreferencesDialog(unittest.TestCase):
         self.preferenceDialog._on_KeySequenceChanged()
         self.assertEqual('', self.preferenceDialog.unhideKeySequenceEdit.keySequence().toString())
 
+    def test_get_new_hotkeys(self):
+
+        QTest.keyPress(self.preferenceDialog.startstopKeySequenceEdit, Qt.Key_1, Qt.ControlModifier)
+        QTest.keyPress(self.preferenceDialog.resetKeySequenceEdit, Qt.Key_2, Qt.ControlModifier)
+        QTest.keyPress(self.preferenceDialog.unhideKeySequenceEdit, Qt.Key_3, Qt.ControlModifier)
+
+        preferences = dict()
+        preferences['new-startstop'] = self.preferenceDialog.startstopKeySequenceEdit.keySequence().toString()
+        preferences['new-reset'] = self.preferenceDialog.resetKeySequenceEdit.keySequence().toString()
+        preferences['new-unhide'] = self.preferenceDialog.unhideKeySequenceEdit.keySequence().toString()
+
+        self.assertEqual('Ctrl+1', preferences['new-startstop'])
+        self.assertEqual('Ctrl+2', preferences['new-reset'])
+        self.assertEqual('Ctrl+3', preferences['new-unhide'])
+
 
 if __name__ == '__main__':
     unittest.main()
