@@ -245,22 +245,25 @@ class PreferencesDialog(QDialog):
     # Slots
     def _on_okPushButton_clicked(self):
 
-        new_startstortKeySequence = self.startstopKeySequenceEdit.keySequence().toString()
-        new_resetKeySequence = self.resetKeySequenceEdit.keySequence().toString()
-        startstop_keysequence_length = len(self.startstopKeySequenceEdit.keySequence())
-        reset_keysequence_length = len(self.resetKeySequenceEdit.keySequence())
+        self.get_user_input()
+        if not self.isHotkeyExist():
+            # [] TODO: prevent accepting multiple key sequence
+            if self.preferences['new-startstop']:
+                self.startstopHotkey.updateShortcut(self.preferences['new-startstop'], self.startstopPushButton_click)
+                logging.debug(f'Start/Stop: new hotkey -> {self.preferences["new-startstop"]}')
 
-        if (new_startstortKeySequence or new_resetKeySequence) not in self.existing_hotkeys:
-            if new_startstortKeySequence and not startstop_keysequence_length > 1:
-                self.startstopHotkey.updateShortcut(new_startstortKeySequence, self.startstopPushButton_click)
-                logging.debug(f'Start/Stop: new hotkey -> {new_startstortKeySequence}')
-            if new_resetKeySequence and not reset_keysequence_length > 1:
-                self.resetHotkey.updateShortcut(new_resetKeySequence, self.resetPushButton_click)
-                logging.debug(f'Reset: new hotkey -> {new_resetKeySequence}')
+            if self.preferences['new-reset']:
+                self.resetHotkey.updateShortcut(self.preferences['new-reset'], self.resetPushButton_click)
+                logging.debug(f'Reset: new hotkey -> {self.preferences["new-reset"]}')
+
+            if self.preferences['new-unhide']:
+                self.unhideHotkey.updateShortcut(self.preferences['new-unhide'], self.unhide_slot)
+
             self.hide()
+
         else:
             QMessageBox.warning(self, 'Set Hotkey', 'Entered hotkey already exist', QMessageBox.Ok)
-            logging.debug(f'{new_startstortKeySequence} or {new_resetKeySequence} already exist')
+            logging.debug(f'{self.common_hotkey} already exist')
 
     def _on_KeySequenceChanged(self):
 
