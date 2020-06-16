@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtTest import QTest
 from PyQt5.QtWidgets import QApplication, QKeySequenceEdit, QPushButton
 from src.dialog.preferences import PreferencesDialog
+from src.widget.keysequenceedit import KeySequenceEdit
 
 APP = QApplication(sys.argv)
 
@@ -25,9 +26,9 @@ class TestPreferencesDialog(unittest.TestCase):
         self.assertEqual('OK', self.preferenceDialog.okPushButton.text())
         self.assertIsInstance(self.preferenceDialog.preferences, dict)
         self.assertIsInstance(self.preferenceDialog.common_hotkey, set)
-        self.assertIsInstance(self.preferenceDialog.startstopKeySequenceEdit, QKeySequenceEdit)
-        self.assertIsInstance(self.preferenceDialog.resetKeySequenceEdit, QKeySequenceEdit)
-        self.assertIsInstance(self.preferenceDialog.unhideKeySequenceEdit, QKeySequenceEdit)
+        self.assertIsInstance(self.preferenceDialog.startstopKeySequenceEdit, KeySequenceEdit)
+        self.assertIsInstance(self.preferenceDialog.resetKeySequenceEdit, KeySequenceEdit)
+        self.assertIsInstance(self.preferenceDialog.unhideKeySequenceEdit, KeySequenceEdit)
         self.assertIsInstance(self.preferenceDialog.okPushButton, QPushButton)
         self.assertEqual(QSize(381, 149), self.preferenceDialog.size())
 
