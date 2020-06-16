@@ -139,10 +139,13 @@ class MainWindow(QWidget):
         dialog = PreferencesDialog(self)
         dialog.startstopHotkey = self.startstopHotkey
         dialog.resetHotkey = self.resetHotkey
+        dialog.unhideHotkey = self.unhideHotkey
         dialog.existing_hotkeys = [self.startstopHotkey.shortcut,
-                                   self.resetHotkey.shortcut]
+                                   self.resetHotkey.shortcut,
+                                   self.unhideHotkey.shortcut]
         dialog.startstopPushButton_click = self.startstopPushButton.click
         dialog.resetPushButton_click = self.resetPushButton.click
+        dialog.unhide_slot = self.unhide
         dialog.exec()
 
         # Update button's shortcut tooltip
