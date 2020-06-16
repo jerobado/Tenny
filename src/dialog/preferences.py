@@ -230,6 +230,17 @@ class PreferencesDialog(QDialog):
         self.preferences['new-reset'] = self.resetKeySequenceEdit.keySequence().toString()
         self.preferences['new-unhide'] = self.unhideKeySequenceEdit.keySequence().toString()
 
+    def isHotkeyExist(self):
+
+        new_hotkeys = [
+            self.preferences['new-startstop'],
+            self.preferences['new-reset'],
+            self.preferences['new-unhide']
+        ]
+        common_hotkey = set(self.existing_hotkeys).intersection(new_hotkeys)
+
+        return len(common_hotkey) > 0
+
     # Slots
     def _on_okPushButton_clicked(self):
 
