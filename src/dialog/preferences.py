@@ -224,6 +224,12 @@ class PreferencesDialog(QDialog):
         self.resetKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
         self.unhideKeySequenceEdit.keySequenceChanged.connect(self._on_KeySequenceChanged)
 
+    def get_user_input(self):
+
+        self.preferences['new-startstop'] = self.startstopKeySequenceEdit.keySequence().toString()
+        self.preferences['new-reset'] = self.resetKeySequenceEdit.keySequence().toString()
+        self.preferences['new-unhide'] = self.unhideKeySequenceEdit.keySequence().toString()
+
     # Slots
     def _on_okPushButton_clicked(self):
 
