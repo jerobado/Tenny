@@ -3,7 +3,7 @@ import sys
 import unittest
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication, QKeySequenceEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QPushButton
 from src.dialog.preferences import PreferencesDialog
 from src.widget.keysequenceedit import KeySequenceEdit
 
