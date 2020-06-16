@@ -24,6 +24,7 @@ class TestPreferencesDialog(unittest.TestCase):
         self.assertEqual('Unhide:', self.preferenceDialog.unhideLabel.text())
         self.assertEqual('OK', self.preferenceDialog.okPushButton.text())
         self.assertIsInstance(self.preferenceDialog.preferences, dict)
+        self.assertIsInstance(self.preferenceDialog.common_hotkey, set)
         self.assertIsInstance(self.preferenceDialog.startstopKeySequenceEdit, QKeySequenceEdit)
         self.assertIsInstance(self.preferenceDialog.resetKeySequenceEdit, QKeySequenceEdit)
         self.assertIsInstance(self.preferenceDialog.unhideKeySequenceEdit, QKeySequenceEdit)
