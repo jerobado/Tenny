@@ -22,11 +22,6 @@ class TestSettings(unittest.TestCase):
 
         self.assertIsInstance(self.window, MainWindow)
 
-    def test_saveSettings(self):
-
-        # [] TODO: study how to test settings
-        ...
-
 
 if __name__ == '__main__':
     unittest.main()
