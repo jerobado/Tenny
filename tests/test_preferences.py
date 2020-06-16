@@ -53,6 +53,24 @@ class TestPreferencesDialog(unittest.TestCase):
         self.assertEqual('Ctrl+2', self.preferenceDialog.preferences['new-reset'])
         self.assertEqual('Ctrl+3', self.preferenceDialog.preferences['new-unhide'])
 
+    def test_isHotkeyExist_True(self):
+
+        QTest.keyPress(self.preferenceDialog.startstopKeySequenceEdit, Qt.Key_1, Qt.ControlModifier)
+
+        self.preferenceDialog.get_user_input()
+        self.preferenceDialog.existing_hotkeys = ['Ctrl+1', 'Ctrl+2', 'Ctrl+3']
+
+        self.assertTrue(self.preferenceDialog.isHotkeyExist())
+
+    def test_isHotkeyExist_False(self):
+
+        QTest.keyPress(self.preferenceDialog.startstopKeySequenceEdit, Qt.Key_X, Qt.ControlModifier)
+
+        self.preferenceDialog.get_user_input()
+        self.preferenceDialog.existing_hotkeys = ['Ctrl+1', 'Ctrl+2', 'Ctrl+3']
+
+        self.assertFalse(self.preferenceDialog.isHotkeyExist())
+
 
 if __name__ == '__main__':
     unittest.main()
