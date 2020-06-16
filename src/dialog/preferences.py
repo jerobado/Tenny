@@ -171,6 +171,7 @@ class PreferencesDialog(QDialog):
     def __init__(self, parent=None):
 
         super().__init__(parent)
+        self.preferences = dict()
         self._widgets()
         self._layout()
         self._properties()
