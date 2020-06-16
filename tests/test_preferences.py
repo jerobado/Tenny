@@ -31,15 +31,6 @@ class TestPreferencesDialog(unittest.TestCase):
         self.assertIsInstance(self.preferenceDialog.okPushButton, QPushButton)
         self.assertEqual(QSize(381, 149), self.preferenceDialog.size())
 
-    def test_unhideKeySequenceEdit_on_KeySequenceChanged(self):
-
-        QTest.keyPress(self.preferenceDialog.unhideKeySequenceEdit, Qt.Key_D, Qt.ControlModifier)
-        QTest.keyPress(self.preferenceDialog.unhideKeySequenceEdit, Qt.Key_4, Qt.ShiftModifier)
-        self.assertGreater(len(self.preferenceDialog.unhideKeySequenceEdit.keySequence()), 1)
-
-        self.preferenceDialog._on_KeySequenceChanged()
-        self.assertEqual('', self.preferenceDialog.unhideKeySequenceEdit.keySequence().toString())
-
     def test_get_user_input(self):
 
         QTest.keyPress(self.preferenceDialog.startstopKeySequenceEdit, Qt.Key_1, Qt.ControlModifier)
