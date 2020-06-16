@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (QDialog,
                              QMessageBox)
 from PyQt5.QtCore import Qt
 import keyboard
+from src.widget.keysequenceedit import KeySequenceEdit
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(levelname)s: %(message)s')
@@ -184,9 +185,9 @@ class PreferencesDialog(QDialog):
         self.startstopLabel = QLabel('Start/Stop:')
         self.resetLabel = QLabel('Reset:')
         self.unhideLabel = QLabel('Unhide:')
-        self.startstopKeySequenceEdit = QKeySequenceEdit()
-        self.resetKeySequenceEdit = QKeySequenceEdit()
-        self.unhideKeySequenceEdit = QKeySequenceEdit()
+        self.startstopKeySequenceEdit = KeySequenceEdit()
+        self.resetKeySequenceEdit = KeySequenceEdit()
+        self.unhideKeySequenceEdit = KeySequenceEdit()
         self.okPushButton = QPushButton('OK')
 
     def _layout(self):
