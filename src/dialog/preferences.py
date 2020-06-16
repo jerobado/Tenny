@@ -172,6 +172,7 @@ class PreferencesDialog(QDialog):
 
         super().__init__(parent)
         self.preferences = dict()
+        self.common_hotkey = set()
         self._widgets()
         self._layout()
         self._properties()
@@ -237,9 +238,9 @@ class PreferencesDialog(QDialog):
             self.preferences['new-reset'],
             self.preferences['new-unhide']
         ]
-        common_hotkey = set(self.existing_hotkeys).intersection(new_hotkeys)
+        self.common_hotkey = set(self.existing_hotkeys).intersection(new_hotkeys)
 
-        return len(common_hotkey) > 0
+        return len(self.common_hotkey) > 0
 
     # Slots
     def _on_okPushButton_clicked(self):
