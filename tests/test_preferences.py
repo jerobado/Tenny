@@ -29,8 +29,6 @@ class TestPreferencesDialog(unittest.TestCase):
         self.assertIsInstance(self.preferenceDialog.resetKeySequenceEdit, QKeySequenceEdit)
         self.assertIsInstance(self.preferenceDialog.unhideKeySequenceEdit, QKeySequenceEdit)
         self.assertIsInstance(self.preferenceDialog.okPushButton, QPushButton)
-        self.assertEqual(381, self.preferenceDialog.width())
-        self.assertEqual(149, self.preferenceDialog.height())
         self.assertEqual(QSize(381, 149), self.preferenceDialog.size())
 
     def test_unhideKeySequenceEdit_on_KeySequenceChanged(self):
