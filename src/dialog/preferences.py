@@ -245,7 +245,7 @@ class PreferencesDialog(QDialog):
 
         self.get_user_input()
         if not self.isHotkeyExist():
-            # [] TODO: prevent accepting multiple key sequence
+            # Update hotkeys one-by-one
             if self.preferences['new-startstop']:
                 self.startstopHotkey.updateShortcut(self.preferences['new-startstop'], self.startstopPushButton_click)
                 logging.debug(f'Start/Stop: new hotkey -> {self.preferences["new-startstop"]}')
@@ -256,6 +256,7 @@ class PreferencesDialog(QDialog):
 
             if self.preferences['new-unhide']:
                 self.unhideHotkey.updateShortcut(self.preferences['new-unhide'], self.unhide_slot)
+                logging.debug(f'Unhide: new hotkey -> {self.preferences["new-unhide"]}')
 
             self.hide()
 
