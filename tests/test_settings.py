@@ -7,8 +7,6 @@ from PyQt5.QtWidgets import QApplication
 from src.core.tenny import Settings
 from src.widget.window import MainWindow
 
-APP = QApplication(sys.argv)
-
 
 class TestSettings(unittest.TestCase):
 

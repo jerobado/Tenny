@@ -7,8 +7,6 @@ from PyQt5.QtWidgets import QApplication, QPushButton
 from src.dialog.preferences import PreferencesDialog
 from src.widget.keysequenceedit import KeySequenceEdit
 
-APP = QApplication(sys.argv)
-
 
 class TestPreferencesDialog(unittest.TestCase):
 
