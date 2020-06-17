@@ -1,7 +1,7 @@
 ![Hey! Tenny](images/stopwatch-32.png) **Tenny**
 ---
 [![Maintainability](https://api.codeclimate.com/v1/badges/43e912332cf2c4d776ac/maintainability)](https://codeclimate.com/github/jerobado/Tenny/maintainability)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/rx3pr1b44tg8njku?svg=true)](https://ci.appveyor.com/project/jerobado/tenny)
+![tests](https://github.com/jerobado/Tenny/workflows/tests/badge.svg)
 
 A simple timer application that's controllable by a hotkey.
 
