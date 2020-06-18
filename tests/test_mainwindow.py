@@ -28,6 +28,7 @@ class TestMainWindow(unittest.TestCase):
         self.assertEqual('Alt+Q', self.tennyMainWindow.startstopHotkey.shortcut)
         self.assertEqual('Alt+W', self.tennyMainWindow.resetHotkey.shortcut)
         self.assertEqual('Alt+D', self.tennyMainWindow.unhideHotkey.shortcut)
+        self.assertEqual('Quit', self.tennyMainWindow.quitAction.text())
         self.assertEqual(QSize(341, 89), self.tennyMainWindow.size())
 
     def test_startstopPushButton_start(self):
@@ -72,6 +73,12 @@ class TestMainWindow(unittest.TestCase):
         self.tennyMainWindow.unhide()
 
         self.assertFalse(self.tennyMainWindow.isHidden())
+
+    def test_on_quitAction_triggered(self):
+
+        self.tennyMainWindow._on_quitAction_triggered()
+
+        self.assertTrue(self.tennyMainWindow.isQuit)
 
     def test_keyPressEvent_isQuit(self):
 
