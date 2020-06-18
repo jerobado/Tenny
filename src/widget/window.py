@@ -36,6 +36,7 @@ class MainWindow(QWidget):
     def _widgets(self):
 
         self.preferencesAction = QAction()
+        self.quitAction = QAction()
         self.contextMenu = QMenu()
         self.stopwatch = Stopwatch()
         self.startstopHotkey = Hotkey()
@@ -75,8 +76,10 @@ class MainWindow(QWidget):
         self.unhideHotkey.shortcut = 'Alt+D'
 
         self.preferencesAction.setText('Preferences')
+        self.quitAction.setText('Quit')
 
         self.contextMenu.addAction(self.preferencesAction)
+        self.contextMenu.addAction(self.quitAction)
 
         self.tennySystemTray.setContextMenu(self.contextMenu)
         self.tennySystemTray.show()
@@ -99,6 +102,7 @@ class MainWindow(QWidget):
         self.tennySystemTray.activated.connect(self._on_tennySystemTray_activated)
 
         self.preferencesAction.triggered.connect(self._on_preferencesAction_triggered)
+        self.quitAction.triggered.connect(self._on_quitAction_triggered)
 
     def unhide(self):
 
@@ -151,6 +155,11 @@ class MainWindow(QWidget):
         # Update button's shortcut tooltip
         self.startstopPushButton.setToolTip(dialog.startstopHotkey.shortcut)
         self.resetPushButton.setToolTip(dialog.resetHotkey.shortcut)
+
+    def _on_quitAction_triggered(self):
+
+        self.isQuit = True
+        self.close()
 
     def _update_timeLabel(self):
 
