@@ -64,12 +64,15 @@ class MainWindow(QWidget):
 
     def _properties(self):
 
+        self.timeLabel.setObjectName('timeLabel')
         self.timeLabel.setText('00:00:00')
         self.timeLabel.setAlignment(Qt.AlignHCenter)
 
+        self.startstopPushButton.setObjectName('startstopPushButton')
         self.startstopPushButton.setText('&START')
         self.startstopHotkey.shortcut = 'Alt+Q'
 
+        self.resetPushButton.setObjectName('resetPushButton')
         self.resetPushButton.setText('&RESET')
         self.resetHotkey.shortcut = 'Alt+W'
 
@@ -84,6 +87,7 @@ class MainWindow(QWidget):
         self.tennySystemTray.setContextMenu(self.contextMenu)
         self.tennySystemTray.show()
 
+        self.setObjectName('MainWindow')
         self.setWindowIcon(QIcon(':/stopwatch-32.png'))
         self.setWindowTitle('Tenny')
         self.resize(341, 89)
