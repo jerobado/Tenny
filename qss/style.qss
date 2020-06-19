@@ -1,26 +1,22 @@
-#Ten {
+#MainWindow {
     background-color: #FFFFFF;
 }
 
-#tennyTimeLabel {
+#timeLabel {
     /* color: #FF7070; */
     color: #383838;
     font: 40px;
     font-family: "Segoe UI";
 }
 
-#stortPushButton {
-    /* Zipper-mouth */
-}
-
-#stortPushButton:flat, #resetPushButton:flat {
+#startstopPushButton:flat, #resetPushButton:flat {
     border: none;
 }
 
-#stortPushButton:pressed, #resetPushButton:pressed {
+#startstopPushButton:pressed, #resetPushButton:pressed {
     background-color: #FF7070;
 }
 
-#stortPushButton:hover, #resetPushButton:hover {
+#startstopPushButton:hover, #resetPushButton:hover {
     background-color: #FF7070;
 }
