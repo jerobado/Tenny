@@ -3,21 +3,20 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/43e912332cf2c4d776ac/maintainability)](https://codeclimate.com/github/jerobado/Tenny/maintainability)
 ![tests](https://github.com/jerobado/Tenny/workflows/tests/badge.svg?branch=master)
 
-A simple timer application that's controllable by a hotkey.
+A simple stopwatch application that's controllable by a hotkey regardless of active window.
 
 ![Tenny Demo](https://github.com/mokachokokarbon/Tenny/blob/master/images/tenny-demo.gif)
 
 Features & Benefits
 ---    
 * Controllable by a customizable hotkey regardless of active window.
-* Customizable transparency and resizable window.
-* Always on top.
+* Easily show the application using a hotkey when minimized or hidden.
 
 System Requirements
 ---
 - OS: Windows 10 64-bit
-- Memory: 20 MB
-- Storage: 45 MB
+- Memory: 25 MB
+- Storage: 60 MB
 
 Credits
 ---
