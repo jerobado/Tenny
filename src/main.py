@@ -10,7 +10,6 @@ import os
 import sys
 sys.path.append('..')
 from PyQt5.QtWidgets import QApplication
-from src.main_window import Ten
 from src.widget.window import MainWindow
 from resources import tenny_resources
 
@@ -60,29 +59,10 @@ def check_tools_version() -> None:
     logging.info(f'[TEN]: SIP version {SIP_VERSION_STR}')
 
 
-def configure_app_icon() -> None:
-    """ This will show the icon of Betty in the taskbar. """
-
-    import ctypes
-    APP_ID = u'novus.mokachokokarbon.tenny.06'
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
-
-
-# [] TODO: make this one-liner only
-# [] TODO: can be transferred to constant.py
-def load_stylesheet():
-
-    stylesheet = open('../qss/style.qss')
-    return stylesheet.read()
-
-
 if __name__ == '__main__':
     # [] TODO: create a condition that will determine if we are running live or in development
     check_tools_version()
-    configure_app_icon()
-    # window = Ten()
     window = MainWindow()
-    # window.setStyleSheet(load_stylesheet()) # [] TODO: do this in main_window.py
     window.setStyleSheet(QSS_FILE)
     window.show()
     APP.exec()
