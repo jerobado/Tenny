@@ -9,4 +9,4 @@ class SystemTrayIcon(QSystemTrayIcon):
 
         super().__init__()
         self.setIcon(QIcon(':/stopwatch-32.png'))
-        self.setToolTip('Tenny develop 0.6')
+        self.setToolTip('Tenny 0.6')
