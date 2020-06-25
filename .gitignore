@@ -47,3 +47,7 @@ Temporary Items
 __pycache__/
 *.py~
 _todo.txt
+
+# PyInstaller stuff
+build
+dist
